@@ -1,8 +1,9 @@
+import { useLocalStorage } from "@uidotdev/usehooks";
 import { Auth, User } from "lib/api";
 import {
-	createContext,
 	Dispatch,
 	ReactNode,
+	createContext,
 	useContext,
 	useReducer
 } from "react";
@@ -84,10 +85,11 @@ type AppStateProviderProps = Readonly<{
 export const AppStateProvider = ({
 	children
 }: AppStateProviderProps) => {
-	const [state, dispatch] = useReducer(
-		reducer,
+	const [saved] = useLocalStorage(
+		"state",
 		defaultState
 	);
+	const [state, dispatch] = useReducer(reducer, saved);
 
 	return (
 		<AppContext.Provider value={[state, dispatch]}>

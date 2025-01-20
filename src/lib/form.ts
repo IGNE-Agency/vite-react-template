@@ -1,60 +1,90 @@
-import { FormEvent, useState } from "react";
-import { type ZodIssue } from "zod";
-
-type FormIssues = Readonly<
-	Record<string, ReadonlyArray<ZodIssue>>
->;
+import { type FormEvent, useState } from "react";
+import type { Schema, ZodIssue } from "zod";
 
 export type UseFormReturn<T> = ReturnType<
 	typeof useForm<T>
 >;
 
-const useForm = <T>() => {
+const useForm = <T>(schema: Schema<T>) => {
 	const [isSubmitting, setIsSubmitting] =
 		useState(false);
-	const [issues, setIssues] = useState<FormIssues>();
+	const [issues, setIssues] =
+		useState<ReadonlyArray<ZodIssue>>();
 
 	const handleSubmit =
 		(handler: (data: T) => void | Promise<void>) =>
 		async (event: FormEvent<HTMLFormElement>) => {
 			event.preventDefault();
-			const data = Object.fromEntries(
-				new FormData(event.currentTarget).entries()
-			) as T;
 
 			setIsSubmitting(true);
 			setIssues(undefined);
-			try {
-				await handler(data);
-			} catch (error) {
-				if (isServerError(error)) {
-					// TODO: Implement
-					throw new Error("Not implemented.");
-				} else if (isZodIssue(error)) {
-					addIssue(error);
+
+			const result = await schema.safeParseAsync(
+				Object.fromEntries(
+					new FormData(event.currentTarget).entries()
+				)
+			);
+
+			if (!result.success) {
+				setIssues(result.error.issues);
+			} else {
+				try {
+					await handler(result.data);
+				} catch (error) {
+					if (!isServerError(error)) {
+						throw error;
+					}
+					for (const [
+						field,
+						messages
+					] of Object.entries(error.errors)) {
+						issue(
+							messages.map(message => ({
+								code: "custom",
+								path: [field],
+								message
+							}))
+						);
+					}
 				}
-			} finally {
-				setIsSubmitting(false);
 			}
+
+			setIsSubmitting(false);
 		};
 
-	const addIssue = (issue: ZodIssue) => {
-		// TODO: Implement
-		throw new Error("Not implemented.");
+	const issue = (issues: ReadonlyArray<ZodIssue>) => {
+		setIssues(oldIssues =>
+			(oldIssues ?? []).concat(issues)
+		);
 	};
+
+	const addIssues = (
+		messages: ReadonlyArray<string>
+	) => issue(messages.map(createCustomIssue));
 
 	return {
 		isSubmitting,
 		handleSubmit,
-		addIssue,
+		addIssues,
 		issues
 	};
 };
 
 export default useForm;
 
+const createCustomIssue = (
+	message: string
+): ZodIssue => ({
+	code: "custom",
+	path: ["*"],
+	message
+});
+
 type ServerError = Readonly<{
 	code: number;
+	errors: Readonly<
+		Record<string, ReadonlyArray<string>>
+	>;
 }>;
 
 const isServerError = (
@@ -62,7 +92,9 @@ const isServerError = (
 ): error is ServerError =>
 	error &&
 	"code" in error &&
-	typeof error.code === "number";
+	typeof error.code === "number" &&
+	"errors" in error &&
+	typeof error.errors === "object";
 
 const isZodIssue = (error: any): error is ZodIssue =>
 	error &&

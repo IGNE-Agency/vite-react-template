@@ -1,14 +1,14 @@
-import Form from "components/form";
+import Form from "components/form/form";
 import {
 	HttpStatus,
-	LoginRequest,
+	type LoginRequest,
 	api
 } from "lib/api";
 import { useAppState } from "lib/app-state";
 import useForm from "lib/form";
 import { useTranslation } from "react-i18next";
 import {
-	Location,
+	type Location,
 	useLocation,
 	useNavigate
 } from "react-router";
@@ -24,8 +24,8 @@ const LoginPage = () => {
 	} = useLocation<{ redirect?: string }>();
 	const navigate = useNavigate();
 	const { t } = useTranslation();
-	const form = useForm<LoginRequest>();
 	const [, dispatch] = useAppState();
+	const form = useForm<LoginRequest>();
 
 	const handleSubmit = form.handleSubmit(
 		async data => {
@@ -37,26 +37,10 @@ const LoginPage = () => {
 			} else {
 				switch (result.error.code) {
 					case HttpStatus.BadRequest: {
-						for (const [
-							field,
-							issues
-						] of Object.entries(result.error.errors)) {
-							for (const issue of issues) {
-								form.addIssue({
-									code: "custom",
-									path: [field],
-									message: issue
-								});
-							}
-						}
-						break;
+						throw result.error;
 					}
 					case HttpStatus.Forbidden: {
-						form.addIssue({
-							code: "custom",
-							path: ["*"],
-							message: result.error.message
-						});
+						form.addIssues([result.error.message]);
 						break;
 					}
 				}
@@ -68,16 +52,14 @@ const LoginPage = () => {
 		<>
 			<h1>{t("pages.login.title")}</h1>
 			<Form form={form} onSubmit={handleSubmit}>
-				<input
-					type="text"
-					name="email"
-					placeholder={t("forms.fields.email")}
-				/>
-				<input
-					type="password"
-					name="password"
-					placeholder={t("forms.fields.password")}
-				/>
+				<label>
+					<span>{t("forms.fields.email")}</span>
+					<input type="text" name="email" />
+				</label>
+				<label>
+					<span>{t("forms.fields.password")}</span>
+					<input type="password" name="password" />
+				</label>
 				<button type="submit">
 					{t("forms.actions.login")}
 				</button>

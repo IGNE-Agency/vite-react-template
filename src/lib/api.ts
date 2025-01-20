@@ -63,6 +63,43 @@ export const api = {
 			| ForbiddenResponse
 		>
 	> => {
-		return null as any;
+		if (!data.email || !data.password) {
+			const errors: Record<any, any> = {};
+			if (!data.email) {
+				errors.email = [`Field "email" is required.`];
+			}
+			if (!data.password) {
+				errors.password = [
+					`Field "password" is required.`
+				];
+			}
+			return {
+				ok: false,
+				error: { code: HttpStatus.BadRequest, errors }
+			};
+		}
+		const ok = !!Math.round(Math.random());
+
+		if (ok) {
+			return {
+				ok,
+				data: {
+					email: "user@example.com",
+					name: "User Name",
+					role: (["user", "admin"] as const)[
+						Math.floor(Math.random() * 2)
+					]
+				}
+			};
+		}
+
+		return {
+			ok,
+			error: {
+				code: HttpStatus.Forbidden,
+				message:
+					"We decided you're just not allowed to do this right now."
+			}
+		};
 	}
 };
