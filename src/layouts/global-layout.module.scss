@@ -1,0 +1,8 @@
+.layout {
+	width: 100cqi;
+	height: 100cqb;
+	overflow: hidden;
+	display: grid;
+	gap: var(--space-4);
+	grid-template-columns: auto repeat(12, 1fr) auto;
+}

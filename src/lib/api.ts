@@ -1,3 +1,6 @@
+import { z } from "zod";
+
+// biome-ignore lint/suspicious/noConstEnum: We know what we're doing.
 export const enum HttpStatus {
 	// Success
 	Ok = 200,
@@ -12,18 +15,6 @@ export const enum HttpStatus {
 	InternalServerError = 500
 }
 
-export type Role = "user" | "admin";
-
-export type User = Readonly<{
-	email: string;
-	name: string;
-	role: Role;
-}>;
-
-export type Auth = Readonly<{
-	exp: number;
-}>;
-
 type Result<T, E> = Success<T> | Failure<E>;
 
 type Success<T> = Readonly<{
@@ -36,15 +27,10 @@ type Failure<E> = Readonly<{
 	error: E;
 }>;
 
-export type LoginRequest = Readonly<{
-	email: string;
-	password: string;
-}>;
-
 type BadRequestResponse<T extends {}> = Readonly<{
 	code: HttpStatus.BadRequest;
 	errors: Readonly<
-		Record<keyof T, ReadonlyArray<string>>
+		Partial<Record<keyof T, ReadonlyArray<string>>>
 	>;
 }>;
 
@@ -53,18 +39,50 @@ type ForbiddenResponse = Readonly<{
 	message: string;
 }>;
 
+export const roles = ["user", "admin"] as const;
+export const RoleSchema = z.enum(roles);
+export type Role = z.infer<typeof RoleSchema>;
+
+export const UserDTOSchema = z.object({
+	id: z.string().uuid(),
+	email: z.string().nonempty(),
+	name: z.string().nonempty(),
+	role: RoleSchema
+});
+export type UserDTO = z.infer<typeof UserDTOSchema>;
+
+const AuthenticationSchema = z.object({
+	exp: z.number().int()
+});
+export type Authentication = z.infer<
+	typeof AuthenticationSchema
+>;
+
+// This is how api code should be generated
+export const LoginRequestSchema = z
+	.object({
+		email: z.string().nonempty(),
+		password: z.string().nonempty()
+	})
+	.readonly();
+export type LoginRequest = z.infer<
+	typeof LoginRequestSchema
+>;
+
 export const api = {
 	Login: async (
 		data: LoginRequest
 	): Promise<
 		Result<
-			User,
+			UserDTO,
 			| BadRequestResponse<LoginRequest>
 			| ForbiddenResponse
 		>
 	> => {
 		if (!data.email || !data.password) {
-			const errors: Record<any, any> = {};
+			const errors: Partial<
+				Record<keyof LoginRequest, string[]>
+			> = {};
 			if (!data.email) {
 				errors.email = [`Field "email" is required.`];
 			}
@@ -84,10 +102,13 @@ export const api = {
 			return {
 				ok,
 				data: {
+					id: globalThis.crypto.randomUUID(),
 					email: "user@example.com",
 					name: "User Name",
-					role: (["user", "admin"] as const)[
-						Math.floor(Math.random() * 2)
+					role: roles[
+						Math.floor(
+							Math.random() * (roles.length - 1)
+						)
 					]
 				}
 			};

@@ -1,0 +1,35 @@
+@mixin button {
+	background: lightgrey;
+	color: black;
+	border: none;
+	padding: var(--space-2);
+	border-radius: var(--radius-1);
+}
+
+.button {
+	@include button;
+}
+
+@mixin input {
+	display: inline-flex;
+	min-width: 0;
+	background: white;
+	color: black;
+	border: 2px solid lightgrey;
+	padding: var(--space-2);
+	border-radius: var(--radius-1);
+	flex: 1;
+}
+
+.input {
+	@include input;
+}
+
+@mixin link {
+	color: royalblue;
+	text-decoration: underline;
+}
+
+.link {
+	@include link;
+}
