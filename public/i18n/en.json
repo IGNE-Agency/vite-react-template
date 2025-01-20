@@ -1,1 +1,18 @@
-{}
+{
+	"pages": {
+		"login": {
+			"title": "Login page",
+			"forgotPassword": "Forgot password?",
+			"noAccount": "Don't have an account?"
+		}
+	},
+	"forms": {
+		"fields": {
+			"email": "Email address",
+			"password": "Password"
+		},
+		"actions": {
+			"login": "Login"
+		}
+	}
+}

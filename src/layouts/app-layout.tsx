@@ -1,3 +1,4 @@
+import style from "layouts/app-layout.module.scss";
 import { useAppState } from "lib/app-state";
 import {
 	Navigate,
@@ -5,14 +6,14 @@ import {
 	useLocation
 } from "react-router";
 
-const AppLayout = () => {
+const LoggedInLayout = () => {
 	const [{ user }] = useAppState();
 	const { pathname } = useLocation();
 
 	if (!user) {
 		return (
 			<Navigate
-				to="/login"
+				to="login"
 				replace
 				state={{ redirect: pathname }}
 			/>
@@ -20,7 +21,7 @@ const AppLayout = () => {
 	}
 
 	return (
-		<div>
+		<div className={style.layout}>
 			<header>Header</header>
 			<main>
 				<Outlet />
@@ -29,4 +30,4 @@ const AppLayout = () => {
 	);
 };
 
-export default AppLayout;
+export default LoggedInLayout;

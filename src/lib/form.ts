@@ -38,7 +38,7 @@ const useForm = <T>(schema: Schema<T>) => {
 						field,
 						messages
 					] of Object.entries(error.errors)) {
-						issue(
+						addIssues(
 							messages.map(message => ({
 								code: "custom",
 								path: [field],
@@ -52,33 +52,22 @@ const useForm = <T>(schema: Schema<T>) => {
 			setIsSubmitting(false);
 		};
 
-	const issue = (issues: ReadonlyArray<ZodIssue>) => {
+	const addIssues = (
+		issues: ReadonlyArray<ZodIssue>
+	) => {
 		setIssues(oldIssues =>
 			(oldIssues ?? []).concat(issues)
 		);
 	};
 
-	const addIssues = (
-		messages: ReadonlyArray<string>
-	) => issue(messages.map(createCustomIssue));
-
 	return {
 		isSubmitting,
 		handleSubmit,
-		addIssues,
 		issues
 	};
 };
 
 export default useForm;
-
-const createCustomIssue = (
-	message: string
-): ZodIssue => ({
-	code: "custom",
-	path: ["*"],
-	message
-});
 
 type ServerError = Readonly<{
 	code: number;
@@ -95,8 +84,3 @@ const isServerError = (
 	typeof error.code === "number" &&
 	"errors" in error &&
 	typeof error.errors === "object";
-
-const isZodIssue = (error: any): error is ZodIssue =>
-	error &&
-	"code" in error &&
-	typeof error.code === "string";

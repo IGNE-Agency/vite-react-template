@@ -6,7 +6,7 @@ import ErrorPage from "pages/error/error-page";
 import { StrictMode, Suspense } from "react";
 import { createRoot } from "react-dom/client";
 import Router from "router";
-import "./reset.css";
+import "style/reset.scss";
 
 const rootElement = document.getElementById("root");
 

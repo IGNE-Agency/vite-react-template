@@ -1,8 +1,8 @@
 import { useLocalStorage } from "@uidotdev/usehooks";
-import { Auth, User } from "lib/api";
+import type { Authentication, UserDTO } from "lib/api";
 import {
-	Dispatch,
-	ReactNode,
+	type Dispatch,
+	type ReactNode,
 	createContext,
 	useContext,
 	useReducer
@@ -13,8 +13,8 @@ type Settings = Readonly<{
 }>;
 
 type AppState = Readonly<{
-	user?: User;
-	auth?: Auth;
+	user?: UserDTO;
+	auth?: Authentication;
 	settings: Settings;
 }>;
 
@@ -25,7 +25,7 @@ type Action =
 
 type LoginAction = Readonly<{
 	type: "login";
-	user: User;
+	user: UserDTO;
 }>;
 
 type ClearAction = Readonly<{
@@ -71,7 +71,7 @@ const reducer = (
 		default: {
 			throw new Error(
 				`Unhandled action type "${
-					(action as any).type
+					(action as Action).type
 				}"`
 			);
 		}

@@ -1,6 +1,7 @@
-import { UseFormReturn } from "lib/form";
-import { HTMLAttributes } from "react";
-import style from "./form.module.css";
+import classNames from "classnames";
+import type { UseFormReturn } from "lib/form";
+import type { HTMLAttributes } from "react";
+import style from "./form.module.scss";
 
 type FormProps<T> = HTMLAttributes<HTMLFormElement> &
 	Readonly<{
@@ -10,12 +11,13 @@ type FormProps<T> = HTMLAttributes<HTMLFormElement> &
 const Form = <T,>({
 	form,
 	children,
+	className,
 	...props
 }: FormProps<T>) => (
-	<form {...props}>
+	<form className={classNames([className])} {...props}>
 		<fieldset
 			disabled={form.isSubmitting}
-			className={style.fields}>
+			className={style.contents}>
 			{children}
 		</fieldset>
 	</form>

@@ -1,0 +1,63 @@
+@use "/src/style/theme.module.scss";
+@use "/src/style/space.scss";
+@use "/src/style/radius.scss";
+
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+
+body {
+	font-family: "Inter", sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	font-size: 1rem;
+	font-weight: unset;
+}
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+button,
+select,
+input,
+textarea {
+	font: inherit;
+}
+
+button,
+input:is([type="checkbox"], [type="radio"]) {
+	cursor: pointer;
+}
+
+button {
+	@include theme.button;
+}
+
+input:is(
+		[type="text"],
+		[type="password"],
+		[type="search"],
+		[type="date"],
+		[type="email"],
+		[type="month"],
+		[type="number"],
+		[type="tel"],
+		[type="time"],
+		[type="url"],
+		[type="week"],
+		[type="datetime"],
+		[type="datetime-local"]
+	) {
+	@include theme.input;
+}
+
+a {
+	@include theme.link;
+}
