@@ -1,9 +1,23 @@
+@mixin disabled {
+	opacity: 0.5;
+	cursor: not-allowed;
+}
+
+@mixin invalid {
+	color: red;
+	border-color: currentColor;
+}
+
 @mixin button {
 	background: lightgrey;
 	color: black;
 	border: none;
 	padding: var(--space-2);
 	border-radius: var(--radius-1);
+
+	&:disabled {
+		@include disabled;
+	}
 }
 
 .button {
@@ -20,9 +34,16 @@
 	border-radius: var(--radius-1);
 	flex: 1;
 
+	@media not (prefers-reduced-motion) {
+		transition: all 0.2s ease;
+	}
+
 	&[aria-invalid="true"] {
-		color: red;
-		border-color: currentColor;
+		@include invalid;
+	}
+
+	&:disabled {
+		@include disabled;
 	}
 }
 

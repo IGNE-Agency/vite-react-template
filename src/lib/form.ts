@@ -56,16 +56,18 @@ const useForm = <T>(schema: Schema<T>) => {
 			setIsSubmitting(false);
 		};
 
+	const invalidFields =
+		issues &&
+		Object.keys(
+			Object.groupBy(issues, issue =>
+				issue.path.join(".")
+			)
+		);
+
 	return {
 		isSubmitting,
 		handleSubmit,
-		invalidFields:
-			issues &&
-			Object.keys(
-				Object.groupBy(issues, issue =>
-					issue.path.join(".")
-				)
-			),
+		invalidFields,
 		issues
 	};
 };

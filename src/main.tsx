@@ -2,6 +2,7 @@ import Spinner from "assets/icons/spinner.svg?react";
 import ErrorBoundary from "components/error-boundary/error-boundary";
 import { AppStateProvider } from "lib/app-state";
 import * as i18n from "lib/i18n";
+import { PageTitleProvider } from "lib/page-title";
 import ErrorPage from "pages/error/error-page";
 import { StrictMode, Suspense } from "react";
 import { createRoot } from "react-dom/client";
@@ -26,7 +27,9 @@ root.render(
 			fallback={error => <ErrorPage error={error} />}>
 			<Suspense fallback={<Spinner />}>
 				<AppStateProvider>
-					<Router />
+					<PageTitleProvider name="Template">
+						<Router />
+					</PageTitleProvider>
 				</AppStateProvider>
 			</Suspense>
 		</ErrorBoundary>

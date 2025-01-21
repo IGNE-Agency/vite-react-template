@@ -1,5 +1,4 @@
 import type { UseFormReturn } from "lib/form";
-import { useTranslation } from "react-i18next";
 import style from "./issues.module.scss";
 
 type IssuesProps<T> = Readonly<{
@@ -11,15 +10,10 @@ const Issues = <T,>({
 	name = "*",
 	form
 }: IssuesProps<T>) => {
-	const { t } = useTranslation();
 	const issues = form.issues
 		?.filter(({ path }) => path.join(".") === name)
 		.map(issue => (
-			<li key={issue.code}>
-				{issue.code === "custom"
-					? issue.message
-					: t(`forms.issues.${issue.code}`, { issue })}
-			</li>
+			<li key={issue.code}>{issue.message}</li>
 		));
 
 	if (!issues?.length) return null;

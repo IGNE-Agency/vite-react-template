@@ -61,3 +61,7 @@ input:is(
 a {
 	@include theme.link;
 }
+
+label:has([aria-invalid="true"]) {
+	@include theme.invalid;
+}

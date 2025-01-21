@@ -9,6 +9,7 @@ import {
 import { useAppState } from "lib/app-state";
 import useForm from "lib/form";
 import useLocationState from "lib/location-state";
+import { usePageTitle } from "lib/page-title";
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router";
 import { z } from "zod";
@@ -24,6 +25,7 @@ const LoginPage = () => {
 	const { t } = useTranslation();
 	const [, dispatch] = useAppState();
 	const form = useForm(LoginRequestSchema);
+	usePageTitle(t("pages.login.title"), []);
 
 	const handleSubmit = form.handleSubmit(
 		async data => {
