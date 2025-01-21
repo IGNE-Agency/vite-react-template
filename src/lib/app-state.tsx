@@ -21,12 +21,17 @@ type AppState = Readonly<{
 
 type Action =
 	| LoginAction
+	| LogutAction
 	| ClearAction
 	| SettingsAction;
 
 type LoginAction = Readonly<{
 	type: "login";
 	user: UserDTO;
+}>;
+
+type LogutAction = Readonly<{
+	type: "logout";
 }>;
 
 type ClearAction = Readonly<{
@@ -59,6 +64,9 @@ const reducer = (
 		}
 		case "login": {
 			return { ...state, user: action.user };
+		}
+		case "logout": {
+			return { ...state, user: undefined };
 		}
 		case "settings": {
 			return {

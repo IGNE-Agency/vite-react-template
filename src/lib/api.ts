@@ -75,8 +75,8 @@ export type LoginRequest = z.infer<
  * If not ok, this method returns either:
  * - A `BadRequestResponse<T>` which describes what errors occured
  *   per field of the input type `T`.
- * - A `BadGatewayResponse` that indicates you are not allowed to log in.
- *   In this fake scenario, we simulate something randomly going wrong.
+ * - An `InternalServerErrorResponse` which indicates that something
+ *   unexpectedly went wrong.
  *
  * You can handle these response types individually by `switch`ing over
  * the `type` of either response. Typescript will figure out which type
@@ -117,7 +117,7 @@ export const Login = async (
 			ok,
 			data: {
 				id: globalThis.crypto.randomUUID(),
-				email: "user@example.com",
+				email: data.email,
 				name: "User Name",
 				role: roles[
 					Math.floor(
@@ -132,7 +132,150 @@ export const Login = async (
 		ok,
 		error: {
 			code: HttpStatus.InternalServerError,
-			message: "Something went wrong."
+			message:
+				"Something went wrong. Please try again later."
+		}
+	};
+};
+
+// This is how api code should be generated
+export const RequestNewPasswordRequestSchema =
+	z.object({ email: z.string().nonempty() });
+export type RequestNewPasswordRequest = z.infer<
+	typeof RequestNewPasswordRequestSchema
+>;
+
+/**
+ * This is a fake method. It only succeeds 50% of the time to
+ * simulate possible errors you might encounter in the real world.
+ *
+ * If ok, this method returns `null`.
+ *
+ * If not ok, this method returns either:
+ * - A `BadRequestResponse<T>` which describes what errors occured
+ *   per field of the input type `T`.
+ * - An `InternalServerErrorResponse` which indicates that something
+ *   unexpectedly went wrong.
+ *
+ * You can handle these response types individually by `switch`ing over
+ * the `type` of either response. Typescript will figure out which type
+ * you're working with.
+ */
+export const RequestNewPassword = async (
+	data: RequestNewPasswordRequest
+): Promise<
+	Result<
+		null,
+		| BadRequestResponse<RequestNewPasswordRequest>
+		| InternalServerErrorResponse
+	>
+> => {
+	await new Promise(res => setTimeout(res, 1000));
+
+	if (!data.email) {
+		const errors: Partial<
+			Record<keyof RequestNewPasswordRequest, string[]>
+		> = {};
+		if (!data.email) {
+			errors.email = [`Field "email" is required.`];
+		}
+		return {
+			ok: false,
+			error: { code: HttpStatus.BadRequest, errors }
+		};
+	}
+	const ok = !!Math.round(Math.random());
+
+	if (ok) {
+		return {
+			ok,
+			data: null
+		};
+	}
+
+	return {
+		ok,
+		error: {
+			code: HttpStatus.InternalServerError,
+			message:
+				"Something went wrong. Please try again later."
+		}
+	};
+};
+
+// This is how api code should be generated
+export const RegisterRequestSchema = z.object({
+	email: z.string().nonempty(),
+	name: z.string().nonempty(),
+	role: RoleSchema
+});
+export type RegisterRequest = z.infer<
+	typeof RegisterRequestSchema
+>;
+
+/**
+ * This is a fake method. It only succeeds 50% of the time to
+ * simulate possible errors you might encounter in the real world.
+ *
+ * If ok, this method returns the newly created `UserDTO`.
+ *
+ * If not ok, this method returns either:
+ * - A `BadRequestResponse<T>` which describes what errors occured
+ *   per field of the input type `T`.
+ * - An `InternalServerErrorResponse` which indicates that something
+ *   unexpectedly went wrong.
+ *
+ * You can handle these response types individually by `switch`ing over
+ * the `type` of either response. Typescript will figure out which type
+ * you're working with.
+ */
+export const Register = async (
+	data: RegisterRequest
+): Promise<
+	Result<
+		UserDTO,
+		| BadRequestResponse<RegisterRequest>
+		| InternalServerErrorResponse
+	>
+> => {
+	await new Promise(res => setTimeout(res, 1000));
+
+	if (!data.email) {
+		const errors: Partial<
+			Record<keyof RegisterRequest, string[]>
+		> = {};
+		if (!data.email) {
+			errors.email = [`Field "email" is required.`];
+		}
+		if (!data.name) {
+			errors.name = [`Field "name" is required.`];
+		}
+		if (!data.role) {
+			errors.role = [`Field "role" is required.`];
+		}
+		return {
+			ok: false,
+			error: { code: HttpStatus.BadRequest, errors }
+		};
+	}
+	const ok = !!Math.round(Math.random());
+
+	if (ok) {
+		return {
+			ok,
+			data: {
+				id: globalThis.crypto.randomUUID(),
+				...data
+			}
+		};
+	}
+
+	return {
+		ok,
+		error: {
+			code: HttpStatus.InternalServerError,
+			message:
+				"Something went wrong. Please try again later."
 		}
 	};
 };

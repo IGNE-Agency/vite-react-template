@@ -5,7 +5,7 @@ const NotFoundPage = () => {
 	const { t } = useTranslation();
 	usePageTitle(t("pages.notFound.title"), []);
 
-	return <div>Not found</div>;
+	return <h1>{t("pages.notFound.title")}</h1>;
 };
 
 export default NotFoundPage;

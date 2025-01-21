@@ -1,6 +1,6 @@
 import Logo from "assets/icons/moon.svg?react";
-import style from "layouts/auth-layout.module.scss";
 import { Outlet } from "react-router";
+import style from "./auth-layout.module.scss";
 
 const AuthLayout = () => (
 	<div className={style.layout}>

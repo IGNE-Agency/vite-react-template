@@ -21,7 +21,7 @@ const useForm = <T>(schema: Schema<T>) => {
 		(
 			handler: (
 				data: T
-			) => PromiseOr<FormErrors | undefined>
+			) => PromiseOr<FormErrors | void>
 		) =>
 		async (event: FormEvent<HTMLFormElement>) => {
 			event.preventDefault();
@@ -29,31 +29,33 @@ const useForm = <T>(schema: Schema<T>) => {
 			setIsSubmitting(true);
 			setIssues(undefined);
 
-			const result = await schema.safeParseAsync(
-				Object.fromEntries(
-					new FormData(event.currentTarget).entries()
-				)
-			);
+			try {
+				const result = await schema.safeParseAsync(
+					Object.fromEntries(
+						new FormData(event.currentTarget).entries()
+					)
+				);
 
-			if (!result.success) {
-				setIssues(result.error.issues);
-			} else {
-				const error = await handler(result.data);
-				if (error) {
-					setIssues(
-						Object.entries(error).flatMap(
-							([field, messages]) =>
-								messages.map(message => ({
-									code: "custom",
-									path: [field],
-									message
-								}))
-						)
-					);
+				if (!result.success) {
+					setIssues(result.error.issues);
+				} else {
+					const error = await handler(result.data);
+					if (error) {
+						setIssues(
+							Object.entries(error).flatMap(
+								([field, messages]) =>
+									messages.map(message => ({
+										code: "custom",
+										path: [field],
+										message
+									}))
+							)
+						);
+					}
 				}
+			} finally {
+				setIsSubmitting(false);
 			}
-
-			setIsSubmitting(false);
 		};
 
 	const invalidFields =

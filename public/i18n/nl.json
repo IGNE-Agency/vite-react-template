@@ -1,0 +1,38 @@
+{
+	"roles": {
+		"user": "Gebruiker",
+		"admin": "Administrator"
+	},
+	"pages": {
+		"error": { "title": "Probleem" },
+		"forgotPassword": {
+			"title": "Wachtwoord vergeten",
+			"success": "Als er een account bestaat met het e-mailadres <email>{{email}}</email>, dan zal je binnenkort een e-mail ontvangen, met instructies om een nieuw wachtwoord in te stellen."
+		},
+		"home": { "title": "Home" },
+		"login": {
+			"title": "Inloggen",
+			"forgotPassword": "Wachtwoord vergeten?",
+			"noAccount": "Nog geen account?"
+		},
+		"notFound": { "title": "Niet gevonden" },
+		"register": {
+			"title": "Registreren",
+			"alreadyHaveAnAccount": "Al een bestaand account?"
+		}
+	},
+	"forms": {
+		"fields": {
+			"email": "E-mailadres",
+			"password": "Wachtwoord",
+			"name": "Naam",
+			"role": "Rol"
+		},
+		"actions": {
+			"login": "Inloggen",
+			"requestNewPassword": "Nieuw wachtwoord aanvragen",
+			"register": "Registreren"
+		},
+		"issues": {}
+	}
+}

@@ -4,7 +4,7 @@
 @use "/src/style/fonts.scss";
 
 body {
-	font-family: "Inter", sans-serif;
+	font: var(--font-body-medium-regular);
 }
 
 h1 {
@@ -24,13 +24,11 @@ h6 {
 	margin: 0;
 	padding: 0;
 	box-sizing: border-box;
+	font: inherit;
 }
 
-button,
-select,
-input,
-textarea {
-	font: inherit;
+*:not(:is(input, textarea)) {
+	text-box: trim-both cap alphabetic;
 }
 
 button,
@@ -56,7 +54,8 @@ input:is(
 		[type="week"],
 		[type="datetime"],
 		[type="datetime-local"]
-	) {
+	),
+select {
 	@include theme.input;
 }
 

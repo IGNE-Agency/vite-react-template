@@ -1,7 +1,14 @@
 {
+	"roles": {
+		"user": "User",
+		"admin": "Administrator"
+	},
 	"pages": {
 		"error": { "title": "Error" },
-		"forgotPassword": { "title": "Forgot password" },
+		"forgotPassword": {
+			"title": "Forgot password",
+			"success": "If there is an account registered under the email <email>{{email}}</email>, you will receive an email shortly, with instructions to reset your password."
+		},
 		"home": { "title": "Home" },
 		"login": {
 			"title": "Login",
@@ -9,15 +16,22 @@
 			"noAccount": "Don't have an account?"
 		},
 		"notFound": { "title": "Not found" },
-		"register": { "title": "Register" }
+		"register": {
+			"title": "Register",
+			"alreadyHaveAnAccount": "Already have an account?"
+		}
 	},
 	"forms": {
 		"fields": {
 			"email": "Email address",
-			"password": "Password"
+			"password": "Password",
+			"name": "Name",
+			"role": "Role"
 		},
 		"actions": {
-			"login": "Login"
+			"login": "Login",
+			"requestNewPassword": "Request new password",
+			"register": "Register"
 		},
 		"issues": {}
 	}

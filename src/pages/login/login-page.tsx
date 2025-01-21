@@ -47,7 +47,11 @@ const LoginPage = () => {
 
 	return (
 		<>
-			<h1 className={style.fullWidth}>
+			<h1
+				className={classNames([
+					style.fullWidth,
+					style.textCenter
+				])}>
 				{t("pages.login.title")}
 			</h1>
 			<Form
@@ -60,6 +64,7 @@ const LoginPage = () => {
 				<label className={style.label}>
 					<span>{t("forms.fields.email")}</span>
 					<input
+						autoFocus
 						type="text"
 						name="email"
 						aria-invalid={form.invalidFields?.includes(

@@ -5,7 +5,7 @@ const HomePage = () => {
 	const { t } = useTranslation();
 	usePageTitle(t("pages.home.title"), []);
 
-	return <div>Home</div>;
+	return <h1>{t("pages.home.title")}</h1>;
 };
 
 export default HomePage;

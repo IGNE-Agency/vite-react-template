@@ -1,5 +1,5 @@
-import style from "layouts/global-layout.module.scss";
 import { Outlet } from "react-router";
+import style from "./global-layout.module.scss";
 
 const GlobalLayout = () => (
 	<div className={style.layout}>
