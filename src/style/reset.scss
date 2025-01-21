@@ -1,21 +1,23 @@
 @use "/src/style/theme.module.scss";
 @use "/src/style/space.scss";
 @use "/src/style/radius.scss";
-
-@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+@use "/src/style/fonts.scss";
 
 body {
 	font-family: "Inter", sans-serif;
 }
 
-h1,
-h2,
+h1 {
+	font: var(--font-heading-large);
+}
+h2 {
+	font: var(--font-heading-medium);
+}
 h3,
 h4,
 h5,
 h6 {
-	font-size: 1rem;
-	font-weight: unset;
+	font: var(--font-heading-small);
 }
 
 * {

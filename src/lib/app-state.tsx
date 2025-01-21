@@ -5,6 +5,7 @@ import {
 	type ReactNode,
 	createContext,
 	useContext,
+	useEffect,
 	useReducer
 } from "react";
 
@@ -85,11 +86,15 @@ type AppStateProviderProps = Readonly<{
 export const AppStateProvider = ({
 	children
 }: AppStateProviderProps) => {
-	const [saved] = useLocalStorage(
+	const [saved, setSaved] = useLocalStorage(
 		"state",
 		defaultState
 	);
 	const [state, dispatch] = useReducer(reducer, saved);
+
+	useEffect(() => {
+		setSaved(state);
+	}, [state]);
 
 	return (
 		<AppContext.Provider value={[state, dispatch]}>

@@ -6,10 +6,33 @@
 
 	header,
 	main {
-		grid-column: 1 / -1;
+		grid-column: 2 / -2;
+	}
+
+	header {
+		padding-block: var(--space-4);
+	}
+
+	header,
+	nav {
+		display: flex;
+		align-items: center;
+		gap: var(--space-4);
 	}
 
 	main {
 		overflow: auto;
 	}
+}
+
+.link {
+	text-decoration: none;
+	color: black;
+	display: flex;
+	align-items: center;
+	gap: var(--space-1);
+}
+
+.active {
+	text-decoration: underline;
 }

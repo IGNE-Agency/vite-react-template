@@ -4,5 +4,9 @@
 	overflow: hidden;
 	display: grid;
 	gap: var(--space-4);
-	grid-template-columns: auto repeat(12, 1fr) auto;
+	--gutter: calc((100cqi - 1440px) / 2);
+	grid-template-columns:
+		var(--gutter)
+		repeat(12, 1fr)
+		var(--gutter);
 }
