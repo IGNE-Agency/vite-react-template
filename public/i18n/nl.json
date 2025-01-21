@@ -3,6 +3,9 @@
 		"user": "Gebruiker",
 		"admin": "Administrator"
 	},
+	"layouts": {
+		"app": { "logout": "Uitloggen" }
+	},
 	"pages": {
 		"error": { "title": "Probleem" },
 		"forgotPassword": {

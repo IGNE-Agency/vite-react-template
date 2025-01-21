@@ -3,6 +3,9 @@
 		"user": "User",
 		"admin": "Administrator"
 	},
+	"layouts": {
+		"app": { "logout": "Log out" }
+	},
 	"pages": {
 		"error": { "title": "Error" },
 		"forgotPassword": {

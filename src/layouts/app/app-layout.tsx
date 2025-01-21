@@ -86,7 +86,7 @@ const LoggedInLayout = () => {
 							onClick={() =>
 								dispatch({ type: "logout" })
 							}>
-							Log out
+							{t("layouts.app.logout")}
 						</button>
 					</div>
 				</div>
