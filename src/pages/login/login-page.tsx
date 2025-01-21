@@ -3,8 +3,8 @@ import Form from "components/form/form";
 import Issues from "components/issues/issues";
 import {
 	HttpStatus,
-	LoginRequestSchema,
-	api
+	Login,
+	LoginRequestSchema
 } from "lib/api";
 import { useAppState } from "lib/app-state";
 import useForm from "lib/form";
@@ -29,7 +29,7 @@ const LoginPage = () => {
 
 	const handleSubmit = form.handleSubmit(
 		async data => {
-			const result = await api.Login(data);
+			const result = await Login(data);
 
 			if (result.ok) {
 				dispatch({ type: "login", user: result.data });
