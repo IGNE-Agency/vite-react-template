@@ -19,6 +19,11 @@
 	padding: var(--space-2);
 	border-radius: var(--radius-1);
 	flex: 1;
+
+	&[aria-invalid="true"] {
+		color: red;
+		border-color: currentColor;
+	}
 }
 
 .input {

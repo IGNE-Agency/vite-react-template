@@ -79,6 +79,8 @@ export const api = {
 			| ForbiddenResponse
 		>
 	> => {
+		await new Promise(res => setTimeout(res, 1000));
+
 		if (!data.email || !data.password) {
 			const errors: Partial<
 				Record<keyof LoginRequest, string[]>

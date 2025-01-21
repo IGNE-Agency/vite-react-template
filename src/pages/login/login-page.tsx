@@ -1,28 +1,25 @@
 import classNames from "classnames";
 import Form from "components/form/form";
-import { LoginRequestSchema, api } from "lib/api";
+import Issues from "components/issues/issues";
+import {
+	HttpStatus,
+	LoginRequestSchema,
+	api
+} from "lib/api";
 import { useAppState } from "lib/app-state";
 import useForm from "lib/form";
+import useLocationState from "lib/location-state";
 import { useTranslation } from "react-i18next";
-import {
-	Link,
-	type Location,
-	useLocation,
-	useNavigate
-} from "react-router";
+import { Link, useNavigate } from "react-router";
+import { z } from "zod";
 import style from "./login-page.module.scss";
 
-// This module extension enables `useLocation.state` to be typed
-declare module "react-router" {
-	export function useLocation<T>(): Location<
-		T | undefined
-	>;
-}
+const LoginPageStateSchema = z.object({
+	redirect: z.string().optional()
+});
 
 const LoginPage = () => {
-	const { state } = useLocation<{
-		redirect?: string;
-	}>();
+	const state = useLocationState(LoginPageStateSchema);
 	const navigate = useNavigate();
 	const { t } = useTranslation();
 	const [, dispatch] = useAppState();
@@ -36,7 +33,12 @@ const LoginPage = () => {
 				dispatch({ type: "login", user: result.data });
 				navigate(state?.redirect ?? "/");
 			} else {
-				throw result.error;
+				switch (result.error.code) {
+					case HttpStatus.BadRequest:
+						return result.error.errors;
+					case HttpStatus.Forbidden:
+						return { "*": [result.error.message] };
+				}
 			}
 		}
 	);
@@ -55,12 +57,26 @@ const LoginPage = () => {
 				])}>
 				<label className={style.label}>
 					<span>{t("forms.fields.email")}</span>
-					<input type="text" name="email" />
+					<input
+						type="text"
+						name="email"
+						aria-invalid={form.invalidFields?.includes(
+							"email"
+						)}
+					/>
+					<Issues name="email" form={form} />
 				</label>
 				<div className={style.label}>
 					<label className={style.label}>
 						<span>{t("forms.fields.password")}</span>
-						<input type="password" name="password" />
+						<input
+							type="password"
+							name="password"
+							aria-invalid={form.invalidFields?.includes(
+								"password"
+							)}
+						/>
+						<Issues name="password" form={form} />
 					</label>
 					<Link
 						to="/forgot-password"
@@ -68,6 +84,7 @@ const LoginPage = () => {
 						{t("pages.login.forgotPassword")}
 					</Link>
 				</div>
+				<Issues form={form} />
 				<button type="submit">
 					{t("forms.actions.login")}
 				</button>

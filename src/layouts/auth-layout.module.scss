@@ -7,3 +7,9 @@
 	place-content: center;
 	row-gap: var(--space-8);
 }
+
+.logo {
+	grid-column: span 6;
+	display: flex;
+	justify-content: center;
+}

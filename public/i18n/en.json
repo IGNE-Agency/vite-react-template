@@ -1,7 +1,7 @@
 {
 	"pages": {
 		"login": {
-			"title": "Login page",
+			"title": "Login",
 			"forgotPassword": "Forgot password?",
 			"noAccount": "Don't have an account?"
 		}
@@ -13,6 +13,9 @@
 		},
 		"actions": {
 			"login": "Login"
+		},
+		"issues": {
+			"too_small": "Expected at least {{issue.minimum}} character(s)."
 		}
 	}
 }

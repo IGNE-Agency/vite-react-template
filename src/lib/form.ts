@@ -5,6 +5,12 @@ export type UseFormReturn<T> = ReturnType<
 	typeof useForm<T>
 >;
 
+type FormErrors = Readonly<
+	Record<string, readonly string[]>
+>;
+
+type PromiseOr<T> = Promise<T> | T;
+
 const useForm = <T>(schema: Schema<T>) => {
 	const [isSubmitting, setIsSubmitting] =
 		useState(false);
@@ -12,7 +18,11 @@ const useForm = <T>(schema: Schema<T>) => {
 		useState<ReadonlyArray<ZodIssue>>();
 
 	const handleSubmit =
-		(handler: (data: T) => void | Promise<void>) =>
+		(
+			handler: (
+				data: T
+			) => PromiseOr<FormErrors | undefined>
+		) =>
 		async (event: FormEvent<HTMLFormElement>) => {
 			event.preventDefault();
 
@@ -28,59 +38,36 @@ const useForm = <T>(schema: Schema<T>) => {
 			if (!result.success) {
 				setIssues(result.error.issues);
 			} else {
-				try {
-					await handler(result.data);
-				} catch (error) {
-					if (!isServerError(error)) {
-						throw error;
-					}
-					for (const [
-						field,
-						messages
-					] of Object.entries(error.errors)) {
-						addIssues(
-							messages.map(message => ({
-								code: "custom",
-								path: [field],
-								message
-							}))
-						);
-					}
+				const error = await handler(result.data);
+				if (error) {
+					setIssues(
+						Object.entries(error).flatMap(
+							([field, messages]) =>
+								messages.map(message => ({
+									code: "custom",
+									path: [field],
+									message
+								}))
+						)
+					);
 				}
 			}
 
 			setIsSubmitting(false);
 		};
 
-	const addIssues = (
-		issues: ReadonlyArray<ZodIssue>
-	) => {
-		setIssues(oldIssues =>
-			(oldIssues ?? []).concat(issues)
-		);
-	};
-
 	return {
 		isSubmitting,
 		handleSubmit,
+		invalidFields:
+			issues &&
+			Object.keys(
+				Object.groupBy(issues, issue =>
+					issue.path.join(".")
+				)
+			),
 		issues
 	};
 };
 
 export default useForm;
-
-type ServerError = Readonly<{
-	code: number;
-	errors: Readonly<
-		Record<string, ReadonlyArray<string>>
-	>;
-}>;
-
-const isServerError = (
-	error: any
-): error is ServerError =>
-	error &&
-	"code" in error &&
-	typeof error.code === "number" &&
-	"errors" in error &&
-	typeof error.errors === "object";
