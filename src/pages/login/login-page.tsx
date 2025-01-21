@@ -38,7 +38,7 @@ const LoginPage = () => {
 				switch (result.error.code) {
 					case HttpStatus.BadRequest:
 						return result.error.errors;
-					case HttpStatus.Forbidden:
+					case HttpStatus.InternalServerError:
 						return { "*": [result.error.message] };
 				}
 			}

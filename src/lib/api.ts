@@ -4,12 +4,9 @@ import { z } from "zod";
 export const enum HttpStatus {
 	// Success
 	Ok = 200,
-	NoContent = 204,
 
 	// Client errors
 	BadRequest = 400,
-	Unauthorized = 401,
-	Forbidden = 403,
 
 	// Server errors
 	InternalServerError = 500
@@ -34,8 +31,8 @@ type BadRequestResponse<T extends {}> = Readonly<{
 	>;
 }>;
 
-type ForbiddenResponse = Readonly<{
-	code: HttpStatus.Forbidden;
+type InternalServerErrorResponse = Readonly<{
+	code: HttpStatus.InternalServerError;
 	message: string;
 }>;
 
@@ -69,60 +66,73 @@ export type LoginRequest = z.infer<
 	typeof LoginRequestSchema
 >;
 
-export const api = {
-	Login: async (
-		data: LoginRequest
-	): Promise<
-		Result<
-			UserDTO,
-			| BadRequestResponse<LoginRequest>
-			| ForbiddenResponse
-		>
-	> => {
-		await new Promise(res => setTimeout(res, 1000));
+/**
+ * This is a fake method. It only succeeds 50% of the time to
+ * simulate possible errors you might encounter in the real world.
+ *
+ * If ok, this method returns a `UserDTO`.
+ *
+ * If not ok, this method returns either:
+ * - A `BadRequestResponse<T>` which describes what errors occured
+ *   per field of the input type `T`.
+ * - A `BadGatewayResponse` that indicates you are not allowed to log in.
+ *   In this fake scenario, we simulate something randomly going wrong.
+ *
+ * You can handle these response types individually by `switch`ing over
+ * the `type` of either response. Typescript will figure out which type
+ * you're working with.
+ */
+export const Login = async (
+	data: LoginRequest
+): Promise<
+	Result<
+		UserDTO,
+		| BadRequestResponse<LoginRequest>
+		| InternalServerErrorResponse
+	>
+> => {
+	await new Promise(res => setTimeout(res, 1000));
 
-		if (!data.email || !data.password) {
-			const errors: Partial<
-				Record<keyof LoginRequest, string[]>
-			> = {};
-			if (!data.email) {
-				errors.email = [`Field "email" is required.`];
-			}
-			if (!data.password) {
-				errors.password = [
-					`Field "password" is required.`
-				];
-			}
-			return {
-				ok: false,
-				error: { code: HttpStatus.BadRequest, errors }
-			};
+	if (!data.email || !data.password) {
+		const errors: Partial<
+			Record<keyof LoginRequest, string[]>
+		> = {};
+		if (!data.email) {
+			errors.email = [`Field "email" is required.`];
 		}
-		const ok = !!Math.round(Math.random());
-
-		if (ok) {
-			return {
-				ok,
-				data: {
-					id: globalThis.crypto.randomUUID(),
-					email: "user@example.com",
-					name: "User Name",
-					role: roles[
-						Math.floor(
-							Math.random() * (roles.length - 1)
-						)
-					]
-				}
-			};
+		if (!data.password) {
+			errors.password = [
+				`Field "password" is required.`
+			];
 		}
+		return {
+			ok: false,
+			error: { code: HttpStatus.BadRequest, errors }
+		};
+	}
+	const ok = !!Math.round(Math.random());
 
+	if (ok) {
 		return {
 			ok,
-			error: {
-				code: HttpStatus.Forbidden,
-				message:
-					"We decided you're just not allowed to do this right now."
+			data: {
+				id: globalThis.crypto.randomUUID(),
+				email: "user@example.com",
+				name: "User Name",
+				role: roles[
+					Math.floor(
+						Math.random() * (roles.length - 1)
+					)
+				]
 			}
 		};
 	}
+
+	return {
+		ok,
+		error: {
+			code: HttpStatus.InternalServerError,
+			message: "Something went wrong."
+		}
+	};
 };
