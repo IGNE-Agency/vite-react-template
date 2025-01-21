@@ -13,7 +13,7 @@ const rootElement = document.getElementById("root");
 
 if (!rootElement) {
 	throw new Error(
-		"Something has gone terribly wrong. The app couldn't find its home :("
+		"Something has gone terribly wrong. The app couldn't find its home :(",
 	);
 }
 
@@ -23,8 +23,7 @@ const root = createRoot(rootElement);
 
 root.render(
 	<StrictMode>
-		<ErrorBoundary
-			fallback={error => <ErrorPage error={error} />}>
+		<ErrorBoundary fallback={(error) => <ErrorPage error={error} />}>
 			<Suspense fallback={<Spinner />}>
 				<AppStateProvider>
 					<PageTitleProvider name="Template">
@@ -33,5 +32,5 @@ root.render(
 				</AppStateProvider>
 			</Suspense>
 		</ErrorBoundary>
-	</StrictMode>
+	</StrictMode>,
 );

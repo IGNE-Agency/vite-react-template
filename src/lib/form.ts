@@ -1,28 +1,18 @@
 import { type FormEvent, useState } from "react";
 import type { Schema, ZodIssue } from "zod";
 
-export type UseFormReturn<T> = ReturnType<
-	typeof useForm<T>
->;
+export type UseFormReturn<T> = ReturnType<typeof useForm<T>>;
 
-type FormErrors = Readonly<
-	Record<string, readonly string[]>
->;
+type FormErrors = Readonly<Record<string, readonly string[]>>;
 
 type PromiseOr<T> = Promise<T> | T;
 
 const useForm = <T>(schema: Schema<T>) => {
-	const [isSubmitting, setIsSubmitting] =
-		useState(false);
-	const [issues, setIssues] =
-		useState<ReadonlyArray<ZodIssue>>();
+	const [isSubmitting, setIsSubmitting] = useState(false);
+	const [issues, setIssues] = useState<ReadonlyArray<ZodIssue>>();
 
 	const handleSubmit =
-		(
-			handler: (
-				data: T
-			) => PromiseOr<FormErrors | void>
-		) =>
+		(handler: (data: T) => PromiseOr<FormErrors | undefined>) =>
 		async (event: FormEvent<HTMLFormElement>) => {
 			event.preventDefault();
 
@@ -31,9 +21,7 @@ const useForm = <T>(schema: Schema<T>) => {
 
 			try {
 				const result = await schema.safeParseAsync(
-					Object.fromEntries(
-						new FormData(event.currentTarget).entries()
-					)
+					Object.fromEntries(new FormData(event.currentTarget).entries()),
 				);
 
 				if (!result.success) {
@@ -42,14 +30,13 @@ const useForm = <T>(schema: Schema<T>) => {
 					const error = await handler(result.data);
 					if (error) {
 						setIssues(
-							Object.entries(error).flatMap(
-								([field, messages]) =>
-									messages.map(message => ({
-										code: "custom",
-										path: [field],
-										message
-									}))
-							)
+							Object.entries(error).flatMap(([field, messages]) =>
+								messages.map((message) => ({
+									code: "custom",
+									path: [field],
+									message,
+								})),
+							),
 						);
 					}
 				}
@@ -60,17 +47,13 @@ const useForm = <T>(schema: Schema<T>) => {
 
 	const invalidFields =
 		issues &&
-		Object.keys(
-			Object.groupBy(issues, issue =>
-				issue.path.join(".")
-			)
-		);
+		Object.keys(Object.groupBy(issues, (issue) => issue.path.join(".")));
 
 	return {
 		isSubmitting,
 		handleSubmit,
 		invalidFields,
-		issues
+		issues,
 	};
 };
 

@@ -9,7 +9,7 @@ export const enum HttpStatus {
 	BadRequest = 400,
 
 	// Server errors
-	InternalServerError = 500
+	InternalServerError = 500,
 }
 
 type Result<T, E> = Success<T> | Failure<E>;
@@ -26,9 +26,7 @@ type Failure<E> = Readonly<{
 
 type BadRequestResponse<T extends {}> = Readonly<{
 	code: HttpStatus.BadRequest;
-	errors: Readonly<
-		Partial<Record<keyof T, ReadonlyArray<string>>>
-	>;
+	errors: Readonly<Partial<Record<keyof T, ReadonlyArray<string>>>>;
 }>;
 
 type InternalServerErrorResponse = Readonly<{
@@ -44,27 +42,23 @@ export const UserDTOSchema = z.object({
 	id: z.string().uuid(),
 	email: z.string().nonempty(),
 	name: z.string().nonempty(),
-	role: RoleSchema
+	role: RoleSchema,
 });
 export type UserDTO = z.infer<typeof UserDTOSchema>;
 
 const AuthenticationSchema = z.object({
-	exp: z.number().int()
+	exp: z.number().int(),
 });
-export type Authentication = z.infer<
-	typeof AuthenticationSchema
->;
+export type Authentication = z.infer<typeof AuthenticationSchema>;
 
 // This is how api code should be generated
 export const LoginRequestSchema = z
 	.object({
 		email: z.string().nonempty(),
-		password: z.string().nonempty()
+		password: z.string().nonempty(),
 	})
 	.readonly();
-export type LoginRequest = z.infer<
-	typeof LoginRequestSchema
->;
+export type LoginRequest = z.infer<typeof LoginRequestSchema>;
 
 /**
  * This is a fake method. It only succeeds 50% of the time to
@@ -83,31 +77,26 @@ export type LoginRequest = z.infer<
  * you're working with.
  */
 export const Login = async (
-	data: LoginRequest
+	data: LoginRequest,
 ): Promise<
 	Result<
 		UserDTO,
-		| BadRequestResponse<LoginRequest>
-		| InternalServerErrorResponse
+		BadRequestResponse<LoginRequest> | InternalServerErrorResponse
 	>
 > => {
-	await new Promise(res => setTimeout(res, 1000));
+	await new Promise((res) => setTimeout(res, 1000));
 
 	if (!data.email || !data.password) {
-		const errors: Partial<
-			Record<keyof LoginRequest, string[]>
-		> = {};
+		const errors: Partial<Record<keyof LoginRequest, string[]>> = {};
 		if (!data.email) {
 			errors.email = [`Field "email" is required.`];
 		}
 		if (!data.password) {
-			errors.password = [
-				`Field "password" is required.`
-			];
+			errors.password = [`Field "password" is required.`];
 		}
 		return {
 			ok: false,
-			error: { code: HttpStatus.BadRequest, errors }
+			error: { code: HttpStatus.BadRequest, errors },
 		};
 	}
 	const ok = !!Math.round(Math.random());
@@ -119,12 +108,8 @@ export const Login = async (
 				id: globalThis.crypto.randomUUID(),
 				email: data.email,
 				name: "User Name",
-				role: roles[
-					Math.floor(
-						Math.random() * (roles.length - 1)
-					)
-				]
-			}
+				role: roles[Math.floor(Math.random() * (roles.length - 1))],
+			},
 		};
 	}
 
@@ -132,15 +117,15 @@ export const Login = async (
 		ok,
 		error: {
 			code: HttpStatus.InternalServerError,
-			message:
-				"Something went wrong. Please try again later."
-		}
+			message: "Something went wrong. Please try again later.",
+		},
 	};
 };
 
 // This is how api code should be generated
-export const RequestNewPasswordRequestSchema =
-	z.object({ email: z.string().nonempty() });
+export const RequestNewPasswordRequestSchema = z.object({
+	email: z.string().nonempty(),
+});
 export type RequestNewPasswordRequest = z.infer<
 	typeof RequestNewPasswordRequestSchema
 >;
@@ -162,26 +147,24 @@ export type RequestNewPasswordRequest = z.infer<
  * you're working with.
  */
 export const RequestNewPassword = async (
-	data: RequestNewPasswordRequest
+	data: RequestNewPasswordRequest,
 ): Promise<
 	Result<
 		null,
-		| BadRequestResponse<RequestNewPasswordRequest>
-		| InternalServerErrorResponse
+		BadRequestResponse<RequestNewPasswordRequest> | InternalServerErrorResponse
 	>
 > => {
-	await new Promise(res => setTimeout(res, 1000));
+	await new Promise((res) => setTimeout(res, 1000));
 
 	if (!data.email) {
-		const errors: Partial<
-			Record<keyof RequestNewPasswordRequest, string[]>
-		> = {};
+		const errors: Partial<Record<keyof RequestNewPasswordRequest, string[]>> =
+			{};
 		if (!data.email) {
 			errors.email = [`Field "email" is required.`];
 		}
 		return {
 			ok: false,
-			error: { code: HttpStatus.BadRequest, errors }
+			error: { code: HttpStatus.BadRequest, errors },
 		};
 	}
 	const ok = !!Math.round(Math.random());
@@ -189,7 +172,7 @@ export const RequestNewPassword = async (
 	if (ok) {
 		return {
 			ok,
-			data: null
+			data: null,
 		};
 	}
 
@@ -197,9 +180,8 @@ export const RequestNewPassword = async (
 		ok,
 		error: {
 			code: HttpStatus.InternalServerError,
-			message:
-				"Something went wrong. Please try again later."
-		}
+			message: "Something went wrong. Please try again later.",
+		},
 	};
 };
 
@@ -207,11 +189,9 @@ export const RequestNewPassword = async (
 export const RegisterRequestSchema = z.object({
 	email: z.string().nonempty(),
 	name: z.string().nonempty(),
-	role: RoleSchema
+	role: RoleSchema,
 });
-export type RegisterRequest = z.infer<
-	typeof RegisterRequestSchema
->;
+export type RegisterRequest = z.infer<typeof RegisterRequestSchema>;
 
 /**
  * This is a fake method. It only succeeds 50% of the time to
@@ -230,20 +210,17 @@ export type RegisterRequest = z.infer<
  * you're working with.
  */
 export const Register = async (
-	data: RegisterRequest
+	data: RegisterRequest,
 ): Promise<
 	Result<
 		UserDTO,
-		| BadRequestResponse<RegisterRequest>
-		| InternalServerErrorResponse
+		BadRequestResponse<RegisterRequest> | InternalServerErrorResponse
 	>
 > => {
-	await new Promise(res => setTimeout(res, 1000));
+	await new Promise((res) => setTimeout(res, 1000));
 
 	if (!data.email) {
-		const errors: Partial<
-			Record<keyof RegisterRequest, string[]>
-		> = {};
+		const errors: Partial<Record<keyof RegisterRequest, string[]>> = {};
 		if (!data.email) {
 			errors.email = [`Field "email" is required.`];
 		}
@@ -255,7 +232,7 @@ export const Register = async (
 		}
 		return {
 			ok: false,
-			error: { code: HttpStatus.BadRequest, errors }
+			error: { code: HttpStatus.BadRequest, errors },
 		};
 	}
 	const ok = !!Math.round(Math.random());
@@ -265,8 +242,8 @@ export const Register = async (
 			ok,
 			data: {
 				id: globalThis.crypto.randomUUID(),
-				...data
-			}
+				...data,
+			},
 		};
 	}
 
@@ -274,8 +251,7 @@ export const Register = async (
 		ok,
 		error: {
 			code: HttpStatus.InternalServerError,
-			message:
-				"Something went wrong. Please try again later."
-		}
+			message: "Something went wrong. Please try again later.",
+		},
 	};
 };

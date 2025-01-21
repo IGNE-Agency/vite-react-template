@@ -6,7 +6,7 @@ import {
 	createContext,
 	useContext,
 	useEffect,
-	useReducer
+	useReducer,
 } from "react";
 
 type Settings = Readonly<{
@@ -19,11 +19,7 @@ type AppState = Readonly<{
 	settings: Settings;
 }>;
 
-type Action =
-	| LoginAction
-	| LogutAction
-	| ClearAction
-	| SettingsAction;
+type Action = LoginAction | LogutAction | ClearAction | SettingsAction;
 
 type LoginAction = Readonly<{
 	type: "login";
@@ -44,20 +40,14 @@ type SettingsAction = Readonly<{
 }>;
 
 const defaultState: AppState = {
-	settings: {}
+	settings: {},
 };
 
 const defaultAction: Dispatch<Action> = () => {};
 
-const AppContext = createContext([
-	defaultState,
-	defaultAction
-] as const);
+const AppContext = createContext([defaultState, defaultAction] as const);
 
-const reducer = (
-	state: AppState,
-	action: Action
-): AppState => {
+const reducer = (state: AppState, action: Action): AppState => {
 	switch (action.type) {
 		case "clear": {
 			return { settings: {} };
@@ -73,16 +63,12 @@ const reducer = (
 				...state,
 				settings: {
 					...state.settings,
-					...action.settings
-				}
+					...action.settings,
+				},
 			};
 		}
 		default: {
-			throw new Error(
-				`Unhandled action type "${
-					(action as Action).type
-				}"`
-			);
+			throw new Error(`Unhandled action type "${(action as Action).type}"`);
 		}
 	}
 };
@@ -91,18 +77,13 @@ type AppStateProviderProps = Readonly<{
 	children?: ReactNode;
 }>;
 
-export const AppStateProvider = ({
-	children
-}: AppStateProviderProps) => {
-	const [saved, setSaved] = useLocalStorage(
-		"state",
-		defaultState
-	);
+export const AppStateProvider = ({ children }: AppStateProviderProps) => {
+	const [saved, setSaved] = useLocalStorage("state", defaultState);
 	const [state, dispatch] = useReducer(reducer, saved);
 
 	useEffect(() => {
 		setSaved(state);
-	}, [state]);
+	}, [setSaved, state]);
 
 	return (
 		<AppContext.Provider value={[state, dispatch]}>
@@ -116,7 +97,7 @@ export const useAppState = () => {
 
 	if (!context) {
 		throw new Error(
-			"useAppState must be called in a descendant of an AppStateProvider."
+			"useAppState must be called in a descendant of an AppStateProvider.",
 		);
 	}
 

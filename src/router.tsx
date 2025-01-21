@@ -6,11 +6,7 @@ import HomePage from "pages/home/home-page";
 import LoginPage from "pages/login/login-page";
 import NotFoundPage from "pages/not-found/not-found-page";
 import RegisterPage from "pages/register/register-page";
-import {
-	BrowserRouter,
-	Route,
-	Routes
-} from "react-router";
+import { BrowserRouter, Route, Routes } from "react-router";
 
 // TODO: figure out lazy loading
 const routes = (
@@ -21,14 +17,8 @@ const routes = (
 		</Route>
 		<Route element={<AuthLayout />}>
 			<Route path="login" element={<LoginPage />} />
-			<Route
-				path="register"
-				element={<RegisterPage />}
-			/>
-			<Route
-				path="forgot-password"
-				element={<ForgotPasswordPage />}
-			/>
+			<Route path="register" element={<RegisterPage />} />
+			<Route path="forgot-password" element={<ForgotPasswordPage />} />
 		</Route>
 	</Route>
 );

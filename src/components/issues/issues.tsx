@@ -6,15 +6,10 @@ type IssuesProps<T> = Readonly<{
 	form: UseFormReturn<T>;
 }>;
 
-const Issues = <T,>({
-	name = "*",
-	form
-}: IssuesProps<T>) => {
+const Issues = <T,>({ name = "*", form }: IssuesProps<T>) => {
 	const issues = form.issues
 		?.filter(({ path }) => path.join(".") === name)
-		.map(issue => (
-			<li key={issue.code}>{issue.message}</li>
-		));
+		.map((issue) => <li key={issue.code}>{issue.message}</li>);
 
 	if (!issues?.length) return null;
 

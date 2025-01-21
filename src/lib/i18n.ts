@@ -8,19 +8,18 @@ export const init = async () => {
 	await i18n
 		.use(
 			new Backend(null, {
-				loadPath: languages =>
-					`/i18n/${languages}.json`
-			})
+				loadPath: (languages) => `/i18n/${languages}.json`,
+			}),
 		)
 		.use(initReactI18next)
 		.init({
 			supportedLngs: supportedLanguages,
 			fallbackLng: supportedLanguages,
-			lng: "en"
+			lng: "en",
 		});
 	document
 		.querySelector(":root")
-		?.setAttribute("lang", i18n.resolvedLanguage!);
+		?.setAttribute("lang", i18n.resolvedLanguage ?? supportedLanguages[0]);
 };
 
 export default i18n;
