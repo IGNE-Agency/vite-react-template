@@ -10,6 +10,14 @@ import {
 } from "react-router";
 import style from "./app-layout.module.scss";
 
+const links = [
+	{
+		to: "/",
+		icon: <Moon width="1rem" />,
+		name: "home"
+	}
+];
+
 const LoggedInLayout = () => {
 	const { t, i18n } = useTranslation();
 	const [{ user }] = useAppState();
@@ -32,14 +40,6 @@ const LoggedInLayout = () => {
 			type: "language"
 		}).of(lang)
 	}));
-
-	const links = [
-		{
-			to: "/",
-			icon: <Moon width="1rem" />,
-			name: "home"
-		}
-	];
 
 	return (
 		<div className={style.layout}>
