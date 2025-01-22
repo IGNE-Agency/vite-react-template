@@ -1,3 +1,4 @@
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Spinner from "assets/icons/spinner.svg?react";
 import ErrorBoundary from "components/error-boundary/error-boundary";
 import { AppStateProvider } from "lib/app-state";
@@ -21,16 +22,26 @@ await i18n.init();
 
 const root = createRoot(rootElement);
 
-root.render(
-	<StrictMode>
-		<ErrorBoundary fallback={(error) => <ErrorPage error={error} />}>
-			<Suspense fallback={<Spinner />}>
-				<AppStateProvider>
-					<PageTitleProvider name="Template">
-						<Router />
-					</PageTitleProvider>
-				</AppStateProvider>
-			</Suspense>
-		</ErrorBoundary>
-	</StrictMode>,
-);
+const client = new QueryClient();
+
+const App = () => {
+	i18n.useSyncHtmlLangAttribute();
+
+	return (
+		<StrictMode>
+			<ErrorBoundary fallback={(error) => <ErrorPage error={error} />}>
+				<Suspense fallback={<Spinner />}>
+					<QueryClientProvider client={client}>
+						<AppStateProvider>
+							<PageTitleProvider name="BOTS">
+								<Router />
+							</PageTitleProvider>
+						</AppStateProvider>
+					</QueryClientProvider>
+				</Suspense>
+			</ErrorBoundary>
+		</StrictMode>
+	);
+};
+
+root.render(<App />);
