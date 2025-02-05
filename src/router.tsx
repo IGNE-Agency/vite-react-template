@@ -8,7 +8,7 @@ import NotFoundPage from "pages/not-found/not-found-page";
 import RegisterPage from "pages/register/register-page";
 import { BrowserRouter, Route, Routes } from "react-router";
 
-// TODO: figure out lazy loading
+// TODO: https://github.com/HanMoeHtet/route-level-code-split
 const routes = (
 	<Route element={<GlobalLayout />}>
 		<Route element={<LoggedInLayout />}>
