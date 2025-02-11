@@ -24,11 +24,13 @@ bun run dev # Start dev server (will open the app automatically)
 
 Or, more concisely:
 ```sh
-bun && bun run dev
+bun i && bun dev
 ```
 
 ### Editor setup 💻
 We [work with VSCode](https://code.visualstudio.com/). Project settings are applied automatically. Make sure you've installed [the BiomeJS editor extension](https://marketplace.visualstudio.com/items?itemName=biomejs.biome) to let your editor format files according to [the config in `biome.json`](./biome.json).
+
+Because [Biome pushes for browser standards](https://github.com/biomejs/biome/issues/1285) over custom tooling, [SASS files have to still be formatted using Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode). This is configured by default if you're using VSCode.
 
 For other editors, the same applies: make sure it understands how to format according to the Biome config.
 
@@ -40,8 +42,8 @@ Use the provided Github Workflows, just add the last step in [.github/workflows/
 ### DIY 🛠️
 If you want to do it yourself, run the following command(s):
 ```sh
-yarn install --frozen-lockfile
-yarn build --mode develop # If you are deploying for production, remove the mode parameter
+bun install --frozen-lockfile
+bun run build --mode develop # If you are deploying for production, remove the mode parameter
 ```
 
 The app is now built in `./dist` and ready to be hosted.

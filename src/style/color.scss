@@ -1,0 +1,39 @@
+// Add your base colors here.
+$colors: (
+	// Royal Blue
+	"primary": #4169e1,
+	// Salmon
+	"secondary": #ff8e77,
+	// Tea Green
+	"tertiary": #c7efcf,
+	// Persian Red
+	"error": #cc3e40,
+	// Grey
+	"neutral": #808080
+);
+
+// If these preset shades and tints aren't granular, you can add steps.
+// Make sure they don't exceed their respective bounds (50 > tint <= 100, 0 >= shade < 50).
+$tints: 55, 60, 65, 70, 75, 80, 85, 90, 95, 97, 99, 100;
+$shades: 0, 1, 3, 5, 10, 15, 20, 25, 30, 35, 40, 45;
+
+// Tints and shades will automaticall be generated.
+:root {
+	@each $name, $color in $colors {
+		@each $shade in $shades {
+			--color-#{$name}-#{$shade}: color-mix(
+				in oklch shorter hue,
+				#{$color} #{calc($shade / 50 * 100)}#{"%"},
+				black
+			);
+		}
+		--color-#{$name}-50: #{$color};
+		@each $tint in $tints {
+			--color-#{$name}-#{$tint}: color-mix(
+				in oklch shorter hue,
+				#{$color},
+				white #{calc(($tint - 50) / 50) * 100}#{"%"}
+			);
+		}
+	}
+}

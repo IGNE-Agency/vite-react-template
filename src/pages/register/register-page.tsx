@@ -7,6 +7,7 @@ import useForm from "lib/form";
 import { usePageTitle } from "lib/page-title";
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router";
+import theme from "style/theme.module.scss";
 import style from "./register-page.module.scss";
 
 const RegisterPage = () => {
@@ -34,7 +35,9 @@ const RegisterPage = () => {
 
 	return (
 		<>
-			<h1 className={classNames([style.fullWidth, style.textCenter])}>
+			<h1
+				className={classNames([theme.title, style.fullWidth, style.textCenter])}
+			>
 				{t("pages.register.title")}
 			</h1>
 			<Form
@@ -49,6 +52,7 @@ const RegisterPage = () => {
 						type="text"
 						name="email"
 						aria-invalid={form.invalidFields?.includes("email")}
+						className={theme.input}
 					/>
 					<Issues name="email" form={form} />
 				</label>
@@ -58,6 +62,7 @@ const RegisterPage = () => {
 						type="text"
 						name="name"
 						aria-invalid={form.invalidFields?.includes("name")}
+						className={theme.input}
 					/>
 					<Issues name="name" form={form} />
 				</label>
@@ -66,6 +71,7 @@ const RegisterPage = () => {
 					<select
 						name="role"
 						aria-invalid={form.invalidFields?.includes("role")}
+						className={theme.input}
 					>
 						{roles.map((role) => (
 							<option key={role} value={role}>
@@ -76,8 +82,13 @@ const RegisterPage = () => {
 					<Issues name="role" form={form} />
 				</label>
 				<Issues form={form} />
-				<button type="submit">{t("forms.actions.register")}</button>
-				<Link to="/login" className={style.alreadyHaveAnAccount}>
+				<button type="submit" className={theme.button}>
+					{t("forms.actions.register")}
+				</button>
+				<Link
+					to="/login"
+					className={classNames([theme.link, style.alreadyHaveAnAccount])}
+				>
 					{t("pages.register.alreadyHaveAnAccount")}
 				</Link>
 			</Form>

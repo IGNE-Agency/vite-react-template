@@ -11,9 +11,10 @@ import { usePageTitle } from "lib/page-title";
 import { useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Link } from "react-router";
+import theme from "style/theme.module.scss";
 import style from "./forgot-password-page.module.scss";
 
-const LoginPage = () => {
+const ForgotPasswordPage = () => {
 	const { t } = useTranslation();
 	const form = useForm(RequestNewPasswordRequestSchema);
 	usePageTitle(t("pages.forgotPassword.title"), []);
@@ -44,7 +45,12 @@ const LoginPage = () => {
 						i18nKey="pages.forgotPassword.success"
 						values={{ email }}
 						components={{
-							email: <Link to={`mailto:${email}`} className={style.email} />,
+							email: (
+								<Link
+									to={`mailto:${email}`}
+									className={theme.link}
+								/>
+							),
 						}}
 					/>
 				</p>
@@ -54,7 +60,9 @@ const LoginPage = () => {
 
 	return (
 		<>
-			<h1 className={classNames([style.fullWidth, style.textCenter])}>
+			<h1
+				className={classNames([theme.title, style.fullWidth, style.textCenter])}
+			>
 				{t("pages.forgotPassword.title")}
 			</h1>
 			<Form
@@ -69,14 +77,17 @@ const LoginPage = () => {
 						name="email"
 						onChange={({ currentTarget: { value } }) => setEmail(value)}
 						aria-invalid={form.invalidFields?.includes("email")}
+						className={theme.input}
 					/>
 					<Issues name="email" form={form} />
 				</label>
 				<Issues form={form} />
-				<button type="submit">{t("forms.actions.requestNewPassword")}</button>
+				<button type="submit" className={theme.button}>
+					{t("forms.actions.requestNewPassword")}
+				</button>
 			</Form>
 		</>
 	);
 };
 
-export default LoginPage;
+export default ForgotPasswordPage;
