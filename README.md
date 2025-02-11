@@ -15,16 +15,16 @@ A template for quick-starting any React app.
 
 ## Getting started 🏃‍♂️
 
-To run this project, [use `yarn`](https://yarnpkg.com/):
+To run this project, [use `bun`](https://bun.sh/):
 
 ```sh
-yarn install # Install dependencies
-yarn dev # Start dev server (will open the app automatically)
+bun install # Install dependencies
+bun run dev # Start dev server (will open the app automatically)
 ```
 
 Or, more concisely:
 ```sh
-yarn && yarn dev
+bun && bun run dev
 ```
 
 ### Editor setup 💻
