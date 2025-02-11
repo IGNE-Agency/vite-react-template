@@ -10,3 +10,9 @@ body {
 	color: var(--color-neutral-1);
 	background-color: var(--color-neutral-97);
 }
+
+// Overwrite browser defaults.
+:is(button, select, input, textarea) {
+	border: none;
+	background: none;
+}

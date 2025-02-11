@@ -3,6 +3,7 @@ import classNames from "classnames";
 import { useAppState } from "lib/app-state";
 import { useTranslation } from "react-i18next";
 import { NavLink } from "react-router";
+import theme from "style/theme.module.scss";
 import style from "./app-layout.module.scss";
 
 const links = [
@@ -47,6 +48,7 @@ const AppHeader = () => {
 						onChange={({ currentTarget: { value } }) =>
 							i18n.changeLanguage(value)
 						}
+						className={theme.input}
 					>
 						{languageOptions.map(({ value, label }) => (
 							<option key={value} value={value}>
@@ -54,7 +56,7 @@ const AppHeader = () => {
 							</option>
 						))}
 					</select>
-					<button type="button" onClick={() => dispatch({ type: "logout" })}>
+					<button type="button" onClick={() => dispatch({ type: "logout" })} className={theme.button}>
 						{t("layouts.app.logout")}
 					</button>
 				</div>
