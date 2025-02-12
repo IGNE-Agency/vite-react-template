@@ -12,8 +12,8 @@
 	background: none;
 	color: var(--color-neutral-0);
 	border: 2px solid var(--color-neutral-80);
-	padding: var(--space-4) var(--space-6);
-	border-radius: var(--radius-full);
+	padding: var(--unit-4) var(--unit-6);
+	border-radius: var(--unit-full);
 	cursor: pointer;
 
 	&:disabled {
@@ -31,8 +31,8 @@
 	background: var(--color-neutral-100);
 	color: var(--color-neutral-0);
 	border: 2px solid var(--color-neutral-80);
-	padding: var(--space-4);
-	border-radius: var(--radius-1);
+	padding: var(--unit-4);
+	border-radius: var(--unit-1);
 	flex: 1;
 
 	@media not (prefers-reduced-motion) {

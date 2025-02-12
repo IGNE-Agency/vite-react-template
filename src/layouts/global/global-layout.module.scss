@@ -3,7 +3,7 @@
 	height: 100cqb;
 	overflow: hidden;
 	display: grid;
-	gap: var(--space-4);
+	gap: var(--unit-4);
 	--gutter: calc((100cqi - 1440px) / 2);
 	grid-template-columns:
 		var(--gutter)
