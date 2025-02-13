@@ -6,7 +6,6 @@
  * https://npmjs.com/vite-css-modules
  */
 
-const fullWidth: string;
 const textCenter: string;
 const form: string;
 const label: string;
@@ -14,7 +13,6 @@ const forgotPassword: string;
 const register: string;
 
 export {
-	fullWidth,
 	textCenter,
 	form,
 	label,
@@ -23,7 +21,6 @@ export {
 };
 
 export default {
-	fullWidth,
 	textCenter,
 	form,
 	label,

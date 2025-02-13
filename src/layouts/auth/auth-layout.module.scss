@@ -13,3 +13,10 @@
 	display: flex;
 	justify-content: center;
 }
+
+.page {
+	display: flex;
+	flex-direction: column;
+	gap: inherit;
+	grid-column: 1 / -1;
+}

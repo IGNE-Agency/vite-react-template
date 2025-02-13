@@ -3,6 +3,17 @@
 		"user": "User",
 		"admin": "Administrator"
 	},
+	"components": {
+		"loadingIndicator": {
+			"messages": [
+				"Initializing knobs & buttons...",
+				"Discombobulating the Metric Accumulator...",
+				"Crossing the T's and dotting the I's...",
+				"One mississippi, two mississippi...",
+				"Pretend we're playing elevator music..."
+			]
+		}
+	},
 	"layouts": {
 		"app": { "logout": "Log out" }
 	},

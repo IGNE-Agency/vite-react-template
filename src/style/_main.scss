@@ -10,6 +10,12 @@ body {
 	background-color: var(--color-neutral-97);
 }
 
+#root {
+	width: 100cqi;
+	height: 100cqb;
+	display: flex;
+}
+
 // Overwrite browser defaults.
 :is(button, select, input, textarea) {
 	border: none;

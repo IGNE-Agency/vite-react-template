@@ -3,6 +3,17 @@
 		"user": "Gebruiker",
 		"admin": "Administrator"
 	},
+	"components": {
+		"loadingIndicator": {
+			"messages": [
+				"Wie dit leest heeft geen glasvezel...",
+				"Dus... Lekker weertje hè?",
+				"Bezig met disproportioneren van Multifunctionele Poly-configuratie...",
+				"Bezig met Fropskottel brouwen...",
+				"Even geduld. Er zijn 236 wachtenden voor u... (grapje)"
+			]
+		}
+	},
 	"layouts": {
 		"app": { "logout": "Uitloggen" }
 	},

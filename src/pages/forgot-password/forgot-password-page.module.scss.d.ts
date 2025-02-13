@@ -6,20 +6,17 @@
  * https://npmjs.com/vite-css-modules
  */
 
-const fullWidth: string;
 const textCenter: string;
 const form: string;
 const label: string;
 
 export {
-	fullWidth,
 	textCenter,
 	form,
 	label
 };
 
 export default {
-	fullWidth,
 	textCenter,
 	form,
 	label

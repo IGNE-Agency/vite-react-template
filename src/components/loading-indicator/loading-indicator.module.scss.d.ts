@@ -6,18 +6,12 @@
  * https://npmjs.com/vite-css-modules
  */
 
-const layout: string;
-const logo: string;
-const page: string;
+const loadingIndicator: string;
 
 export {
-	layout,
-	logo,
-	page
+	loadingIndicator
 };
 
 export default {
-	layout,
-	logo,
-	page
+	loadingIndicator
 };

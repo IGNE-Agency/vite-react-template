@@ -35,16 +35,10 @@ const RegisterPage = () => {
 
 	return (
 		<>
-			<h1
-				className={classNames([theme.title, style.fullWidth, style.textCenter])}
-			>
+			<h1 className={classNames([theme.title, style.textCenter])}>
 				{t("pages.register.title")}
 			</h1>
-			<Form
-				form={form}
-				onSubmit={handleSubmit}
-				className={classNames([style.fullWidth, style.form])}
-			>
+			<Form form={form} onSubmit={handleSubmit} className={style.form}>
 				<label className={style.label}>
 					<span>{t("forms.fields.email")}</span>
 					<input

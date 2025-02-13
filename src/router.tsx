@@ -1,31 +1,48 @@
-import LoggedInLayout from "layouts/app/app-layout";
-import AuthLayout from "layouts/auth/auth-layout";
-import GlobalLayout from "layouts/global/global-layout";
-import ForgotPasswordPage from "pages/forgot-password/forgot-password-page";
-import HomePage from "pages/home/home-page";
-import LoginPage from "pages/login/login-page";
-import NotFoundPage from "pages/not-found/not-found-page";
-import RegisterPage from "pages/register/register-page";
+import LoadingIndicator from "components/loading-indicator/loading-indicator";
+import React, { type ExoticComponent, Suspense } from "react";
 import { BrowserRouter, Route, Routes } from "react-router";
 
-// TODO: https://github.com/HanMoeHtet/route-level-code-split
-const routes = (
-	<Route element={<GlobalLayout />}>
-		<Route element={<LoggedInLayout />}>
-			<Route index element={<HomePage />} />
-			<Route path="*" element={<NotFoundPage />} />
-		</Route>
-		<Route element={<AuthLayout />}>
-			<Route path="login" element={<LoginPage />} />
-			<Route path="register" element={<RegisterPage />} />
-			<Route path="forgot-password" element={<ForgotPasswordPage />} />
-		</Route>
-	</Route>
+const lazy =
+	(Component: ExoticComponent) =>
+	// biome-ignore lint/suspicious/noExplicitAny: Don't care whate the type is
+	(props: any) => (
+		<Suspense fallback={<LoadingIndicator />}>
+			<Component {...props} />
+		</Suspense>
+	);
+
+const LoggedInLayout = lazy(React.lazy(() => import("layouts/app/app-layout")));
+const AuthLayout = lazy(React.lazy(() => import("layouts/auth/auth-layout")));
+const GlobalLayout = lazy(
+	React.lazy(() => import("layouts/global/global-layout")),
+);
+const ForgotPasswordPage = lazy(
+	React.lazy(() => import("pages/forgot-password/forgot-password-page")),
+);
+const HomePage = lazy(React.lazy(() => import("pages/home/home-page")));
+const LoginPage = lazy(React.lazy(() => import("pages/login/login-page")));
+const NotFoundPage = lazy(
+	React.lazy(() => import("pages/not-found/not-found-page")),
+);
+const RegisterPage = lazy(
+	React.lazy(() => import("pages/register/register-page")),
 );
 
 const Router = () => (
 	<BrowserRouter>
-		<Routes>{routes}</Routes>
+		<Routes>
+			<Route element={<GlobalLayout />}>
+				<Route element={<LoggedInLayout />}>
+					<Route index element={<HomePage />} />
+					<Route path="*" element={<NotFoundPage />} />
+				</Route>
+				<Route element={<AuthLayout />}>
+					<Route path="login" element={<LoginPage />} />
+					<Route path="register" element={<RegisterPage />} />
+					<Route path="forgot-password" element={<ForgotPasswordPage />} />
+				</Route>
+			</Route>
+		</Routes>
 	</BrowserRouter>
 );
 

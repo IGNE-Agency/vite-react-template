@@ -7,7 +7,9 @@ const AuthLayout = () => (
 		<div className={style.logo}>
 			<Logo width="5rem" />
 		</div>
-		<Outlet />
+		<div className={style.page}>
+			<Outlet />
+		</div>
 	</div>
 );
 

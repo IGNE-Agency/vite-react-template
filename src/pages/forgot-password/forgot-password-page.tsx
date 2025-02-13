@@ -39,18 +39,13 @@ const ForgotPasswordPage = () => {
 	if (requestSent) {
 		return (
 			<>
-				<p className={classNames([style.fullWidth, style.textCenter])}>
+				<p className={style.textCenter}>
 					<Trans
 						t={t}
 						i18nKey="pages.forgotPassword.success"
 						values={{ email }}
 						components={{
-							email: (
-								<Link
-									to={`mailto:${email}`}
-									className={theme.link}
-								/>
-							),
+							email: <Link to={`mailto:${email}`} className={theme.link} />,
 						}}
 					/>
 				</p>
@@ -60,16 +55,10 @@ const ForgotPasswordPage = () => {
 
 	return (
 		<>
-			<h1
-				className={classNames([theme.title, style.fullWidth, style.textCenter])}
-			>
+			<h1 className={classNames([theme.title, style.textCenter])}>
 				{t("pages.forgotPassword.title")}
 			</h1>
-			<Form
-				form={form}
-				onSubmit={handleSubmit}
-				className={classNames([style.fullWidth, style.form])}
-			>
+			<Form form={form} onSubmit={handleSubmit} className={style.form}>
 				<label className={style.label}>
 					<span>{t("forms.fields.email")}</span>
 					<input
