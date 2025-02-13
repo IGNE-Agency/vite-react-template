@@ -1,6 +1,7 @@
 import Moon from "assets/icons/moon.svg?react";
 import classNames from "classnames";
 import { useAppState } from "lib/app-state";
+import { useLocale } from "lib/i18n";
 import { useTranslation } from "react-i18next";
 import { NavLink } from "react-router";
 import theme from "style/theme.module.scss";
@@ -17,13 +18,16 @@ const links = [
 const AppHeader = () => {
 	const { t, i18n } = useTranslation();
 	const [, dispatch] = useAppState();
+	const locale = useLocale();
 
-	const languageOptions = i18n.languages.map((lang) => ({
-		value: lang,
-		label: new Intl.DisplayNames([lang], {
-			type: "language",
-		}).of(lang),
-	}));
+	const languageOptions = i18n.languages
+		.toSorted((a, b) => a.localeCompare(b, locale))
+		.map((lang) => ({
+			value: lang,
+			label: new Intl.DisplayNames([lang], {
+				type: "language",
+			}).of(lang),
+		}));
 
 	return (
 		<header>
@@ -56,7 +60,11 @@ const AppHeader = () => {
 							</option>
 						))}
 					</select>
-					<button type="button" onClick={() => dispatch({ type: "logout" })} className={theme.button}>
+					<button
+						type="button"
+						onClick={() => dispatch({ type: "logout" })}
+						className={theme.button}
+					>
 						{t("layouts.app.logout")}
 					</button>
 				</div>
