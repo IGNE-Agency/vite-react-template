@@ -12,38 +12,39 @@ const useForm = <T>(schema: Schema<T>) => {
 	const [issues, setIssues] = useState<ReadonlyArray<ZodIssue>>();
 
 	const handleSubmit =
-		(handler: (data: T) => PromiseOr<FormErrors | undefined>) =>
-		async (event: FormEvent<HTMLFormElement>) => {
-			event.preventDefault();
+		// biome-ignore lint/suspicious/noConfusingVoidType: Shut up
+			(handler: (data: T) => PromiseOr<FormErrors | void>) =>
+			async (event: FormEvent<HTMLFormElement>) => {
+				event.preventDefault();
 
-			setIsSubmitting(true);
-			setIssues(undefined);
+				setIsSubmitting(true);
+				setIssues(undefined);
 
-			try {
-				const result = await schema.safeParseAsync(
-					Object.fromEntries(new FormData(event.currentTarget).entries()),
-				);
+				try {
+					const result = await schema.safeParseAsync(
+						Object.fromEntries(new FormData(event.currentTarget).entries()),
+					);
 
-				if (!result.success) {
-					setIssues(result.error.issues);
-				} else {
-					const error = await handler(result.data);
-					if (error) {
-						setIssues(
-							Object.entries(error).flatMap(([field, messages]) =>
-								messages.map((message) => ({
-									code: "custom",
-									path: [field],
-									message,
-								})),
-							),
-						);
+					if (!result.success) {
+						setIssues(result.error.issues);
+					} else {
+						const error = await handler(result.data);
+						if (error) {
+							setIssues(
+								Object.entries(error).flatMap(([field, messages]) =>
+									messages.map((message) => ({
+										code: "custom",
+										path: [field],
+										message,
+									})),
+								),
+							);
+						}
 					}
+				} finally {
+					setIsSubmitting(false);
 				}
-			} finally {
-				setIsSubmitting(false);
-			}
-		};
+			};
 
 	const invalidFields =
 		issues &&

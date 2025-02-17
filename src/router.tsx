@@ -1,4 +1,5 @@
 import LoadingIndicator from "components/loading-indicator/loading-indicator";
+import PostsPage from "pages/posts/posts-page";
 import React, { type ExoticComponent, Suspense } from "react";
 import { BrowserRouter, Route, Routes } from "react-router";
 
@@ -34,6 +35,7 @@ const Router = () => (
 			<Route element={<GlobalLayout />}>
 				<Route element={<LoggedInLayout />}>
 					<Route index element={<HomePage />} />
+					<Route path="posts" element={<PostsPage />} />
 					<Route path="*" element={<NotFoundPage />} />
 				</Route>
 				<Route element={<AuthLayout />}>

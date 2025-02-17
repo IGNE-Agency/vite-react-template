@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { ZodIssue, z } from "zod";
 
 // biome-ignore lint/suspicious/noConstEnum: We know what we're doing.
 export const enum HttpStatus {
@@ -254,4 +254,56 @@ export const Register = async (
 			message: "Something went wrong. Please try again later.",
 		},
 	};
+};
+
+export const RequestOneTimePasswordRequestSchema = z
+	.object({ email: z.string().nonempty() })
+	.readonly();
+type RequestOneTimePasswordRequest = z.infer<
+	typeof RequestOneTimePasswordRequestSchema
+>;
+
+const RequestOneTimePasswordResponseSchema = z
+	.object({
+		message: z.string(),
+	})
+	.readonly();
+type RequestOneTimePasswordResponse = z.infer<
+	typeof RequestOneTimePasswordResponseSchema
+>;
+
+/**
+ * sdfghjdsfdfghdfgh
+ */
+export const RequestOneTimePassword = async (
+	data: RequestOneTimePasswordRequest,
+): Promise<Result<RequestOneTimePasswordResponse, ReadonlyArray<ZodIssue>>> => {
+	const response = await fetch("/api/code", {
+		method: "POST",
+		body: JSON.stringify(data),
+		headers: { "Content-Type": "application/json", Accept: "application/json" },
+	});
+
+	if (!response.ok) {
+		return {
+			ok: false,
+			error: [
+				{
+					code: "custom",
+					message: "Something went wrong",
+					path: ["*"],
+				},
+			],
+		};
+	}
+
+	const parseResult = RequestOneTimePasswordResponseSchema.safeParse(
+		await response.json(),
+	);
+
+	if (!parseResult.success) {
+		return { ok: false, error: parseResult.error.issues };
+	}
+
+	return { ok: true, data: parseResult.data };
 };

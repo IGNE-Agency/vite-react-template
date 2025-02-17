@@ -1,6 +1,6 @@
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
-import { patchCssModules } from 'vite-css-modules';
+import { patchCssModules } from "vite-css-modules";
 import svgr from "vite-plugin-svgr";
 import viteTsConfigPaths from "vite-tsconfig-paths";
 
@@ -20,14 +20,13 @@ export default defineConfig({
 	],
 	css: {
 		modules: {
-			localsConvention:"camelCase",
+			localsConvention: "camelCase",
 		},
 	},
 	server: {
 		open: true,
 		proxy: {
-			"/api": "CHANGE_ME",
-			"/oauth2": "CHANGE_ME",
+			"/api": "https://admin.onbezorgd-ontslag.igne.link/api",
 		},
-	}
+	},
 });
