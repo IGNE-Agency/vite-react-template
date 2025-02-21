@@ -5,7 +5,7 @@
 	"scripts": {
 		"dev": "vite",
 		"build": "tsc -b && vite build",
-		"lint": "bun run biome check --write src",
+		"lint": "bun run biome check src",
 		"preview": "vite preview"
 	},
 	"dependencies": {
