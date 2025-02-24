@@ -3,11 +3,9 @@
 :root {
 	// Used in `font` shorthand property.
 	// grammar: <weight> <font-size> / <line-height> <font-family>;
-	--font-body-small-regular: 400 0.875rem / 160%
-		"Inter";
+	--font-body-small-regular: 400 0.875rem / 160% "Inter";
 	--font-body-medium-regular: 400 1rem / 160% "Inter";
-	--font-body-large-regular: 400 1.125rem / 160%
-		"Inter";
+	--font-body-large-regular: 400 1.125rem / 160% "Inter";
 	--font-body-small-medium: 500 0.875rem / 160% "Inter";
 	--font-body-medium-medium: 500 1rem / 160% "Inter";
 	--font-body-large-medium: 500 1.125rem / 160% "Inter";

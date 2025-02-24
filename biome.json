@@ -22,6 +22,9 @@
 			"recommended": true,
 			"a11y": {
 				"noAutofocus": "off"
+			},
+			"suspicious": {
+				"noConsole": "error"
 			}
 		}
 	},
