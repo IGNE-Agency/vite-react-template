@@ -5,8 +5,8 @@
 	"scripts": {
 		"openapi": "bunx --bun openapi-typescript ./openapi.json -o ./src/lib/schema.gen.d.ts && bun run generate-schemas.ts ./openapi.json ./src/lib/validators.gen.ts",
 		"dev": "vite",
-		   "build": "tsc -b && vite build",
-		"lint": "bun run biome check src && bun run prettier --check 'src/**/*.{s,}css'",
+		"build": "tsc -b && vite build",
+		"lint": "biome check src && prettier --check 'src/**/*.{s,}css'",
 		"preview": "vite preview"
 	},
 	"dependencies": {
