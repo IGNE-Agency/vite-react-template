@@ -10,38 +10,42 @@ import { createRoot } from "react-dom/client";
 import Router from "router";
 import "style/_main.scss";
 
-const rootElement = document.getElementById("root");
+// IIFE - https://developer.mozilla.org/en-US/docs/Glossary/IIFE
+// Because we can not use top-level await (i18n init)
+(async () => {
+	const rootElement = document.getElementById("root");
 
-if (!rootElement) {
-	throw new Error(
-		"Something has gone terribly wrong. The app couldn't find its home :(",
-	);
-}
+	if (!rootElement) {
+		throw new Error(
+			"Something has gone terribly wrong. The app couldn't find its home :(",
+		);
+	}
 
-await i18n.init();
+	await i18n.init();
 
-const root = createRoot(rootElement);
+	const root = createRoot(rootElement);
 
-const client = new QueryClient();
+	const client = new QueryClient();
 
-const App = () => {
-	i18n.useSyncHtmlLangAttribute();
+	const App = () => {
+		i18n.useSyncHtmlLangAttribute();
 
-	return (
-		<StrictMode>
-			<ErrorBoundary fallback={(error) => <ErrorPage error={error} />}>
-				<Suspense fallback={<LoadingIndicator />}>
-					<QueryClientProvider client={client}>
-						<AppStateProvider>
-							<PageTitleProvider name="Template">
-								<Router />
-							</PageTitleProvider>
-						</AppStateProvider>
-					</QueryClientProvider>
-				</Suspense>
-			</ErrorBoundary>
-		</StrictMode>
-	);
-};
+		return (
+			<StrictMode>
+				<ErrorBoundary fallback={(error) => <ErrorPage error={error} />}>
+					<Suspense fallback={<LoadingIndicator />}>
+						<QueryClientProvider client={client}>
+							<AppStateProvider>
+								<PageTitleProvider name="Template">
+									<Router />
+								</PageTitleProvider>
+							</AppStateProvider>
+						</QueryClientProvider>
+					</Suspense>
+				</ErrorBoundary>
+			</StrictMode>
+		);
+	};
 
-root.render(<App />);
+	root.render(<App />);
+})();
