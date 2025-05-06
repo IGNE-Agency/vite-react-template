@@ -6,9 +6,12 @@ import style from "./loading-indicator.module.scss";
 const LoadingIndicator = () => {
 	const { t } = useTranslation();
 
-	const messages = t("components.loadingIndicator.messages", {
-		returnObjects: true,
-	}) as ReadonlyArray<string>;
+	const messages = t(
+		"components.loadingIndicator.messages",
+		{
+			returnObjects: true,
+		},
+	) as ReadonlyArray<string>;
 	const [message, setMessage] = useState(
 		messages[Math.floor(Math.random() * messages.length)],
 	);
@@ -17,12 +20,18 @@ const LoadingIndicator = () => {
 		const updateLoadingMessage = () => {
 			let newMessage = message;
 			while (newMessage === message) {
-				newMessage = messages[Math.floor(Math.random() * messages.length)];
+				newMessage =
+					messages[
+						Math.floor(Math.random() * messages.length)
+					];
 			}
 			setMessage(newMessage);
 		};
 
-		const interval = setInterval(updateLoadingMessage, 5000);
+		const interval = setInterval(
+			updateLoadingMessage,
+			5000,
+		);
 
 		return () => {
 			clearInterval(interval);

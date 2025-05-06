@@ -7,7 +7,7 @@ type ErrorPageProps = Readonly<{
 
 const ErrorPage = ({ error }: ErrorPageProps) => {
 	const { t } = useTranslation();
-	usePageTitle(t("pages.error.title"), []);
+	usePageTitle(t("pages.error.title"));
 
 	return <pre>{error.toString()}</pre>;
 };

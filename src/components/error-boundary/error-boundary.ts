@@ -1,4 +1,8 @@
-import { Component, type ErrorInfo, type ReactNode } from "react";
+import {
+	Component,
+	type ErrorInfo,
+	type ReactNode,
+} from "react";
 
 type ErrorBoundaryProps = Readonly<{
 	children: ReactNode;
@@ -9,7 +13,10 @@ type ErrorBoundarystate = Readonly<{
 	error?: Error;
 }>;
 
-class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarystate> {
+class ErrorBoundary extends Component<
+	ErrorBoundaryProps,
+	ErrorBoundarystate
+> {
 	constructor(props: ErrorBoundaryProps) {
 		super(props);
 		this.state = {};

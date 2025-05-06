@@ -1,6 +1,6 @@
 import Logo from "assets/icons/logo.svg?react";
 import classNames from "classnames";
-import { useAppState } from "lib/app-state";
+import { useAuth } from "lib/auth";
 import { useLocale } from "lib/i18n";
 import { useTranslation } from "react-i18next";
 import { NavLink } from "react-router";
@@ -17,7 +17,7 @@ const links = [
 
 const AppHeader = () => {
 	const { t, i18n } = useTranslation();
-	const [, dispatch] = useAppState();
+	const [, setToken] = useAuth();
 	const locale = useLocale();
 
 	const languageOptions = i18n.languages
@@ -31,14 +31,23 @@ const AppHeader = () => {
 
 	return (
 		<header>
-			<div className={classNames([style.header, style.row, style.full])}>
+			<div
+				className={classNames([
+					style.header,
+					style.row,
+					style.full,
+				])}
+			>
 				<nav className={style.row}>
 					{links.map((link) => (
 						<NavLink
 							key={link.to}
 							to={link.to}
 							className={({ isActive }) =>
-								classNames([style.link, isActive && style.active])
+								classNames([
+									style.link,
+									isActive && style.active,
+								])
 							}
 						>
 							{link.icon}
@@ -62,7 +71,7 @@ const AppHeader = () => {
 					</select>
 					<button
 						type="button"
-						onClick={() => dispatch({ type: "logout" })}
+						onClick={() => setToken(undefined)}
 						className={theme.button}
 					>
 						{t("layouts.app.logout")}

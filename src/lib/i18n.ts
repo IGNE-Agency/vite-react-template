@@ -25,9 +25,12 @@ export const init = async () => {
 
 export default i18n;
 
-// biome-ignore lint/suspicious/noExplicitAny: Really doesn't matter what types the args have.
-const getLocale = (i18n: UseTranslationResponse<any, any>["i18n"]) => {
-	const language = i18n.resolvedLanguage ?? supportedLanguages[0];
+const getLocale = (
+	// biome-ignore lint/suspicious/noExplicitAny: Really doesn't matter what types the args have.
+	i18n: UseTranslationResponse<any, any>["i18n"],
+) => {
+	const language =
+		i18n.resolvedLanguage ?? supportedLanguages[0];
 	return new Intl.Locale(language);
 };
 

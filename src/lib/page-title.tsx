@@ -1,10 +1,14 @@
 import type React from "react";
-import { createContext, useContext, useEffect, useState } from "react";
+import {
+	createContext,
+	useContext,
+	useEffect,
+	useState,
+} from "react";
 
 type PageTitleContext = Readonly<{
 	title: string;
-	// biome-ignore lint/suspicious/noExplicitAny: Dependencies can really be anything.
-	useTitle: (title: string, deps?: any) => void;
+	useTitle: (title: string) => void;
 }>;
 
 const PageTitleContext = createContext<PageTitleContext>({
@@ -18,16 +22,17 @@ export const PageTitleProvider: React.FC<{
 }> = ({ children, name }) => {
 	const [title, setTitle] = useState("");
 
-	const useTitle: PageTitleContext["useTitle"] = (title, deps) => {
+	const useTitle: PageTitleContext["useTitle"] = (
+		title,
+	) => {
 		const before = document.title;
-		// biome-ignore lint/correctness/useExhaustiveDependencies: Biome cannot figure out dynamic deps
 		useEffect(() => {
 			setTitle(title);
 			document.title = `${title} | ${name}`;
 			return () => {
 				document.title = before;
 			};
-		}, [deps, title, name, before].flat(Number.POSITIVE_INFINITY));
+		}, [title, name, before]);
 	};
 
 	return (
@@ -41,14 +46,18 @@ export const usePageTitleContext = () => {
 	const context = useContext(PageTitleContext);
 
 	if (!context) {
-		throw new Error("usePageTitle must be used within a PageTitleProvider");
+		throw new Error(
+			"usePageTitle must be used within a PageTitleProvider",
+		);
 	}
 
 	return context;
 };
 
-export const usePageTitle: PageTitleContext["useTitle"] = (title, deps) => {
+export const usePageTitle: PageTitleContext["useTitle"] = (
+	title,
+) => {
 	const context = usePageTitleContext();
-	context.useTitle(title, deps);
+	context.useTitle(title);
 	return context.title;
 };

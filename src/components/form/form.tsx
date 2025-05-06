@@ -8,9 +8,17 @@ type FormProps<T> = HTMLAttributes<HTMLFormElement> &
 		form: UseFormReturn<T>;
 	}>;
 
-const Form = <T,>({ form, children, className, ...props }: FormProps<T>) => (
+const Form = <T,>({
+	form,
+	children,
+	className,
+	...props
+}: FormProps<T>) => (
 	<form className={classNames([className])} {...props}>
-		<fieldset disabled={form.isSubmitting} className={style.contents}>
+		<fieldset
+			disabled={form.isSubmitting}
+			className={style.contents}
+		>
 			{children}
 		</fieldset>
 	</form>
