@@ -77,6 +77,7 @@ import {z} from "zod";
 		.then(() => $`bun run biome format --write ${output}`)
 		.then(() => {
 			const elapsed = performance.now() - before;
+			// biome-ignore lint/suspicious/noConsole: We can do a little loggin' here 😎
 			console.log(
 				`🔥 ${input} -> ${output} [${elapsed.toFixed(2)}ms]`,
 			);
