@@ -23,6 +23,9 @@ export default defineConfig({
 			localsConvention: "camelCase",
 		},
 	},
+	build: {
+		target: "esnext",
+	},
 	server: {
 		open: true,
 		proxy: {
