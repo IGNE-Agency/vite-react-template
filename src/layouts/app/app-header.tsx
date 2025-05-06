@@ -1,4 +1,4 @@
-import Moon from "assets/icons/moon.svg?react";
+import Logo from "assets/icons/logo.svg?react";
 import classNames from "classnames";
 import { useAppState } from "lib/app-state";
 import { useLocale } from "lib/i18n";
@@ -10,7 +10,7 @@ import style from "./app-layout.module.scss";
 const links = [
 	{
 		to: "/",
-		icon: <Moon width="1rem" />,
+		icon: <Logo width="1rem" />,
 		name: "home",
 	},
 ];
