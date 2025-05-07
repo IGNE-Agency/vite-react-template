@@ -4,14 +4,15 @@
 }
 
 @mixin invalid {
-	color: var(--color-error-50);
+	color: var(--color-error-500);
 	border-color: currentColor;
 }
 
 @mixin button {
 	background: none;
-	color: var(--color-neutral-0);
-	border: 2px solid var(--color-neutral-80);
+	background: white;
+	color: black;
+	border: 2px solid currentColor;
 	padding: var(--unit-4) var(--unit-6);
 	border-radius: var(--unit-full);
 	cursor: pointer;
@@ -28,9 +29,9 @@
 @mixin input {
 	display: inline-flex;
 	min-width: 0;
-	background: var(--color-neutral-100);
-	color: var(--color-neutral-0);
-	border: 2px solid var(--color-neutral-80);
+	background: white;
+	color: black;
+	border: 2px solid currentColor;
 	padding: var(--unit-4);
 	border-radius: var(--unit-1);
 	flex: 1;
@@ -53,7 +54,7 @@
 }
 
 @mixin link {
-	color: var(--color-primary-50);
+	color: var(--color-primary-400);
 	text-decoration: underline;
 
 	@media not (prefers-reduced-motion) {
@@ -62,7 +63,7 @@
 
 	&:hover,
 	&:focus-visible {
-		color: var(--color-primary-40);
+		color: var(--color-primary-600);
 	}
 }
 
