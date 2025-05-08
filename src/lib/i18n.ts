@@ -1,47 +1,40 @@
 import i18n from "i18next";
+import LanguageDetector from "i18next-browser-languagedetector";
 import Backend from "i18next-http-backend";
 import {
-	type UseTranslationResponse,
 	initReactI18next,
 	useTranslation,
 } from "react-i18next";
 
-const supportedLanguages = ["nl-NL", "en-US"] as const;
+// Authomatically detect supported languages
+const supportedLocales = Object.keys(
+	import.meta.glob("/public/i18n/*.json", {
+		query: "?url",
+		import: "default",
+	}),
+).map((path) =>
+	path.replaceAll(/\/public\/i18n\/|\.json/g, ""),
+);
 
-export const init = async () => {
-	await i18n
-		.use(
-			new Backend(null, {
-				loadPath: (languages) => `/i18n/${languages}.json`,
-			}),
-		)
+export const init = () =>
+	i18n
+		.use(Backend)
+		.use(LanguageDetector)
 		.use(initReactI18next)
 		.init({
-			supportedLngs: supportedLanguages,
-			fallbackLng: supportedLanguages,
-			lng: "en",
+			supportedLngs: supportedLocales,
+			fallbackLng: import.meta.env.PROD ? "en-US" : "dev",
+			nonExplicitSupportedLngs: true,
 		});
-};
-
-export default i18n;
-
-const getLocale = (
-	// biome-ignore lint/suspicious/noExplicitAny: Really doesn't matter what types the args have.
-	i18n: UseTranslationResponse<any, any>["i18n"],
-) => {
-	const language =
-		i18n.resolvedLanguage ?? supportedLanguages[0];
-	return new Intl.Locale(language);
-};
 
 export const useLocale = () => {
 	const { i18n } = useTranslation();
-	return getLocale(i18n);
+	return new Intl.Locale(i18n.language);
 };
 
 export const useSyncHtmlLangAttribute = () => {
 	const { i18n } = useTranslation();
 	document
 		.querySelector(":root")
-		?.setAttribute("lang", getLocale(i18n).language);
+		?.setAttribute("lang", i18n.language);
 };
