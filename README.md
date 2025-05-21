@@ -44,7 +44,6 @@ This will read `./openapi.json` and generate `./src/lib/schema.gen.d.ts` and `./
 > 	},
 > 	// ...
 > }
-```
 
 ### 💻 Editor setup
 
