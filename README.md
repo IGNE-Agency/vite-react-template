@@ -87,8 +87,8 @@ The app is now built in `./dist` and ready to be hosted.
 > Note that the web app is configured to send requests to the server it's hosted on. This is to prevent CORS issues while developing our projects.
 >
 > In order to support this, the server must reverse proxy requests according to [the following rules in `vite.config.ts`](./vite.config.ts):
-
-```
-"/api": "https://api.example.CHANGE_ME.com/api/v1",
-"/oauth2": "https://CHANGE_ME.exampleauthservice.com/v3/oauth2"
-```
+>
+> ```
+> "/api": "https://api.example.CHANGE_ME.com/api/v1",
+> "/oauth2": "https://CHANGE_ME.exampleauthservice.com/v3/oauth2"
+> ```
