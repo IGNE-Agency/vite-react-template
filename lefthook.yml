@@ -1,5 +1,7 @@
 pre-commit:
-  # parallel: true
+  parallel: true
   jobs:
-    - run: bun run lint
+    - run: bun run biome check {staged_files}
+    - run: bun run prettier --check {staged_files}
+      glob: "**/*.{s,}css"
       
