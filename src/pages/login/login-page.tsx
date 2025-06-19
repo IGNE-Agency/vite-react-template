@@ -39,6 +39,12 @@ const LoginPage = () => {
 		navigate(state?.redirect ?? "/");
 	});
 
+	// Demo purposes - Remove me
+	const handleFakeLogin = () => {
+		setToken("logged in");
+		navigate(state?.redirect ?? "/");
+	};
+
 	return (
 		<>
 			<h1
@@ -93,6 +99,13 @@ const LoginPage = () => {
 				<Issues form={form} />
 				<button type="submit" className={theme.button}>
 					{t("forms.actions.login")}
+				</button>
+				<button
+					type="button"
+					className={theme.button}
+					onClick={handleFakeLogin}
+				>
+					Fake login
 				</button>
 				<Link
 					to="/register"
