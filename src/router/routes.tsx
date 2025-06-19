@@ -1,23 +1,29 @@
 import { BrowserRouter, Route, Routes } from "react-router";
 
 import {
+	AppLayout,
 	AuthLayout,
 	ForgotPasswordPage,
 	GlobalLayout,
 	HomePage,
-	LoggedInLayout,
 	LoginPage,
 	NotFoundPage,
 	RegisterPage,
 } from "./page-loader";
+import { ProtectedRoute } from "./protected-route";
 
 const Router = () => (
 	<BrowserRouter>
 		<Routes>
 			<Route element={<GlobalLayout />}>
-				<Route element={<LoggedInLayout />}>
+				<Route
+					element={
+						<ProtectedRoute>
+							<AppLayout />
+						</ProtectedRoute>
+					}
+				>
 					<Route index element={<HomePage />} />
-					<Route path="*" element={<NotFoundPage />} />
 				</Route>
 				<Route element={<AuthLayout />}>
 					<Route path="login" element={<LoginPage />} />
@@ -30,6 +36,7 @@ const Router = () => (
 						element={<ForgotPasswordPage />}
 					/>
 				</Route>
+				<Route path="*" element={<NotFoundPage />} />
 			</Route>
 		</Routes>
 	</BrowserRouter>

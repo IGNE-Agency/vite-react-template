@@ -13,6 +13,9 @@ const lazy =
 		</Suspense>
 	);
 
+export const AppLayout = lazy(
+	React.lazy(() => import("layouts/app/app-layout")),
+);
 export const AuthLayout = lazy(
 	React.lazy(() => import("layouts/auth/auth-layout")),
 );
@@ -27,9 +30,6 @@ export const GlobalLayout = lazy(
 );
 export const HomePage = lazy(
 	React.lazy(() => import("pages/home/home-page")),
-);
-export const LoggedInLayout = lazy(
-	React.lazy(() => import("layouts/app/app-layout")),
 );
 export const LoginPage = lazy(
 	React.lazy(() => import("pages/login/login-page")),
