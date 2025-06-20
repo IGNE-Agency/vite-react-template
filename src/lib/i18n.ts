@@ -24,14 +24,14 @@ const supportedLanguages = Object.fromEntries(
 				query: "?url",
 				import: "default",
 			}),
-		).map(async ([path, importer]) => [
+		).map(async ([path, resolveFilename]) => [
 			path
 				.split("/")
 				.at(-1)
 				?.split(".")
 				.slice(0, -1)
 				.join("."),
-			await importer(),
+			await resolveFilename(),
 		]),
 	),
 );
