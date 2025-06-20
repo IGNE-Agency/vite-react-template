@@ -87,7 +87,7 @@ export const useLocale = () => {
 	return locale;
 };
 
-/** A hoo for syncing up the [lang] attribute
+/** A hook for syncing up the [lang] attribute
  * of the document to the value in i18n.
  */
 export const useSyncHtmlLangAttribute = () => {
