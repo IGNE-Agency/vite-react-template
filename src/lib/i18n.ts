@@ -1,40 +1,98 @@
 import i18n from "i18next";
-import LanguageDetector from "i18next-browser-languagedetector";
 import Backend from "i18next-http-backend";
+import { useMemo } from "react";
 import {
 	initReactI18next,
 	useTranslation,
 } from "react-i18next";
+import { z } from "zod";
+import { zodI18nMap } from "zod-i18n-map";
+import {
+	default as ZodEnUs,
+	default as ZodNlNl,
+} from "zod-i18n-map/locales/nl/zod.json";
 
-// Authomatically detect supported languages
-const supportedLocales = Object.keys(
-	import.meta.glob("/public/i18n/*.json", {
-		query: "?url",
-		import: "default",
-	}),
-).map((path) =>
-	path.replaceAll(/\/public\/i18n\/|\.json/g, ""),
+/** Dynamic import of all json files in i18n,
+ * parse their filenames and use them as locales
+ * and load their url during build so they're statically
+ * built to prevent caching as static assets.
+ */
+const supportedLanguages = Object.fromEntries(
+	await Promise.all(
+		Object.entries(
+			await import.meta.glob("../i18n/*.json", {
+				query: "?url",
+				import: "default",
+			}),
+		).map(async ([path, importer]) => [
+			path
+				.split("/")
+				.at(-1)
+				?.split(".")
+				.slice(0, -1)
+				.join("."),
+			await importer(),
+		]),
+	),
 );
 
-export const init = () =>
-	i18n
-		.use(Backend)
-		.use(LanguageDetector)
+const supportedLanguageNames = Object.keys(
+	supportedLanguages,
+);
+
+/** Run this once before loading the app so the
+ * translations are ready to go.
+ */
+export const init = async () => {
+	await i18n
+		.use(
+			new Backend(null, {
+				loadPath: (lng) =>
+					supportedLanguages[lng.toString()],
+			}),
+		)
 		.use(initReactI18next)
 		.init({
-			supportedLngs: supportedLocales,
-			fallbackLng: import.meta.env.PROD ? "en-US" : "dev",
-			nonExplicitSupportedLngs: true,
-		});
+			// Supported and fallback languages are the same
+			supportedLngs: supportedLanguageNames,
+			fallbackLng: supportedLanguageNames,
 
-export const useLocale = () => {
-	const { i18n } = useTranslation();
-	return new Intl.Locale(i18n.language);
+			// Use zod error translations together with backend plugin
+			partialBundledLanguages: true,
+			resources: {
+				"nl-NL": { zod: ZodNlNl },
+				"en-US": { zod: ZodEnUs },
+			},
+
+			// Default to nl-NL, even when automatic detection
+			// says otherwise.
+			lng: "nl-NL",
+		});
+	z.setErrorMap(zodI18nMap);
 };
 
-export const useSyncHtmlLangAttribute = () => {
+export default i18n;
+
+/** A hook for returning the current language from
+ * i18n as an `Intl.Locale`
+ */
+export const useLocale = () => {
 	const { i18n } = useTranslation();
+	const language =
+		i18n.resolvedLanguage ?? supportedLanguageNames[0];
+	const locale = useMemo(
+		() => new Intl.Locale(language),
+		[language],
+	);
+	return locale;
+};
+
+/** A hoo for syncing up the [lang] attribute
+ * of the document to the value in i18n.
+ */
+export const useSyncHtmlLangAttribute = () => {
+	const locale = useLocale();
 	document
 		.querySelector(":root")
-		?.setAttribute("lang", i18n.language);
+		?.setAttribute("lang", locale.language);
 };
