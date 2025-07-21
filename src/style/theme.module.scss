@@ -4,18 +4,18 @@
 }
 
 @mixin invalid {
-	color: var(--color-error-500);
 	border-color: currentColor;
+	color: var(--color-error-500);
 }
 
 @mixin button {
+	cursor: pointer;
+	border: 2px solid currentColor;
+	border-radius: var(--unit-full);
 	background: none;
 	background: white;
-	color: black;
-	border: 2px solid currentColor;
 	padding: var(--unit-4) var(--unit-6);
-	border-radius: var(--unit-full);
-	cursor: pointer;
+	color: black;
 
 	&:disabled {
 		@include disabled;
@@ -28,13 +28,13 @@
 
 @mixin input {
 	display: inline-flex;
-	min-width: 0;
-	background: white;
-	color: black;
-	border: 2px solid currentColor;
-	padding: var(--unit-4);
-	border-radius: var(--unit-1);
 	flex: 1;
+	border: 2px solid currentColor;
+	border-radius: var(--unit-1);
+	background: white;
+	padding: var(--unit-4);
+	min-width: 0;
+	color: black;
 
 	@media not (prefers-reduced-motion) {
 		transition: all 0.2s ease;

@@ -3,9 +3,9 @@ import classNames from "classnames";
 import { useAuth } from "lib/auth";
 import { useLocale } from "lib/i18n";
 import { useTranslation } from "react-i18next";
-import { NavLink } from "react-router";
+import { NavLink, useNavigate } from "react-router";
 import theme from "style/theme.module.scss";
-import style from "./app-layout.module.scss";
+import style from "./app-header.module.scss";
 
 const links = [
 	{
@@ -19,6 +19,7 @@ const AppHeader = () => {
 	const { t, i18n } = useTranslation();
 	const [, setToken] = useAuth();
 	const locale = useLocale();
+	const navigate = useNavigate();
 
 	const languageOptions = i18n.languages
 		.toSorted((a, b) => a.localeCompare(b, locale))
@@ -29,14 +30,15 @@ const AppHeader = () => {
 			}).of(lang),
 		}));
 
+	const handleLogout = () => {
+		setToken(undefined);
+		navigate("/");
+	};
+
 	return (
 		<header>
 			<div
-				className={classNames([
-					style.header,
-					style.row,
-					style.full,
-				])}
+				className={classNames([style.header, style.row])}
 			>
 				<nav className={style.row}>
 					{links.map((link) => (
@@ -71,7 +73,7 @@ const AppHeader = () => {
 					</select>
 					<button
 						type="button"
-						onClick={() => setToken(undefined)}
+						onClick={handleLogout}
 						className={theme.button}
 					>
 						{t("layouts.app.logout")}

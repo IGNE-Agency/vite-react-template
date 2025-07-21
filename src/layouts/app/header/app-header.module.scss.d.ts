@@ -6,12 +6,21 @@
  * https://npmjs.com/vite-css-modules
  */
 
-const layout: string;
+const header: string;
+const row: string;
+const link: string;
+const active: string;
 
 export {
-	layout
+	header,
+	row,
+	link,
+	active
 };
 
 export default {
-	layout
+	header,
+	row,
+	link,
+	active
 };

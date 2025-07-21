@@ -6,15 +6,12 @@
  * https://npmjs.com/vite-css-modules
  */
 
-const layout: string;
-const gridMain: string;
+const page: string;
 
 export {
-	layout,
-	gridMain
+	page
 };
 
 export default {
-	layout,
-	gridMain
+	page
 };
