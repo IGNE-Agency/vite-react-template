@@ -1,0 +1,16 @@
+// Meant for recurring styling.
+//
+// @use "style/variables/mixins.scss"
+// .selector {
+//   @include mixins.disabled;
+// }
+
+@mixin disabled {
+	opacity: 0.5;
+	cursor: not-allowed;
+}
+
+@mixin invalid {
+	border-color: currentColor;
+	color: var(--color-error-500);
+}

@@ -1,5 +1,6 @@
 import classNames from "classnames";
 import Form from "components/form/form";
+import Input from "components/form/input/input";
 import Issues from "components/issues/issues";
 import { client } from "lib/api";
 import { useAuth } from "lib/auth";
@@ -60,29 +61,27 @@ const LoginPage = () => {
 				onSubmit={handleSubmit}
 				className={style.form}
 			>
-				<label className={style.label}>
-					<span>{t("forms.fields.email")}</span>
-					<input
-						autoFocus
-						type="text"
-						name="email"
-						aria-invalid={form.invalidFields?.includes(
+				<label className={style.label} htmlFor="email">
+					<Input
+						label={t("forms.fields.email")}
+						isInvalid={form.invalidFields?.includes(
 							"email",
 						)}
-						className={theme.input}
+						name="email"
+						id="email"
 					/>
 					<Issues name="email" form={form} />
 				</label>
 				<div className={style.label}>
-					<label className={style.label}>
-						<span>{t("forms.fields.password")}</span>
-						<input
+					<label className={style.label} htmlFor="password">
+						<Input
 							type="password"
-							name="password"
-							aria-invalid={form.invalidFields?.includes(
+							label={t("forms.fields.password")}
+							isInvalid={form.invalidFields?.includes(
 								"password",
 							)}
-							className={theme.input}
+							name="password"
+							id="password"
 						/>
 						<Issues name="password" form={form} />
 					</label>
