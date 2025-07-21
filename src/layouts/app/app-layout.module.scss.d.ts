@@ -7,26 +7,14 @@
  */
 
 const layout: string;
-const header: string;
-const full: string;
-const row: string;
-const link: string;
-const active: string;
+const gridMain: string;
 
 export {
 	layout,
-	header,
-	full,
-	row,
-	link,
-	active
+	gridMain
 };
 
 export default {
 	layout,
-	header,
-	full,
-	row,
-	link,
-	active
+	gridMain
 };

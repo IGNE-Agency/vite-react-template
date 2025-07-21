@@ -1,22 +1,33 @@
+// Example of a different layout
+// Note the usage of multiple grid areas, specified by line names with -start & -end suffix.
+// You could also work with `content` and `aside`, etc.
 .layout {
+	--gutter: calc((100cqi - 500px) / 2);
 	display: grid;
-	grid-template-columns: subgrid;
-	grid-auto-rows: min-content;
-	grid-auto-rows: min-content;
+	grid-template-columns:
+		var(--gutter)
+		[main-start]
+		1fr
+		[logo-start]
+		1fr
+		[logo-end]
+		1fr
+		[main-end]
+		var(--gutter);
 	row-gap: var(--unit-8);
-	grid-column: 5 / -5;
 	place-content: center;
+	width: 100cqi;
 }
 
 .logo {
 	display: flex;
-	grid-column: span 6;
+	grid-column: logo;
 	justify-content: center;
 }
 
 .page {
 	display: flex;
-	grid-column: 1 / -1;
+	grid-column: main;
 	flex-direction: column;
 	gap: inherit;
 }
