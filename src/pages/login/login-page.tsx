@@ -93,6 +93,7 @@ const LoginPage = () => {
 					</Link>
 				</div>
 				<Issues form={form} />
+
 				<button type="submit" className={theme.button}>
 					{t("forms.actions.login")}
 				</button>

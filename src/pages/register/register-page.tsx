@@ -1,5 +1,6 @@
 import classNames from "classnames";
 import Form from "components/form/form";
+import Input from "components/form/input/input";
 import Issues from "components/issues/issues";
 import { client } from "lib/api";
 import { useAuth } from "lib/auth";
@@ -49,32 +50,29 @@ const RegisterPage = () => {
 				onSubmit={handleSubmit}
 				className={style.form}
 			>
-				<label className={style.label}>
-					<span>{t("forms.fields.email")}</span>
-					<input
+				<label className={style.label} htmlFor="email">
+					<Input
+						label={t("forms.fields.email")}
 						autoFocus
-						type="text"
 						name="email"
-						aria-invalid={form.invalidFields?.includes(
+						id="email"
+						isInvalid={form.invalidFields?.includes(
 							"email",
 						)}
-						className={theme.input}
 					/>
 					<Issues name="email" form={form} />
 				</label>
-				<label className={style.label}>
-					<span>{t("forms.fields.name")}</span>
-					<input
-						type="text"
+				<label className={style.label} htmlFor="name">
+					<Input
+						label={t("forms.fields.name")}
 						name="name"
-						aria-invalid={form.invalidFields?.includes(
-							"name",
-						)}
-						className={theme.input}
+						id="name"
+						isInvalid={form.invalidFields?.includes("name")}
 					/>
 					<Issues name="name" form={form} />
 				</label>
 				<Issues form={form} />
+
 				<button type="submit" className={theme.button}>
 					{t("forms.actions.register")}
 				</button>

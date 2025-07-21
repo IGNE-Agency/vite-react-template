@@ -1,5 +1,6 @@
 import classNames from "classnames";
 import Form from "components/form/form";
+import Input from "components/form/input/input";
 import Issues from "components/issues/issues";
 import { client } from "lib/api";
 import useForm from "lib/form";
@@ -59,22 +60,22 @@ const ForgotPasswordPage = () => {
 				onSubmit={handleSubmit}
 				className={style.form}
 			>
-				<label className={style.label}>
-					<span>{t("forms.fields.email")}</span>
-					<input
-						type="text"
+				<label className={style.label} htmlFor="email">
+					<Input
+						label={t("forms.fields.email")}
 						name="email"
+						id="email"
+						isInvalid={form.invalidFields?.includes(
+							"email",
+						)}
 						onChange={({ currentTarget: { value } }) =>
 							setEmail(value)
 						}
-						aria-invalid={form.invalidFields?.includes(
-							"email",
-						)}
-						className={theme.input}
 					/>
 					<Issues name="email" form={form} />
 				</label>
 				<Issues form={form} />
+
 				<button type="submit" className={theme.button}>
 					{t("forms.actions.requestNewPassword")}
 				</button>
