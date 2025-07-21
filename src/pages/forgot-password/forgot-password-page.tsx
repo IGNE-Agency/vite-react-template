@@ -36,12 +36,7 @@ const ForgotPasswordPage = () => {
 						i18nKey="pages.forgotPassword.success"
 						values={{ email }}
 						components={{
-							email: (
-								<Link
-									to={`mailto:${email}`}
-									className={theme.link}
-								/>
-							),
+							email: <Link to={`mailto:${email}`} />,
 						}}
 					/>
 				</p>

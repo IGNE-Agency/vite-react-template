@@ -88,10 +88,7 @@ const LoginPage = () => {
 					</label>
 					<Link
 						to="/forgot-password"
-						className={classNames([
-							theme.link,
-							style.forgotPassword,
-						])}
+						className={classNames([style.forgotPassword])}
 					>
 						{t("pages.login.forgotPassword")}
 					</Link>
@@ -109,10 +106,7 @@ const LoginPage = () => {
 				</button>
 				<Link
 					to="/register"
-					className={classNames([
-						theme.link,
-						style.register,
-					])}
+					className={classNames([style.register])}
 				>
 					{t("pages.login.noAccount")}
 				</Link>

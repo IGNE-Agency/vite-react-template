@@ -81,7 +81,6 @@ const RegisterPage = () => {
 				<Link
 					to="/login"
 					className={classNames([
-						theme.link,
 						style.alreadyHaveAnAccount,
 					])}
 				>
