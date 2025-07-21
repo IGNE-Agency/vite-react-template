@@ -1,22 +1,22 @@
 .layout {
 	display: grid;
 	grid-template-columns: subgrid;
-	grid-column: 5 / -5;
 	grid-auto-rows: min-content;
 	grid-auto-rows: min-content;
-	place-content: center;
 	row-gap: var(--unit-8);
+	grid-column: 5 / -5;
+	place-content: center;
 }
 
 .logo {
-	grid-column: span 6;
 	display: flex;
+	grid-column: span 6;
 	justify-content: center;
 }
 
 .page {
 	display: flex;
+	grid-column: 1 / -1;
 	flex-direction: column;
 	gap: inherit;
-	grid-column: 1 / -1;
 }

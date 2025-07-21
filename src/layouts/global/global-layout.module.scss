@@ -1,12 +1,12 @@
 .layout {
-	width: 100cqi;
-	height: 100cqb;
-	overflow: hidden;
-	display: grid;
-	gap: var(--unit-4);
 	--gutter: calc((100cqi - 1440px) / 2);
+	display: grid;
 	grid-template-columns:
 		var(--gutter)
 		repeat(12, 1fr)
 		var(--gutter);
+	gap: var(--unit-4);
+	width: 100cqi;
+	height: 100cqb;
+	overflow: hidden;
 }

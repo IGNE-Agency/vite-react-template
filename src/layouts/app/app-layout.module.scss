@@ -1,7 +1,7 @@
 .layout {
 	display: grid;
-	grid-template-columns: subgrid;
 	grid-template-rows: min-content 1fr;
+	grid-template-columns: subgrid;
 	grid-column: 1 / -1;
 
 	header,
@@ -38,11 +38,11 @@
 }
 
 .link {
-	text-decoration: none;
-	color: black;
 	display: flex;
 	align-items: center;
 	gap: var(--unit-1);
+	color: black;
+	text-decoration: none;
 }
 
 .active {
