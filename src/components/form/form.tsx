@@ -1,27 +1,31 @@
 import classNames from "classnames";
-import type { UseFormReturn } from "lib/form";
-import type { HTMLAttributes } from "react";
+import { forwardRef } from "react";
 import style from "./form.module.scss";
 
-type FormProps<T> = HTMLAttributes<HTMLFormElement> &
-	Readonly<{
-		form: UseFormReturn<T>;
-	}>;
+type FormProps = React.ComponentPropsWithRef<"form"> & {
+	disabled?: boolean;
+};
 
-const Form = <T,>({
-	form,
-	children,
-	className,
-	...props
-}: FormProps<T>) => (
-	<form className={classNames([className])} {...props}>
-		<fieldset
-			disabled={form.isSubmitting}
-			className={style.contents}
-		>
-			{children}
-		</fieldset>
-	</form>
+const Form = forwardRef<HTMLFormElement, FormProps>(
+	(
+		{ children, className, disabled = false, ...props },
+		ref,
+	) => {
+		return (
+			<form
+				ref={ref}
+				className={classNames([className])}
+				{...props}
+			>
+				<fieldset
+					disabled={disabled}
+					className={style.disablerFieldset}
+				>
+					{children}
+				</fieldset>
+			</form>
+		);
+	},
 );
 
 export default Form;
