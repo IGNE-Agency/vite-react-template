@@ -1,6 +1,11 @@
 import classNames from "classnames";
-import Form from "components/form/form";
-import Issues from "components/issues/issues";
+import {
+	Button,
+	Form,
+	Input,
+	Issues,
+} from "components/form";
+import { H1 } from "components/heading/heading";
 import { client } from "lib/api";
 import { useAuth } from "lib/auth";
 import useForm from "lib/form";
@@ -8,7 +13,6 @@ import { usePageTitle } from "lib/page-title";
 import { PostApiV1AuthRegisterRequestSchema } from "lib/validators.gen";
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router";
-import theme from "style/theme.module.scss";
 import style from "./register-page.module.scss";
 
 const RegisterPage = () => {
@@ -36,52 +40,43 @@ const RegisterPage = () => {
 
 	return (
 		<>
-			<h1
-				className={classNames([
-					theme.title,
-					style.textCenter,
-				])}
-			>
+			<H1 size="small" className={style.textCenter}>
 				{t("pages.register.title")}
-			</h1>
+			</H1>
 			<Form
 				form={form}
 				onSubmit={handleSubmit}
 				className={style.form}
 			>
-				<label className={style.label}>
-					<span>{t("forms.fields.email")}</span>
-					<input
+				<label className={style.label} htmlFor="email">
+					<Input
+						label={t("forms.fields.email")}
 						autoFocus
-						type="text"
 						name="email"
-						aria-invalid={form.invalidFields?.includes(
+						id="email"
+						isInvalid={form.invalidFields?.includes(
 							"email",
 						)}
-						className={theme.input}
 					/>
 					<Issues name="email" form={form} />
 				</label>
-				<label className={style.label}>
-					<span>{t("forms.fields.name")}</span>
-					<input
-						type="text"
+				<label className={style.label} htmlFor="name">
+					<Input
+						label={t("forms.fields.name")}
 						name="name"
-						aria-invalid={form.invalidFields?.includes(
-							"name",
-						)}
-						className={theme.input}
+						id="name"
+						isInvalid={form.invalidFields?.includes("name")}
 					/>
 					<Issues name="name" form={form} />
 				</label>
 				<Issues form={form} />
-				<button type="submit" className={theme.button}>
+
+				<Button type="submit">
 					{t("forms.actions.register")}
-				</button>
+				</Button>
 				<Link
 					to="/login"
 					className={classNames([
-						theme.link,
 						style.alreadyHaveAnAccount,
 					])}
 				>

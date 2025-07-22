@@ -1,19 +1,13 @@
 @use "/node_modules/reset-css/sass/reset";
 
-@use "/src/style/unit.scss";
-@use "/src/style/fonts.scss";
-@use "/src/style/color.scss";
+@use "/src/style/variables/unit.scss";
+@use "/src/style/variables/fonts.scss";
+@use "/src/style/variables/color.scss";
 
 body {
 	background-color: white;
 	color: black;
 	font: var(--font-body-medium-regular);
-}
-
-#root {
-	display: flex;
-	width: 100cqi;
-	height: 100cqb;
 }
 
 // Overwrite browser defaults.

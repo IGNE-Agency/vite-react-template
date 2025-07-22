@@ -1,6 +1,10 @@
-import classNames from "classnames";
-import Form from "components/form/form";
-import Issues from "components/issues/issues";
+import {
+	Button,
+	Form,
+	Input,
+	Issues,
+} from "components/form";
+import { H1 } from "components/heading/heading";
 import { client } from "lib/api";
 import useForm from "lib/form";
 import { usePageTitle } from "lib/page-title";
@@ -8,7 +12,6 @@ import { PostApiV1AuthForgotPasswordRequestSchema } from "lib/validators.gen";
 import { useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Link } from "react-router";
-import theme from "style/theme.module.scss";
 import style from "./forgot-password-page.module.scss";
 
 const ForgotPasswordPage = () => {
@@ -36,12 +39,7 @@ const ForgotPasswordPage = () => {
 						i18nKey="pages.forgotPassword.success"
 						values={{ email }}
 						components={{
-							email: (
-								<Link
-									to={`mailto:${email}`}
-									className={theme.link}
-								/>
-							),
+							email: <Link to={`mailto:${email}`} />,
 						}}
 					/>
 				</p>
@@ -51,38 +49,33 @@ const ForgotPasswordPage = () => {
 
 	return (
 		<>
-			<h1
-				className={classNames([
-					theme.title,
-					style.textCenter,
-				])}
-			>
+			<H1 size="medium" className={style.textCenter}>
 				{t("pages.forgotPassword.title")}
-			</h1>
+			</H1>
 			<Form
 				form={form}
 				onSubmit={handleSubmit}
 				className={style.form}
 			>
-				<label className={style.label}>
-					<span>{t("forms.fields.email")}</span>
-					<input
-						type="text"
+				<label className={style.label} htmlFor="email">
+					<Input
+						label={t("forms.fields.email")}
 						name="email"
+						id="email"
+						isInvalid={form.invalidFields?.includes(
+							"email",
+						)}
 						onChange={({ currentTarget: { value } }) =>
 							setEmail(value)
 						}
-						aria-invalid={form.invalidFields?.includes(
-							"email",
-						)}
-						className={theme.input}
 					/>
 					<Issues name="email" form={form} />
 				</label>
 				<Issues form={form} />
-				<button type="submit" className={theme.button}>
+
+				<Button type="submit">
 					{t("forms.actions.requestNewPassword")}
-				</button>
+				</Button>
 			</Form>
 		</>
 	);

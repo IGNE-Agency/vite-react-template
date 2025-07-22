@@ -1,8 +1,6 @@
-import classNames from "classnames";
-import layout from "layouts/app/app-layout.module.scss";
+import { H1 } from "components/heading/heading";
 import { usePageTitle } from "lib/page-title";
 import { useTranslation } from "react-i18next";
-import theme from "style/theme.module.scss";
 import style from "./not-found-page.module.scss";
 
 const NotFoundPage = () => {
@@ -10,9 +8,9 @@ const NotFoundPage = () => {
 	usePageTitle(t("pages.notFound.title"));
 
 	return (
-		<h1 className={classNames(style.page, theme.title)}>
+		<H1 size="medium" className={style.page}>
 			{t("pages.notFound.title")}
-		</h1>
+		</H1>
 	);
 };
 

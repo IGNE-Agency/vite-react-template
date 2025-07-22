@@ -11,7 +11,7 @@ import ErrorPage from "pages/error/error-page";
 import { StrictMode, Suspense } from "react";
 import { createRoot } from "react-dom/client";
 import Router from "router/routes";
-import "style/_main.scss";
+import "style/main.scss";
 
 const rootElement = document.getElementById("root");
 
