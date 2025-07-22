@@ -1,7 +1,11 @@
 import classNames from "classnames";
-import Form from "components/form/form";
-import Input from "components/form/input/input";
-import Issues from "components/issues/issues";
+import {
+	Button,
+	Form,
+	Input,
+	Issues,
+} from "components/form";
+import { H1 } from "components/heading/heading";
 import { client } from "lib/api";
 import { useAuth } from "lib/auth";
 import useForm from "lib/form";
@@ -9,7 +13,6 @@ import { usePageTitle } from "lib/page-title";
 import { PostApiV1AuthRegisterRequestSchema } from "lib/validators.gen";
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router";
-import theme from "style/theme.module.scss";
 import style from "./register-page.module.scss";
 
 const RegisterPage = () => {
@@ -37,14 +40,9 @@ const RegisterPage = () => {
 
 	return (
 		<>
-			<h1
-				className={classNames([
-					theme.title,
-					style.textCenter,
-				])}
-			>
+			<H1 size="small" className={style.textCenter}>
 				{t("pages.register.title")}
-			</h1>
+			</H1>
 			<Form
 				form={form}
 				onSubmit={handleSubmit}
@@ -73,9 +71,9 @@ const RegisterPage = () => {
 				</label>
 				<Issues form={form} />
 
-				<button type="submit" className={theme.button}>
+				<Button type="submit">
 					{t("forms.actions.register")}
-				</button>
+				</Button>
 				<Link
 					to="/login"
 					className={classNames([

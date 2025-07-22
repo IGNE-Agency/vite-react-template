@@ -1,7 +1,10 @@
-import classNames from "classnames";
-import Form from "components/form/form";
-import Input from "components/form/input/input";
-import Issues from "components/issues/issues";
+import {
+	Button,
+	Form,
+	Input,
+	Issues,
+} from "components/form";
+import { H1 } from "components/heading/heading";
 import { client } from "lib/api";
 import useForm from "lib/form";
 import { usePageTitle } from "lib/page-title";
@@ -9,7 +12,6 @@ import { PostApiV1AuthForgotPasswordRequestSchema } from "lib/validators.gen";
 import { useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Link } from "react-router";
-import theme from "style/theme.module.scss";
 import style from "./forgot-password-page.module.scss";
 
 const ForgotPasswordPage = () => {
@@ -47,14 +49,9 @@ const ForgotPasswordPage = () => {
 
 	return (
 		<>
-			<h1
-				className={classNames([
-					theme.title,
-					style.textCenter,
-				])}
-			>
+			<H1 size="medium" className={style.textCenter}>
 				{t("pages.forgotPassword.title")}
-			</h1>
+			</H1>
 			<Form
 				form={form}
 				onSubmit={handleSubmit}
@@ -76,9 +73,9 @@ const ForgotPasswordPage = () => {
 				</label>
 				<Issues form={form} />
 
-				<button type="submit" className={theme.button}>
+				<Button type="submit">
 					{t("forms.actions.requestNewPassword")}
-				</button>
+				</Button>
 			</Form>
 		</>
 	);

@@ -1,7 +1,11 @@
 import classNames from "classnames";
-import Form from "components/form/form";
-import Input from "components/form/input/input";
-import Issues from "components/issues/issues";
+import {
+	Button,
+	Form,
+	Input,
+	Issues,
+} from "components/form";
+import { H1 } from "components/heading/heading";
 import { client } from "lib/api";
 import { useAuth } from "lib/auth";
 import useForm from "lib/form";
@@ -10,7 +14,6 @@ import { usePageTitle } from "lib/page-title";
 import { PostApiV1AuthLoginRequestSchema } from "lib/validators.gen";
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router";
-import theme from "style/theme.module.scss";
 import { z } from "zod";
 import style from "./login-page.module.scss";
 
@@ -48,14 +51,9 @@ const LoginPage = () => {
 
 	return (
 		<>
-			<h1
-				className={classNames([
-					theme.title,
-					style.textCenter,
-				])}
-			>
+			<H1 size="medium" className={style.textCenter}>
 				{t("pages.login.title")}
-			</h1>
+			</H1>
 			<Form
 				form={form}
 				onSubmit={handleSubmit}
@@ -94,16 +92,12 @@ const LoginPage = () => {
 				</div>
 				<Issues form={form} />
 
-				<button type="submit" className={theme.button}>
+				<Button type="submit">
 					{t("forms.actions.login")}
-				</button>
-				<button
-					type="button"
-					className={theme.button}
-					onClick={handleFakeLogin}
-				>
+				</Button>
+				<Button onClick={handleFakeLogin}>
 					Fake login
-				</button>
+				</Button>
 				<Link
 					to="/register"
 					className={classNames([style.register])}

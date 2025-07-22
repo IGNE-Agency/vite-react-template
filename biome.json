@@ -26,6 +26,9 @@
 			"suspicious": {
 				"noConsole": "error",
 				"noConfusingVoidType": "off"
+			},
+			"correctness": {
+				"noUnusedImports": "warn"
 			}
 		}
 	},
