@@ -36,6 +36,3 @@ export const NotFoundPage = lazy(
 		() => import("pages/not-found/not-found-page"),
 	),
 );
-export const RegisterPage = lazy(
-	React.lazy(() => import("pages/register/register-page")),
-);
