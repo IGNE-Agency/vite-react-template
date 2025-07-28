@@ -23,20 +23,21 @@ const LoginPageStateSchema = z.object({
 });
 
 const LoginPage = () => {
+	const { t } = useTranslation();
+	usePageTitle(t("pages.login.title"));
 	const locationState = useLocationState(
 		LoginPageStateSchema,
 	);
 	const [genericError, setGenericError] = useState("");
-	const navigate = useNavigate();
-	const { t } = useTranslation();
 	const [, setToken] = useAuth();
-	usePageTitle(t("pages.login.title"));
+	const navigate = useNavigate();
 
 	const { mutate, isPending } = queryClient.useMutation(
 		"post",
 		"/api/v1/auth/login",
 		{
 			onError(error) {
+				// TODO: zorm.customIssues
 				setGenericError(error.errors[0].message);
 			},
 			onSuccess(token) {
