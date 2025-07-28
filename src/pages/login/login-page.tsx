@@ -110,12 +110,6 @@ const LoginPage = () => {
 				<Button onClick={handleFakeLogin}>
 					Fake login
 				</Button>
-				<Link
-					to="/register"
-					className={classNames([style.register])}
-				>
-					{t("pages.login.noAccount")}
-				</Link>
 			</Form>
 		</>
 	);
