@@ -84,9 +84,9 @@ export const init = async () => {
 				"en-US": { zod: ZodEnUs },
 			},
 
-			// Default to nl-NL, even when automatic detection
+			// Default to FALLBACK_LNG, even when automatic detection
 			// says otherwise.
-			lng: "nl-NL",
+			lng: FALLBACK_LNG,
 		});
 	z.setErrorMap(zodI18nMap);
 };
