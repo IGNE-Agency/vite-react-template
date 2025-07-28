@@ -16,7 +16,6 @@
 		"classnames": "2.5.1",
 		"i18next": "25.1.1",
 		"i18next-http-backend": "3.0.2",
-		"lefthook": "1.10.10",
 		"openapi-fetch": "0.13.7",
 		"openapi-react-query": "0.4.1",
 		"react": "19.1.0",
