@@ -12,7 +12,7 @@ import {
 	default as ZodNlNl,
 } from "zod-i18n-map/locales/nl/zod.json";
 
-const LOCALSTORAGE_LOCALE_KEY = "locale:v2.2.0";
+const LOCALSTORAGE_LOCALE_KEY = "locale:v3.0.0";
 const FALLBACK_LNG =
 	localStorage.getItem(LOCALSTORAGE_LOCALE_KEY) ?? "nl-NL";
 
@@ -59,7 +59,8 @@ const supportedLanguageNames = Object.keys(
 	supportedLanguages,
 );
 
-/** Run this once before loading the app so the
+/**
+ * Run this once before loading the app so the
  * translations are ready to go.
  */
 export const init = async () => {
@@ -74,7 +75,7 @@ export const init = async () => {
 		.init({
 			// Supported and fallback languages are the same
 			supportedLngs: supportedLanguageNames,
-			fallbackLng: supportedLanguageNames,
+			fallbackLng: FALLBACK_LNG,
 
 			// Use zod error translations together with backend plugin
 			partialBundledLanguages: true,
@@ -92,7 +93,8 @@ export const init = async () => {
 
 export default i18n;
 
-/** A hook for returning the current language from
+/**
+ * A hook for returning the current language from
  * i18n as an `Intl.Locale`
  */
 export const useLocale = () => {
@@ -105,19 +107,21 @@ export const useLocale = () => {
 		[language],
 	);
 
-	useEffect(() => {
-		localStorage.setItem(LOCALSTORAGE_LOCALE_KEY, language);
-	}, [language]);
-
 	return locale;
 };
 
-/** A hook for syncing up the [lang] attribute
+/**
+ * A hook for syncing up the [lang] attribute
  * of the document to the value in i18n.
  */
 export const useSyncHtmlLangAttribute = () => {
-	const locale = useLocale();
-	document
-		.querySelector(":root")
-		?.setAttribute("lang", locale.language);
+	const locale = useLocale().toString();
+
+	useEffect(() => {
+		localStorage.setItem(LOCALSTORAGE_LOCALE_KEY, locale);
+
+		document
+			.querySelector(":root")
+			?.setAttribute("lang", locale);
+	}, [locale]);
 };
