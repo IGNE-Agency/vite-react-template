@@ -1,6 +1,6 @@
 import i18n from "i18next";
 import Backend from "i18next-http-backend";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import {
 	initReactI18next,
 	useTranslation,
@@ -11,6 +11,30 @@ import {
 	default as ZodEnUs,
 	default as ZodNlNl,
 } from "zod-i18n-map/locales/nl/zod.json";
+
+const LOCALSTORAGE_LOCALE_KEY = "locale:v2.2.0";
+const FALLBACK_LNG =
+	localStorage.getItem(LOCALSTORAGE_LOCALE_KEY) ?? "nl-NL";
+
+/**
+ * Reads a file path and returns the filename.
+ *
+ * This also discards any hash that might be
+ * appended by build systems.
+ *
+ * Example:
+ * ```ts
+ * getLocaleFromFilePath("src/i18n/nl-NL.json") // -> "nl-NL"
+ * getLocaleFromFilePath("src/i18n/en-US.sdf3usbfs.json") // -> "en-US"
+ * ```
+ */
+const getLocaleFromFilePath = (path: string) =>
+	path
+		.split("/")
+		.at(-1)
+		?.split(".")
+		.slice(0, -1)
+		.join(".") ?? FALLBACK_LNG;
 
 /** Dynamic import of all json files in i18n,
  * parse their filenames and use them as locales
@@ -25,12 +49,7 @@ const supportedLanguages = Object.fromEntries(
 				import: "default",
 			}),
 		).map(async ([path, resolveFilename]) => [
-			path
-				.split("/")
-				.at(-1)
-				?.split(".")
-				.slice(0, -1)
-				.join("."),
+			getLocaleFromFilePath(path),
 			await resolveFilename(),
 		]),
 	),
@@ -78,12 +97,18 @@ export default i18n;
  */
 export const useLocale = () => {
 	const { i18n } = useTranslation();
-	const language =
-		i18n.resolvedLanguage ?? supportedLanguageNames[0];
+
+	const language = i18n.resolvedLanguage ?? FALLBACK_LNG;
+
 	const locale = useMemo(
 		() => new Intl.Locale(language),
 		[language],
 	);
+
+	useEffect(() => {
+		localStorage.setItem(LOCALSTORAGE_LOCALE_KEY, language);
+	}, [language]);
+
 	return locale;
 };
 
