@@ -6,6 +6,7 @@ import style from "./loading-indicator.module.scss";
 const LoadingIndicator = () => {
 	const { t } = useTranslation();
 
+	// TODO: update the messages for your client! (probably one message is enough)
 	const messages = t(
 		"components.loadingIndicator.messages",
 		{

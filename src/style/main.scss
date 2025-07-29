@@ -1,0 +1,17 @@
+@use "/node_modules/reset-css/sass/reset";
+
+@use "/src/style/variables/unit.scss";
+@use "/src/style/variables/fonts.scss";
+@use "/src/style/variables/color.scss";
+
+body {
+	background-color: white;
+	color: black;
+	font: var(--font-body-medium-regular);
+}
+
+// Overwrite browser defaults.
+:is(button, select, input, textarea) {
+	border: none;
+	background: none;
+}

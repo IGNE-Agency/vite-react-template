@@ -1,11 +1,11 @@
 .loadingIndicator {
 	display: flex;
+	grid-column: 1 / -1;
+	flex: 1;
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-	flex: 1;
-	text-align: center;
 	gap: var(--unit-4);
 	padding: var(--unit-4);
-	grid-column: 1 / -1;
+	text-align: center;
 }

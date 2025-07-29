@@ -25,9 +25,6 @@ export const ForgotPasswordPage = lazy(
 			import("pages/forgot-password/forgot-password-page"),
 	),
 );
-export const GlobalLayout = lazy(
-	React.lazy(() => import("layouts/global/global-layout")),
-);
 export const HomePage = lazy(
 	React.lazy(() => import("pages/home/home-page")),
 );

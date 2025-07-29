@@ -1,3 +1,4 @@
+import * as path from "node:path";
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
 import { patchCssModules } from "vite-css-modules";
@@ -25,6 +26,15 @@ export default defineConfig({
 	},
 	build: {
 		target: "esnext",
+	},
+	resolve: {
+		// vite-tsconfig-paths doesn't work in SASS files
+		alias: [
+			{
+				find: /^style\/(.*\.(c|s[ac])ss$)/,
+				replacement: `${path.resolve(__dirname)}/src/style/$1`,
+			},
+		],
 	},
 	server: {
 		open: true,
