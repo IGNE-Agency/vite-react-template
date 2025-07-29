@@ -113,7 +113,6 @@ import {z} from "zod";
 	await Bun.file(output).write(
 		`${header}\n\n${validators.join("\n\n")}`,
 	);
-	await new Promise((res) => setTimeout(res, 5000));
 
 	exit(
 		(elapsed) =>
