@@ -31,8 +31,8 @@ export default defineConfig({
 		// vite-tsconfig-paths doesn't work in SASS files
 		alias: [
 			{
-				find: /^style\//,
-				replacement: `${path.resolve(__dirname)}/src/style/`,
+				find: /^style\/(.*\.(c|s[ac])ss$)/,
+				replacement: `${path.resolve(__dirname)}/src/style/$1`,
 			},
 		],
 	},
