@@ -3,7 +3,6 @@
  * in zod from a given openapi spec.
  */
 
-import { $ } from "bun";
 import { resolveRefs } from "json-refs";
 import jsonSchemaToZod from "json-schema-to-zod";
 import { parseArgs } from "node:util";
@@ -74,7 +73,6 @@ import {z} from "zod";
 
 	Bun.file(output)
 		.write(`${header}\n\n${validators.join("\n\n")}`)
-		.then(() => $`bun run biome format --write ${output}`)
 		.then(() => {
 			const elapsed = performance.now() - before;
 			// biome-ignore lint/suspicious/noConsole: We can do a little loggin' here 😎
