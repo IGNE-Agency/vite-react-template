@@ -9,11 +9,8 @@ jobs:
     timeout-minutes: 5
     runs-on: ubuntu-latest
     steps:
-      - name: Setup
       - uses: actions/checkout@v4
       - uses: oven-sh/setup-bun@v2
-      
-      - name: Install & build
       - run: bun i --frozen-lockfile
       - run: bun run openapi
       - run: bun run build
