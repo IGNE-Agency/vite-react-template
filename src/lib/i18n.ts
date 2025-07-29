@@ -12,7 +12,7 @@ import {
 	default as ZodNlNl,
 } from "zod-i18n-map/locales/nl/zod.json";
 
-const LOCALSTORAGE_LOCALE_KEY = "locale:v3.0.0";
+const LOCALSTORAGE_LOCALE_KEY = "locale";
 const FALLBACK_LNG =
 	localStorage.getItem(LOCALSTORAGE_LOCALE_KEY) ?? "nl-NL";
 
