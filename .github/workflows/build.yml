@@ -13,5 +13,5 @@ jobs:
       - uses: oven-sh/setup-bun@v2
       - run: bun i --frozen-lockfile
       - run: bun run openapi
-      - run: bun run build
       - run: bun run check-ts
+      - run: bun run build
