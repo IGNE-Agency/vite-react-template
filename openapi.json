@@ -16,7 +16,7 @@
 			"auth-cookie": { "type": "apiKey", "in": "cookie", "name": "auth-cookie" }
 		},
 		"schemas": {
-			"Problem": {
+			"V1Problem": {
 				"type": "object",
 				"properties": {
 					"status": { "type": "number" },
@@ -41,7 +41,7 @@
 				},
 				"required": ["status", "title", "instance", "detail", "errors"]
 			},
-			"JsonRegisterRequest": {
+			"V1RegisterRequest": {
 				"type": "object",
 				"properties": {
 					"name": { "type": "string" },
@@ -49,6 +49,234 @@
 					"password": { "type": "string" }
 				},
 				"required": ["name", "email", "password"]
+			},
+			"V1RegisterResponse": {
+				"type": "string"
+			},
+			"V1LoginRequest": {
+				"type": "object",
+				"properties": {
+					"email": { "format": "email", "type": "string" },
+					"password": { "type": "string" }
+				},
+				"required": ["email", "password"]
+			},
+			"V1LoginResponse": {
+				"type": "string"
+			},
+			"V1ForgotPasswordRequest": {
+				"type": "object",
+				"properties": {
+					"email": { "format": "email", "type": "string" }
+				},
+				"required": ["email"]
+			},
+			"V1GetCurrentUserResponse": {
+				"type": "object",
+				"required": ["id", "name", "email", "createdAt", "updatedAt"],
+				"properties": {
+					"id": { "type": "string", "format": "uuid" },
+					"name": { "type": "string" },
+					"email": { "type": "string", "format": "email" },
+					"profileImage": {
+						"type": "object",
+						"required": [
+							"id",
+							"data",
+							"createdBy",
+							"createdAt",
+							"updatedBy",
+							"updatedAt"
+						],
+						"properties": {
+							"id": { "type": "string", "format": "uuid" },
+							"name": { "type": "string" },
+							"data": { "type": "string", "format": "bytea" },
+							"createdBy": {
+								"type": "object",
+								"properties": {
+									"id": { "type": "string", "format": "uuid" },
+									"name": { "type": "string" },
+									"email": { "type": "string", "format": "email" }
+								}
+							},
+							"createdAt": {
+								"type": "string",
+								"format": "date-time"
+							},
+							"updatedBy": {
+								"type": "object",
+								"properties": {
+									"id": { "type": "string", "format": "uuid" },
+									"name": { "type": "string" },
+									"email": { "type": "string", "format": "email" }
+								}
+							},
+							"updatedAt": { "type": "string", "format": "date-time" }
+						}
+					},
+					"createdAt": { "type": "string", "format": "date-time" },
+					"updatedAt": { "type": "string", "format": "date-time" }
+				}
+			},
+			"V1GetUserByIdResponse": {
+				"type": "object",
+				"required": ["id", "name", "email", "createdAt", "updatedAt"],
+				"properties": {
+					"id": { "type": "string", "format": "uuid" },
+					"name": { "type": "string" },
+					"email": { "type": "string", "format": "email" },
+					"profileImage": {
+						"type": "object",
+						"required": [
+							"id",
+							"data",
+							"createdBy",
+							"createdAt",
+							"updatedBy",
+							"updatedAt"
+						],
+						"properties": {
+							"id": { "type": "string", "format": "uuid" },
+							"name": { "type": "string" },
+							"data": { "type": "string", "format": "bytea" },
+							"createdBy": {
+								"type": "object",
+								"properties": {
+									"id": { "type": "string", "format": "uuid" },
+									"name": { "type": "string" },
+									"email": { "type": "string", "format": "email" }
+								}
+							},
+							"createdAt": {
+								"type": "string",
+								"format": "date-time"
+							},
+							"updatedBy": {
+								"type": "object",
+								"properties": {
+									"id": { "type": "string", "format": "uuid" },
+									"name": { "type": "string" },
+									"email": { "type": "string", "format": "email" }
+								}
+							},
+							"updatedAt": { "type": "string", "format": "date-time" }
+						}
+					},
+					"createdAt": { "type": "string", "format": "date-time" },
+					"updatedAt": { "type": "string", "format": "date-time" }
+				}
+			},
+			"V1UpdateUserByIdRequest": {
+				"type": "object",
+				"properties": {
+					"name": { "type": "string" },
+					"email": { "format": "email", "type": "string" }
+				}
+			},
+			"V1GetProjectsResponse": {
+				"type": "object",
+				"required": [
+					"items",
+					"pageNumber",
+					"totalPages",
+					"pageSize",
+					"hasNextPage",
+					"hasPreviousPage"
+				],
+				"properties": {
+					"items": {
+						"type": "array",
+						"items": {
+							"type": "object",
+							"readOnly": true,
+							"required": [
+								"id",
+								"createdAt",
+								"updatedAt",
+								"createdBy",
+								"updatedBy"
+							],
+							"properties": {
+								"name": { "type": "string" },
+								"createdAt": {
+									"type": "string",
+									"format": "date-time"
+								},
+								"updatedAt": {
+									"type": "string",
+									"format": "date-time"
+								},
+								"createdBy": {
+									"type": "object",
+									"readOnly": true,
+									"required": ["id", "name", "email"],
+									"properties": {
+										"id": { "type": "string", "format": "uuid" },
+										"name": { "type": "string" },
+										"email": { "type": "string", "format": "email" }
+									}
+								},
+								"updatedBy": {
+									"type": "object",
+									"readOnly": true,
+									"required": ["id", "name", "email"],
+									"properties": {
+										"id": { "type": "string", "format": "uuid" },
+										"name": { "type": "string" },
+										"email": { "type": "string", "format": "email" }
+									}
+								}
+							}
+						},
+						"readOnly": true
+					},
+					"pageNumber": { "type": "number" },
+					"totalPages": { "type": "number" },
+					"pageSize": { "type": "number" },
+					"hasNextPage": { "type": "boolean" },
+					"hasPreviousPage": { "type": "boolean" }
+				},
+				"readOnly": true
+			},
+			"V1CreateProjectResponse": {
+				"type": "string",
+				"format": "uri"
+			},
+			"V1CreateProjectRequest": {
+				"type": "object",
+				"properties": { "name": { "type": "string" } }
+			},
+			"V1GetProjectByIdRequest": {
+				"type": "object",
+				"readOnly": true,
+				"required": ["id", "createdBy", "createdAt", "updatedBy", "updatedAt"],
+				"properties": {
+					"id": { "type": "string", "format": "uuid" },
+					"name": { "type": "string", "format": "uuid" },
+					"createdBy": {
+						"type": "object",
+						"readOnly": true,
+						"required": ["id", "name", "email"],
+						"properties": {
+							"id": { "type": "string", "format": "uuid" },
+							"name": { "type": "string" },
+							"email": { "type": "string", "format": "email" }
+						}
+					},
+					"createdAt": { "type": "string", "format": "date-time" },
+					"updatedBy": {
+						"type": "object",
+						"readOnly": true,
+						"required": ["id", "name", "email"],
+						"properties": {
+							"id": { "type": "string", "format": "uuid" },
+							"name": { "type": "string" },
+							"email": { "type": "string", "format": "email" }
+						}
+					},
+					"updatedAt": { "type": "string", "format": "date-time" }
+				}
 			}
 		}
 	},
@@ -60,14 +288,18 @@
 					"200": {
 						"description": "Registers an account, logs in by setting an authentication cookie, and sends a verification email.",
 						"content": {
-							"text/plain": { "schema": { "type": "string" } }
+							"text/plain": {
+								"schema": {
+									"$ref": "#/components/schemas/V1RegisterResponse"
+								}
+							}
 						}
 					},
 					"400": {
 						"description": "Bad request",
 						"content": {
 							"application/problem+json": {
-								"schema": { "$ref": "#/components/schemas/Problem" }
+								"schema": { "$ref": "#/components/schemas/V1Problem" }
 							}
 						}
 					}
@@ -78,7 +310,9 @@
 				"requestBody": {
 					"content": {
 						"application/json": {
-							"schema": { "$ref": "#/components/schemas/JsonRegisterRequest" }
+							"schema": {
+								"$ref": "#/components/schemas/V1RegisterRequest"
+							}
 						}
 					}
 				}
@@ -90,14 +324,18 @@
 					"200": {
 						"description": "Logs in and sets an authentication cookie.",
 						"content": {
-							"text/plain": { "schema": { "type": "string" } }
+							"text/plain": {
+								"schema": {
+									"$ref": "#/components/schemas/V1LoginResponse"
+								}
+							}
 						}
 					},
 					"400": {
 						"description": "Bad request",
 						"content": {
 							"application/problem+json": {
-								"schema": { "$ref": "#/components/schemas/Problem" }
+								"schema": { "$ref": "#/components/schemas/V1Problem" }
 							}
 						}
 					}
@@ -109,12 +347,7 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"type": "object",
-								"properties": {
-									"email": { "format": "email", "type": "string" },
-									"password": { "type": "string" }
-								},
-								"required": ["email", "password"]
+								"$ref": "#/components/schemas/V1LoginRequest"
 							}
 						}
 					}
@@ -144,7 +377,7 @@
 						"description": "Bad request",
 						"content": {
 							"application/problem+json": {
-								"schema": { "$ref": "#/components/schemas/Problem" }
+								"schema": { "$ref": "#/components/schemas/V1Problem" }
 							}
 						}
 					}
@@ -156,11 +389,7 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"type": "object",
-								"properties": {
-									"email": { "format": "email", "type": "string" }
-								},
-								"required": ["email"]
+								"$ref": "#/components/schemas/V1ForgotPasswordRequest"
 							}
 						}
 					}
@@ -175,52 +404,7 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"type": "object",
-									"required": ["id", "name", "email", "createdAt", "updatedAt"],
-									"properties": {
-										"id": { "type": "string", "format": "uuid" },
-										"name": { "type": "string" },
-										"email": { "type": "string", "format": "email" },
-										"profileImage": {
-											"type": "object",
-											"required": [
-												"id",
-												"data",
-												"createdBy",
-												"createdAt",
-												"updatedBy",
-												"updatedAt"
-											],
-											"properties": {
-												"id": { "type": "string", "format": "uuid" },
-												"name": { "type": "string" },
-												"data": { "type": "string", "format": "bytea" },
-												"createdBy": {
-													"type": "object",
-													"properties": {
-														"id": { "type": "string", "format": "uuid" },
-														"name": { "type": "string" },
-														"email": { "type": "string", "format": "email" }
-													}
-												},
-												"createdAt": {
-													"type": "string",
-													"format": "date-time"
-												},
-												"updatedBy": {
-													"type": "object",
-													"properties": {
-														"id": { "type": "string", "format": "uuid" },
-														"name": { "type": "string" },
-														"email": { "type": "string", "format": "email" }
-													}
-												},
-												"updatedAt": { "type": "string", "format": "date-time" }
-											}
-										},
-										"createdAt": { "type": "string", "format": "date-time" },
-										"updatedAt": { "type": "string", "format": "date-time" }
-									}
+									"$ref": "#/components/schemas/V1GetCurrentUserResponse"
 								}
 							}
 						}
@@ -241,52 +425,7 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"type": "object",
-									"required": ["id", "name", "email", "createdAt", "updatedAt"],
-									"properties": {
-										"id": { "type": "string", "format": "uuid" },
-										"name": { "type": "string" },
-										"email": { "type": "string", "format": "email" },
-										"profileImage": {
-											"type": "object",
-											"required": [
-												"id",
-												"data",
-												"createdBy",
-												"createdAt",
-												"updatedBy",
-												"updatedAt"
-											],
-											"properties": {
-												"id": { "type": "string", "format": "uuid" },
-												"name": { "type": "string" },
-												"data": { "type": "string", "format": "bytea" },
-												"createdBy": {
-													"type": "object",
-													"properties": {
-														"id": { "type": "string", "format": "uuid" },
-														"name": { "type": "string" },
-														"email": { "type": "string", "format": "email" }
-													}
-												},
-												"createdAt": {
-													"type": "string",
-													"format": "date-time"
-												},
-												"updatedBy": {
-													"type": "object",
-													"properties": {
-														"id": { "type": "string", "format": "uuid" },
-														"name": { "type": "string" },
-														"email": { "type": "string", "format": "email" }
-													}
-												},
-												"updatedAt": { "type": "string", "format": "date-time" }
-											}
-										},
-										"createdAt": { "type": "string", "format": "date-time" },
-										"updatedAt": { "type": "string", "format": "date-time" }
-									}
+									"$ref": "#/components/schemas/V1GetUserByIdResponse"
 								}
 							}
 						}
@@ -314,7 +453,7 @@
 						"description": "Bad request",
 						"content": {
 							"application/problem+json": {
-								"schema": { "$ref": "#/components/schemas/Problem" }
+								"schema": { "$ref": "#/components/schemas/V1Problem" }
 							}
 						}
 					},
@@ -334,11 +473,7 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"type": "object",
-								"properties": {
-									"name": { "type": "string" },
-									"email": { "format": "email", "type": "string" }
-								}
+								"$ref": "#/components/schemas/V1UpdateUserByIdRequest"
 							}
 						}
 					}
@@ -353,69 +488,7 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"type": "object",
-									"required": [
-										"items",
-										"pageNumber",
-										"totalPages",
-										"pageSize",
-										"hasNextPage",
-										"hasPreviousPage"
-									],
-									"properties": {
-										"items": {
-											"type": "array",
-											"items": {
-												"type": "object",
-												"readOnly": true,
-												"required": [
-													"id",
-													"createdAt",
-													"updatedAt",
-													"createdBy",
-													"updatedBy"
-												],
-												"properties": {
-													"name": { "type": "string" },
-													"createdAt": {
-														"type": "string",
-														"format": "date-time"
-													},
-													"updatedAt": {
-														"type": "string",
-														"format": "date-time"
-													},
-													"createdBy": {
-														"type": "object",
-														"readOnly": true,
-														"required": ["id", "name", "email"],
-														"properties": {
-															"id": { "type": "string", "format": "uuid" },
-															"name": { "type": "string" },
-															"email": { "type": "string", "format": "email" }
-														}
-													},
-													"updatedBy": {
-														"type": "object",
-														"readOnly": true,
-														"required": ["id", "name", "email"],
-														"properties": {
-															"id": { "type": "string", "format": "uuid" },
-															"name": { "type": "string" },
-															"email": { "type": "string", "format": "email" }
-														}
-													}
-												}
-											},
-											"readOnly": true
-										},
-										"pageNumber": { "type": "number" },
-										"totalPages": { "type": "number" },
-										"pageSize": { "type": "number" },
-										"hasNextPage": { "type": "boolean" },
-										"hasPreviousPage": { "type": "boolean" }
-									},
-									"readOnly": true
+									"$ref": "#/components/schemas/V1GetProjectsResponse"
 								}
 							}
 						}
@@ -451,7 +524,9 @@
 						"headers": {
 							"Location": {
 								"description": "The url of the newly created project.",
-								"schema": { "type": "string", "format": "uri" }
+								"schema": {
+									"$ref": "#/components/schemas/V1CreateProjectResponse"
+								}
 							}
 						}
 					},
@@ -459,7 +534,7 @@
 						"description": "Bad request",
 						"content": {
 							"application/problem+json": {
-								"schema": { "$ref": "#/components/schemas/Problem" }
+								"schema": { "$ref": "#/components/schemas/V1Problem" }
 							}
 						}
 					},
@@ -473,8 +548,7 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"type": "object",
-								"properties": { "name": { "type": "string" } }
+								"$ref": "#/components/schemas/V1CreateProjectRequest"
 							}
 						}
 					}
@@ -489,41 +563,7 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"type": "object",
-									"readOnly": true,
-									"required": [
-										"id",
-										"createdBy",
-										"createdAt",
-										"updatedBy",
-										"updatedAt"
-									],
-									"properties": {
-										"id": { "type": "string", "format": "uuid" },
-										"name": { "type": "string", "format": "uuid" },
-										"createdBy": {
-											"type": "object",
-											"readOnly": true,
-											"required": ["id", "name", "email"],
-											"properties": {
-												"id": { "type": "string", "format": "uuid" },
-												"name": { "type": "string" },
-												"email": { "type": "string", "format": "email" }
-											}
-										},
-										"createdAt": { "type": "string", "format": "date-time" },
-										"updatedBy": {
-											"type": "object",
-											"readOnly": true,
-											"required": ["id", "name", "email"],
-											"properties": {
-												"id": { "type": "string", "format": "uuid" },
-												"name": { "type": "string" },
-												"email": { "type": "string", "format": "email" }
-											}
-										},
-										"updatedAt": { "type": "string", "format": "date-time" }
-									}
+									"$ref": "#/components/schemas/V1GetProjectByIdRequest"
 								}
 							}
 						}
@@ -532,7 +572,7 @@
 						"description": "Bad request",
 						"content": {
 							"application/problem+json": {
-								"schema": { "$ref": "#/components/schemas/Problem" }
+								"schema": { "$ref": "#/components/schemas/V1Problem" }
 							}
 						}
 					},

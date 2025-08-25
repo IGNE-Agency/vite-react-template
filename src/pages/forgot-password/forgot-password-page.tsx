@@ -8,7 +8,7 @@ import { H1 } from "components/heading/heading";
 import { client } from "lib/api";
 import useForm from "lib/form";
 import { usePageTitle } from "lib/page-title";
-import { PostApiV1AuthForgotPasswordRequestSchema } from "lib/validators.gen";
+import { V1LoginRequestSchema } from "lib/validators.gen";
 import { useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Link } from "react-router";
@@ -16,9 +16,7 @@ import style from "./forgot-password-page.module.scss";
 
 const ForgotPasswordPage = () => {
 	const { t } = useTranslation();
-	const form = useForm(
-		PostApiV1AuthForgotPasswordRequestSchema,
-	);
+	const form = useForm(V1LoginRequestSchema);
 	usePageTitle(t("pages.forgotPassword.title"));
 	const [requestSent, setRequestSent] = useState(false);
 	const [email, setEmail] = useState("");

@@ -3,7 +3,6 @@
  * in zod from a given openapi spec.
  */
 
-import { resolveRefs } from "json-refs";
 import jsonSchemaToZod from "json-schema-to-zod";
 import { parseArgs } from "node:util";
 import type { OpenAPIV3 } from "openapi-types";
@@ -37,10 +36,30 @@ import type { OpenAPIV3 } from "openapi-types";
 		throw new Error("Please provide an output file/url.");
 	}
 
-	const exit = (message: (elapsed: number) => string) => {
+	const formatDuration = (totalMs: number) => {
+		let ms = totalMs;
+		if (ms < 0) {
+			ms = -ms;
+		}
+		const time = {
+			d: Math.floor(ms / 86400000),
+			h: Math.floor(ms / 3600000) % 24,
+			m: Math.floor(ms / 60000) % 60,
+			s: Math.floor(ms / 1000) % 60,
+			ms: Math.floor(ms) % 1000,
+		};
+		return Object.entries(time)
+			.filter((val) => val[1] !== 0)
+			.map(([unit, amount]) => `${amount}${unit}`)
+			.join(", ");
+	};
+
+	const exit = (message: string) => {
 		const elapsed = performance.now() - before;
 		// biome-ignore lint/suspicious/noConsole: We can do a little loggin' here 😎
-		console.log(message(elapsed));
+		console.log(
+			`🔥 ${message} [${formatDuration(elapsed)}]`,
+		);
 		process.exit();
 	};
 
@@ -71,15 +90,10 @@ import type { OpenAPIV3 } from "openapi-types";
 		`// ${hash}`,
 	);
 	if (noChangesInSpecFile) {
-		exit(
-			(elapsed) =>
-				`🔥 ${input} (no changes) [${elapsed.toFixed(2)}ms]`,
-		);
+		// exit(`${input} (no changes)`);
 	}
 
-	const { resolved } = await resolveRefs(json);
-	const document = resolved as OpenAPIV3.Document;
-
+	const document = json as OpenAPIV3.Document;
 	const validators: string[] = [];
 
 	for (const [name, schema] of Object.entries(
@@ -114,8 +128,5 @@ import {z} from "zod";
 		`${header}\n\n${validators.join("\n\n")}`,
 	);
 
-	exit(
-		(elapsed) =>
-			`🔥 ${input} → ${output} [${elapsed.toFixed(2)}ms]`,
-	);
+	exit(`${input} → ${output}`);
 })();
