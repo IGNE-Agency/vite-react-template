@@ -8,10 +8,10 @@ import {
 import { H1 } from "components/heading/heading";
 import { queryClient } from "lib/api";
 import { useAuth } from "lib/auth";
+import useBackendError from "lib/helpers/useBackendError";
 import useLocationState from "lib/location-state";
 import { usePageTitle } from "lib/page-title";
 import { V1LoginRequestSchema } from "lib/validators.gen";
-import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router";
 import { useZorm } from "react-zorm";
@@ -28,17 +28,17 @@ const LoginPage = () => {
 	const locationState = useLocationState(
 		LoginPageStateSchema,
 	);
-	const [genericError, setGenericError] = useState("");
 	const [, setToken] = useAuth();
 	const navigate = useNavigate();
+	const [backendErrors, handleBackendErrors] =
+		useBackendError();
 
 	const { mutate, isPending } = queryClient.useMutation(
 		"post",
 		"/api/v1/auth/login",
 		{
 			onError(error) {
-				// TODO: zorm.customIssues
-				setGenericError(error.errors[0].message);
+				handleBackendErrors(error);
 			},
 			onSuccess(token) {
 				setToken(token);
@@ -52,6 +52,7 @@ const LoginPage = () => {
 			evt.preventDefault();
 			mutate({ body: evt.data });
 		},
+		customIssues: backendErrors.formIssues,
 	});
 
 	// Demo purposes - Remove me
@@ -103,7 +104,11 @@ const LoginPage = () => {
 					</Link>
 				</div>
 
-				{!!genericError && <p>{genericError}</p>}
+				{!!backendErrors.genericError && (
+					<p style={{ color: "var(--color-error-500)" }}>
+						{backendErrors.genericError}
+					</p>
+				)}
 				<Button type="submit">
 					{t("forms.actions.login")}
 				</Button>
