@@ -7,8 +7,10 @@ import {
 import { H1 } from "components/heading/heading";
 import { queryClient } from "lib/api";
 import { usePageTitle } from "lib/page-title";
+
+import useBackendError from "lib/helpers/useBackendError";
 import { V1ForgotPasswordRequestSchema } from "lib/validators.gen";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Link } from "react-router";
 import { useZorm } from "react-zorm";
@@ -18,14 +20,27 @@ const ForgotPasswordPage = () => {
 	const { t } = useTranslation();
 	usePageTitle(t("pages.forgotPassword.title"));
 	const [email, setEmail] = useState("");
+	const [backendErrors, handleBackendErrors] =
+		useBackendError();
 
-	const { mutate, isPending, isSuccess } =
+	// DEV: showcase what it looks like with backend errors
+	// Normally you would just call `handleBackendErrors` in the `onError` mutation option
+	useEffect(() => {
+		handleBackendErrors({
+			errors: {
+				email: ["email does not exist"],
+			},
+			message: "Something went terribly wrong",
+		});
+	}, [handleBackendErrors]);
+
+	const { mutate, isPending, isSuccess, error } =
 		queryClient.useMutation(
 			"post",
 			"/api/v1/auth/forgot-password",
 			{
 				onError(error) {
-					// TODO: zorm.customIssues
+					handleBackendErrors(error);
 				},
 			},
 		);
@@ -39,6 +54,7 @@ const ForgotPasswordPage = () => {
 				setEmail(evt.data.email);
 				mutate({ body: evt.data });
 			},
+			customIssues: backendErrors.formIssues,
 		},
 	);
 
@@ -84,6 +100,11 @@ const ForgotPasswordPage = () => {
 					))}
 				</label>
 
+				{backendErrors.genericError && (
+					<p style={{ color: "var(--color-error-500)" }}>
+						{backendErrors.genericError}
+					</p>
+				)}
 				<Button type="submit">
 					{t("forms.actions.requestNewPassword")}
 				</Button>
