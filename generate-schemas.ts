@@ -3,8 +3,8 @@
  * in zod from a given openapi spec.
  */
 
-import jsonSchemaToZod from "json-schema-to-zod";
 import { parseArgs } from "node:util";
+import jsonSchemaToZod from "json-schema-to-zod";
 import type { OpenAPIV3 } from "openapi-types";
 
 (async () => {
@@ -106,10 +106,9 @@ import type { OpenAPIV3 } from "openapi-types";
 		const capitalised = capitaliseAscii(name);
 		const formattedName = `${capitalised}Schema`;
 
-		validators.push(
-			`export const ${formattedName} = ${jsonSchemaToZod(schema)};`,
-			`export type ${capitalised} = z.infer<typeof ${formattedName}>;`,
-		);
+		validators.push(`
+export const ${formattedName} = ${jsonSchemaToZod(schema)};
+export type ${capitalised} = z.infer<typeof ${formattedName}>;`);
 	}
 
 	const header = `
@@ -125,7 +124,7 @@ import {z} from "zod";
 `.trim();
 
 	await Bun.file(output).write(
-		`${header}\n\n${validators.join("\n\n")}`,
+		`${header}\n${validators.join("\n")}`,
 	);
 
 	exit(`${input} → ${output}`);
