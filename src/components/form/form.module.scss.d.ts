@@ -6,12 +6,12 @@
  * https://npmjs.com/vite-css-modules
  */
 
-const contents: string;
+const disablerFieldset: string;
 
 export {
-	contents
+	disablerFieldset
 };
 
 export default {
-	contents
+	disablerFieldset
 };
