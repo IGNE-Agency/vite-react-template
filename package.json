@@ -7,7 +7,7 @@
     "setup:schemas": "bun run generate-schemas.ts ./openapi.json ./src/lib/validators.gen.ts",
     "setup:all": "bun run setup:openapi && bun run setup:schemas",
     "dev": "bun run setup:all && bun run vite",
-    "build": "bun run vite build && bun run tsc --noEmit",
+    "build": "bun run setup:all && bun run vite build && bun run tsc --noEmit",
     "lint": "bun run biome check src && bun run prettier --check 'src/**/*.{s,}css'",
     "preview": "vite preview"
   },
