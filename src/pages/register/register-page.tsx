@@ -10,7 +10,7 @@ import { client } from "lib/api";
 import { useAuth } from "lib/auth";
 import useForm from "lib/form";
 import { usePageTitle } from "lib/page-title";
-import { PostApiV1AuthRegisterRequestSchema } from "lib/validators.gen";
+import { V1RegisterRequestSchema } from "lib/validators.gen";
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router";
 import style from "./register-page.module.scss";
@@ -19,7 +19,7 @@ const RegisterPage = () => {
 	const navigate = useNavigate();
 	const { t } = useTranslation();
 	const [, setToken] = useAuth();
-	const form = useForm(PostApiV1AuthRegisterRequestSchema);
+	const form = useForm(V1RegisterRequestSchema);
 	usePageTitle(t("pages.login.title"));
 
 	const handleSubmit = form.handleSubmit(async (body) => {

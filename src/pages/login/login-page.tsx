@@ -11,7 +11,7 @@ import { useAuth } from "lib/auth";
 import useForm from "lib/form";
 import useLocationState from "lib/location-state";
 import { usePageTitle } from "lib/page-title";
-import { PostApiV1AuthLoginRequestSchema } from "lib/validators.gen";
+import { V1LoginRequestSchema } from "lib/validators.gen";
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router";
 import { z } from "zod";
@@ -26,7 +26,7 @@ const LoginPage = () => {
 	const navigate = useNavigate();
 	const { t } = useTranslation();
 	const [, setToken] = useAuth();
-	const form = useForm(PostApiV1AuthLoginRequestSchema);
+	const form = useForm(V1LoginRequestSchema);
 	usePageTitle(t("pages.login.title"));
 
 	const handleSubmit = form.handleSubmit(async (body) => {
