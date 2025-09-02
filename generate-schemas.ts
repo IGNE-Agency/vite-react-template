@@ -3,8 +3,8 @@
  * in zod from a given openapi spec.
  */
 
-import { parseArgs } from "node:util";
 import jsonSchemaToZod from "json-schema-to-zod";
+import { parseArgs } from "node:util";
 import type { OpenAPIV3 } from "openapi-types";
 
 (async () => {
@@ -90,7 +90,7 @@ import type { OpenAPIV3 } from "openapi-types";
 		`// ${hash}`,
 	);
 	if (noChangesInSpecFile) {
-		// exit(`${input} (no changes)`);
+		exit(`${input} (no changes)`);
 	}
 
 	const document = json as OpenAPIV3.Document;
