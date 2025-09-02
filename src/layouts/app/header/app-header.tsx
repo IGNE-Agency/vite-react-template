@@ -21,7 +21,9 @@ const AppHeader = () => {
 	const locale = useLocale();
 	const navigate = useNavigate();
 
-	const languageOptions = i18n.languages
+	const languageOptions = Object.keys(
+		i18n.options.resources || {},
+	)
 		.toSorted((a, b) => a.localeCompare(b, locale))
 		.map((lang) => ({
 			value: lang,

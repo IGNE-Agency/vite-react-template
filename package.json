@@ -1,6 +1,6 @@
 {
 	"name": "vite-react-template",
-	"version": "2.2.0",
+	"version": "3.0.0",
 	"type": "module",
 	"scripts": {
 		"setup:openapi": "bunx --bun openapi-typescript ./openapi.json -o ./src/lib/schema.gen.d.ts",
@@ -25,7 +25,8 @@
 		"react-i18next": "15.5.1",
 		"react-router": "7.5.3",
 		"reset-css": "5.0.2",
-		"zod": "3.24.4"
+		"zod": "3.24.4",
+		"zod-i18n-map": "2.27.0"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "1.9.4",
