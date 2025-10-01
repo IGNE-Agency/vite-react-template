@@ -9,9 +9,9 @@ import {
 import { H1 } from "components/heading/heading";
 import { queryClient } from "lib/api";
 import { useAuth } from "lib/auth";
-import useBackendError from "lib/helpers/useBackendError";
 import useLocationState from "lib/location-state";
 import { usePageTitle } from "lib/page-title";
+import useBackendError from "lib/useBackendError";
 import { V1LoginRequestSchema } from "lib/validators.gen";
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router";

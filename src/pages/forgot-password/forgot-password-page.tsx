@@ -9,7 +9,7 @@ import { queryClient } from "lib/api";
 import { usePageTitle } from "lib/page-title";
 
 import { ErrorText } from "components/error-text/error-text";
-import useBackendError from "lib/helpers/useBackendError";
+import useBackendError from "lib/useBackendError";
 import { V1ForgotPasswordRequestSchema } from "lib/validators.gen";
 import { useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
