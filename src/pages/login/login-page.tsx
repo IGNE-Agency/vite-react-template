@@ -1,4 +1,5 @@
 import classNames from "classnames";
+import { ErrorText } from "components/error-text/error-text";
 import {
 	Button,
 	Form,
@@ -105,9 +106,9 @@ const LoginPage = () => {
 				</div>
 
 				{!!backendErrors.genericError && (
-					<p style={{ color: "var(--color-error-500)" }}>
+					<ErrorText>
 						{backendErrors.genericError}
-					</p>
+					</ErrorText>
 				)}
 				<Button type="submit">
 					{t("forms.actions.login")}

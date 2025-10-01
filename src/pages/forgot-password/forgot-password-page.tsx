@@ -8,6 +8,7 @@ import { H1 } from "components/heading/heading";
 import { queryClient } from "lib/api";
 import { usePageTitle } from "lib/page-title";
 
+import { ErrorText } from "components/error-text/error-text";
 import useBackendError from "lib/helpers/useBackendError";
 import { V1ForgotPasswordRequestSchema } from "lib/validators.gen";
 import { useEffect, useState } from "react";
@@ -101,9 +102,9 @@ const ForgotPasswordPage = () => {
 				</label>
 
 				{backendErrors.genericError && (
-					<p style={{ color: "var(--color-error-500)" }}>
+					<ErrorText>
 						{backendErrors.genericError}
-					</p>
+					</ErrorText>
 				)}
 				<Button type="submit">
 					{t("forms.actions.requestNewPassword")}
