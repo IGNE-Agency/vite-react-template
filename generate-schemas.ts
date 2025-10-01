@@ -3,9 +3,9 @@
  * in zod from a given openapi spec.
  */
 
+import { parseArgs } from "node:util";
 import { resolveRefs } from "json-refs";
 import jsonSchemaToZod from "json-schema-to-zod";
-import { parseArgs } from "node:util";
 import type { OpenAPIV3 } from "openapi-types";
 
 const { positionals, values } = parseArgs({
