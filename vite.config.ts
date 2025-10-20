@@ -1,13 +1,15 @@
-import * as path from "node:path";
 import react from "@vitejs/plugin-react";
+import * as path from "node:path";
 import { defineConfig } from "vite";
 import { patchCssModules } from "vite-css-modules";
+import https from "vite-plugin-mkcert";
 import svgr from "vite-plugin-svgr";
 import viteTsConfigPaths from "vite-tsconfig-paths";
 
 // https://vitejs.dev/config/
 export default defineConfig({
 	plugins: [
+		https(),
 		react(),
 		viteTsConfigPaths(),
 		svgr(),
@@ -39,7 +41,11 @@ export default defineConfig({
 	server: {
 		open: true,
 		proxy: {
-			"/api": "CHANGE_ME",
+			"/api": {
+				target: "CHANGE_ME",
+				secure: true,
+				changeOrigin: true,
+			},
 		},
 	},
 });
