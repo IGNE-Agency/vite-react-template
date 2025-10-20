@@ -10,7 +10,9 @@ import viteTsConfigPaths from "vite-tsconfig-paths";
 export default defineConfig({
 	plugins: [
 		https(),
-		react(),
+		react({
+			babel: { plugins: ["babel-plugin-react-compiler"] },
+		}),
 		viteTsConfigPaths(),
 		svgr(),
 		// While Vite should automatically handle SASS, it has some problems with modules.
