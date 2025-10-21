@@ -29,9 +29,10 @@ const ForgotPasswordPage = () => {
 	useEffect(() => {
 		handleBackendErrors({
 			errors: {
-				email: ["email does not exist"],
+				email: ["Email does not exist"],
 			},
-			message: "Something went terribly wrong",
+			message:
+				"Showcase errors on load. This message is a generic error, unrelated to form.",
 		});
 	}, [handleBackendErrors]);
 
