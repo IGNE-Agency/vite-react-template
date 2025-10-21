@@ -3,8 +3,8 @@
  * in zod from a given openapi spec.
  */
 
-import jsonSchemaToZod from "json-schema-to-zod";
 import { parseArgs } from "node:util";
+import jsonSchemaToZod from "json-schema-to-zod";
 import type { OpenAPIV3 } from "openapi-types";
 
 (async () => {

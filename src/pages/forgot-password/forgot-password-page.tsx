@@ -5,32 +5,67 @@ import {
 	Issues,
 } from "components/form";
 import { H1 } from "components/heading/heading";
-import { client } from "lib/api";
-import useForm from "lib/form";
+import { queryClient } from "lib/api";
 import { usePageTitle } from "lib/page-title";
-import { V1LoginRequestSchema } from "lib/validators.gen";
-import { useState } from "react";
+
+import { ErrorText } from "components/error-text/error-text";
+import useBackendError from "lib/useBackendError";
+import { V1ForgotPasswordRequestSchema } from "lib/validators.gen";
+import { useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Link } from "react-router";
+import { useZorm } from "react-zorm";
 import style from "./forgot-password-page.module.scss";
 
 const ForgotPasswordPage = () => {
 	const { t } = useTranslation();
-	const form = useForm(V1LoginRequestSchema);
 	usePageTitle(t("pages.forgotPassword.title"));
-	const [requestSent, setRequestSent] = useState(false);
 	const [email, setEmail] = useState("");
+	const [backendErrors, handleBackendErrors] =
+		useBackendError();
 
-	const handleSubmit = form.handleSubmit(async (body) => {
-		await client.POST("/api/v1/auth/forgot-password", {
-			body,
+	// DEV: showcase what it looks like with backend errors
+	// Normally you would just call `handleBackendErrors` in the `onError` mutation option
+	useEffect(() => {
+		handleBackendErrors({
+			errors: {
+				email: ["Email does not exist"],
+			},
+			message:
+				"Showcase errors on load. This message is a generic error, unrelated to form.",
 		});
-		setRequestSent(true);
-	});
+	}, [handleBackendErrors]);
 
-	if (requestSent) {
+	const { mutate, isPending, isSuccess, error } =
+		queryClient.useMutation(
+			"post",
+			"/api/v1/auth/forgot-password",
+			{
+				onError(error) {
+					handleBackendErrors(error);
+				},
+			},
+		);
+
+	const zorm = useZorm(
+		"login",
+		V1ForgotPasswordRequestSchema,
+		{
+			onValidSubmit: async (evt) => {
+				evt.preventDefault();
+				setEmail(evt.data.email);
+				mutate({ body: evt.data });
+			},
+			customIssues: backendErrors.formIssues,
+		},
+	);
+
+	if (isSuccess) {
 		return (
 			<>
+				<H1 size="medium" className={style.textCenter}>
+					{t("pages.forgotPassword.title")}
+				</H1>
 				<p className={style.textCenter}>
 					<Trans
 						t={t}
@@ -51,26 +86,27 @@ const ForgotPasswordPage = () => {
 				{t("pages.forgotPassword.title")}
 			</H1>
 			<Form
-				form={form}
-				onSubmit={handleSubmit}
+				ref={zorm.ref}
 				className={style.form}
+				disabled={isPending}
 			>
 				<label className={style.label} htmlFor="email">
 					<Input
 						label={t("forms.fields.email")}
-						name="email"
+						name={zorm.fields.email()}
 						id="email"
-						isInvalid={form.invalidFields?.includes(
-							"email",
-						)}
-						onChange={({ currentTarget: { value } }) =>
-							setEmail(value)
-						}
+						isInvalid={zorm.errors.email(Boolean)}
 					/>
-					<Issues name="email" form={form} />
+					{zorm.errors.email((...issues) => (
+						<Issues issues={issues} />
+					))}
 				</label>
-				<Issues form={form} />
 
+				{backendErrors.genericError && (
+					<ErrorText>
+						{backendErrors.genericError}
+					</ErrorText>
+				)}
 				<Button type="submit">
 					{t("forms.actions.requestNewPassword")}
 				</Button>
