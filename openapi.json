@@ -19,27 +19,17 @@
 			"V1Problem": {
 				"type": "object",
 				"properties": {
-					"status": { "type": "number" },
-					"title": { "type": "string" },
-					"instance": { "format": "uri-reference", "type": "string" },
-					"detail": { "type": "string" },
+					"message": { "type": "string" },
 					"errors": {
-						"type": "array",
-						"items": {
-							"type": "object",
-							"required": ["code", "path", "message"],
-							"properties": {
-								"code": { "type": "string" },
-								"path": {
-									"type": "array",
-									"items": { "type": "string" }
-								},
-								"message": { "type": "string" }
+						"type": "object",
+						"additionalProperties": {
+							"type": "array",
+							"items": {
+								"type": "string"
 							}
 						}
 					}
-				},
-				"required": ["status", "title", "instance", "detail", "errors"]
+				}
 			},
 			"V1RegisterRequest": {
 				"type": "object",
@@ -282,42 +272,6 @@
 	},
 	"security": [{ "auth-cookie": [] }],
 	"paths": {
-		"/api/v1/auth/register": {
-			"post": {
-				"responses": {
-					"200": {
-						"description": "Registers an account, logs in by setting an authentication cookie, and sends a verification email.",
-						"content": {
-							"text/plain": {
-								"schema": {
-									"$ref": "#/components/schemas/V1RegisterResponse"
-								}
-							}
-						}
-					},
-					"400": {
-						"description": "Bad request",
-						"content": {
-							"application/problem+json": {
-								"schema": { "$ref": "#/components/schemas/V1Problem" }
-							}
-						}
-					}
-				},
-				"operationId": "postApiV1AuthRegister",
-				"tags": ["Authentication"],
-				"parameters": [],
-				"requestBody": {
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/V1RegisterRequest"
-							}
-						}
-					}
-				}
-			}
-		},
 		"/api/v1/auth/login": {
 			"post": {
 				"responses": {
@@ -394,201 +348,6 @@
 						}
 					}
 				}
-			}
-		},
-		"/api/v1/users/current": {
-			"get": {
-				"responses": {
-					"200": {
-						"description": "Gets the user that is associated to the current session.",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/V1GetCurrentUserResponse"
-								}
-							}
-						}
-					},
-					"401": { "description": "Unauthorized." },
-					"404": { "description": "User not found." }
-				},
-				"operationId": "getApiV1UsersCurrent",
-				"tags": ["Users"],
-				"parameters": []
-			}
-		},
-		"/api/v1/users/{id}": {
-			"get": {
-				"responses": {
-					"200": {
-						"description": "Gets a user by the given id.",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/V1GetUserByIdResponse"
-								}
-							}
-						}
-					},
-					"401": { "description": "Unauthorized." },
-					"404": { "description": "User not found." }
-				},
-				"operationId": "getApiV1UsersById",
-				"tags": ["Users"],
-				"parameters": [
-					{
-						"schema": { "type": "string" },
-						"in": "path",
-						"name": "id",
-						"required": true
-					}
-				]
-			},
-			"patch": {
-				"responses": {
-					"200": {
-						"description": "Overwrites the user's data with any matching entries in the request body.\n\nIf you change the email, a new verification email will be sent."
-					},
-					"400": {
-						"description": "Bad request",
-						"content": {
-							"application/problem+json": {
-								"schema": { "$ref": "#/components/schemas/V1Problem" }
-							}
-						}
-					},
-					"401": { "description": "Unauthorized" }
-				},
-				"operationId": "patchApiV1UsersById",
-				"tags": ["Users"],
-				"parameters": [
-					{
-						"schema": { "type": "string" },
-						"in": "path",
-						"name": "id",
-						"required": true
-					}
-				],
-				"requestBody": {
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/V1UpdateUserByIdRequest"
-							}
-						}
-					}
-				}
-			}
-		},
-		"/api/v1/projects": {
-			"get": {
-				"responses": {
-					"200": {
-						"description": "Gets a paginated list of all projects.",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/V1GetProjectsResponse"
-								}
-							}
-						}
-					},
-					"401": { "description": "Unauthorized" }
-				},
-				"operationId": "getApiV1Projects",
-				"tags": ["Projects"],
-				"parameters": [
-					{
-						"in": "query",
-						"name": "pageNumber",
-						"schema": { "type": "integer" }
-					},
-					{
-						"in": "query",
-						"name": "pageSize",
-						"schema": { "type": "integer" }
-					},
-					{
-						"in": "query",
-						"name": "orderDirection",
-						"schema": { "type": "string", "enum": ["asc", "desc"] }
-					},
-					{ "in": "query", "name": "orderBy", "schema": { "type": "string" } }
-				],
-				"security": [{ "auth-cookie": [] }]
-			},
-			"post": {
-				"responses": {
-					"201": {
-						"description": "Creates a project and returns the id of the new project in the Location header.",
-						"headers": {
-							"Location": {
-								"description": "The url of the newly created project.",
-								"schema": {
-									"$ref": "#/components/schemas/V1CreateProjectResponse"
-								}
-							}
-						}
-					},
-					"400": {
-						"description": "Bad request",
-						"content": {
-							"application/problem+json": {
-								"schema": { "$ref": "#/components/schemas/V1Problem" }
-							}
-						}
-					},
-					"401": { "description": "Unauthorized" }
-				},
-				"operationId": "postApiV1Projects",
-				"tags": ["Projects"],
-				"parameters": [],
-				"security": [{ "auth-cookie": [] }],
-				"requestBody": {
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/V1CreateProjectRequest"
-							}
-						}
-					}
-				}
-			}
-		},
-		"/api/v1/projects/{id}": {
-			"get": {
-				"responses": {
-					"200": {
-						"description": "Returns a project with the requested id.",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/V1GetProjectByIdRequest"
-								}
-							}
-						}
-					},
-					"400": {
-						"description": "Bad request",
-						"content": {
-							"application/problem+json": {
-								"schema": { "$ref": "#/components/schemas/V1Problem" }
-							}
-						}
-					},
-					"401": { "description": "Unauthorized" }
-				},
-				"operationId": "getApiV1ProjectsById",
-				"tags": ["Projects"],
-				"parameters": [
-					{
-						"schema": { "type": "string" },
-						"in": "path",
-						"name": "id",
-						"required": true
-					}
-				],
-				"security": [{ "auth-cookie": [] }]
 			}
 		}
 	}

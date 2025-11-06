@@ -26,8 +26,7 @@
 		"home": { "title": "Home" },
 		"login": {
 			"title": "Inloggen",
-			"forgotPassword": "Wachtwoord vergeten?",
-			"noAccount": "Nog geen account?"
+			"forgotPassword": "Wachtwoord vergeten?"
 		},
 		"notFound": { "title": "Niet gevonden" },
 		"register": {

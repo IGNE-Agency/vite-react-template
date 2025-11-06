@@ -7,7 +7,6 @@ import {
 	HomePage,
 	LoginPage,
 	NotFoundPage,
-	RegisterPage,
 } from "./page-loader";
 import { ProtectedRoute } from "./protected-route";
 
@@ -16,7 +15,6 @@ const Router = () => (
 		<Routes>
 			<Route element={<AuthLayout />}>
 				<Route path="login" element={<LoginPage />} />
-				<Route path="register" element={<RegisterPage />} />
 				<Route
 					path="forgot-password"
 					element={<ForgotPasswordPage />}
