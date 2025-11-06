@@ -19,7 +19,8 @@ import { ZodIssueCode } from "zod";
  *   "message": "Something went wrong"
  * }
  */
-export type BackendError = components["schemas"]["Problem"];
+export type BackendError =
+	components["schemas"]["V1Problem"];
 
 const useBackendError = () => {
 	const [backendErrors, setBackendErrors] = useState<{
