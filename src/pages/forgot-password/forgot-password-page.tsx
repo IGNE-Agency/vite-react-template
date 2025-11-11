@@ -1,3 +1,4 @@
+import { ErrorText } from "components/error-text/error-text";
 import {
 	Button,
 	Form,
@@ -7,8 +8,6 @@ import {
 import { H1 } from "components/heading/heading";
 import { queryClient } from "lib/api";
 import { usePageTitle } from "lib/page-title";
-
-import { ErrorText } from "components/error-text/error-text";
 import useBackendError from "lib/useBackendError";
 import { V1ForgotPasswordRequestSchema } from "lib/validators.gen";
 import { useEffect, useState } from "react";
@@ -36,7 +35,7 @@ const ForgotPasswordPage = () => {
 		});
 	}, [handleBackendErrors]);
 
-	const { mutate, isPending, isSuccess, error } =
+	const { mutate, isPending, isSuccess } =
 		queryClient.useMutation(
 			"post",
 			"/api/v1/auth/forgot-password",

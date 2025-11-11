@@ -1,5 +1,5 @@
-import react from "@vitejs/plugin-react";
 import * as path from "node:path";
+import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
 import { patchCssModules } from "vite-css-modules";
 import https from "vite-plugin-mkcert";
