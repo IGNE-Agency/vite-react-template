@@ -5,6 +5,11 @@ import {
 	Input,
 	Issues,
 } from "components/form";
+import {
+	Field,
+	FieldError,
+	FieldLabel,
+} from "components/form/field/field";
 import { H1 } from "components/heading/heading";
 import { queryClient } from "lib/api";
 import { usePageTitle } from "lib/page-title";
@@ -89,17 +94,19 @@ const ForgotPasswordPage = () => {
 				className={style.form}
 				disabled={isPending}
 			>
-				<label className={style.label} htmlFor="email">
+				<Field name={zorm.fields.email()}>
+					<FieldLabel>{t("forms.fields.email")}</FieldLabel>
 					<Input
-						label={t("forms.fields.email")}
 						name={zorm.fields.email()}
 						id="email"
 						isInvalid={zorm.errors.email(Boolean)}
 					/>
-					{zorm.errors.email((...issues) => (
-						<Issues issues={issues} />
-					))}
-				</label>
+					<FieldError>
+						{zorm.errors.email((...issues) => (
+							<Issues issues={issues} />
+						))}
+					</FieldError>
+				</Field>
 
 				{backendErrors.genericError && (
 					<ErrorText>
