@@ -2,5 +2,4 @@ pre-commit:
   parallel: true
   jobs:
     - run: bun run oxlint --type-aware {staged_files}
-      glob: "**/*.{js,jsx,ts,tsx}"
     - run: bun run oxfmt --check {staged_files}
