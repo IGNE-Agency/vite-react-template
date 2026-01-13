@@ -1,27 +1,22 @@
+import { Input as InputPrimitive } from "@base-ui/react/input";
 import style from "./input.module.scss";
 
-type Props = React.ComponentPropsWithoutRef<"input"> & {
-	name: string;
-	label?: string;
+type Props = InputPrimitive.Props & {
 	isInvalid?: boolean;
 };
 
 function Input({
-	label,
 	isInvalid,
 	type = "text",
 	...props
 }: Props) {
 	return (
-		<>
-			{label && <span>{label}</span>}
-			<input
-				type={type}
-				aria-invalid={isInvalid}
-				className={style.input}
-				{...props}
-			/>
-		</>
+		<InputPrimitive
+			type={type}
+			aria-invalid={isInvalid}
+			className={style.input}
+			{...props}
+		/>
 	);
 }
 
