@@ -1,10 +1,5 @@
 import type React from "react";
-import {
-	createContext,
-	useContext,
-	useEffect,
-	useState,
-} from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 
 type PageTitleContext = Readonly<{
 	title: string;
@@ -22,9 +17,7 @@ export const PageTitleProvider: React.FC<{
 }> = ({ children, name }) => {
 	const [title, setTitle] = useState("");
 
-	const useTitle: PageTitleContext["useTitle"] = (
-		title,
-	) => {
+	const useTitle: PageTitleContext["useTitle"] = (title) => {
 		const before = document.title;
 		useEffect(() => {
 			setTitle(title);
@@ -36,9 +29,7 @@ export const PageTitleProvider: React.FC<{
 	};
 
 	return (
-		<PageTitleContext.Provider value={{ title, useTitle }}>
-			{children}
-		</PageTitleContext.Provider>
+		<PageTitleContext.Provider value={{ title, useTitle }}>{children}</PageTitleContext.Provider>
 	);
 };
 
@@ -46,17 +37,13 @@ export const usePageTitleContext = () => {
 	const context = useContext(PageTitleContext);
 
 	if (!context) {
-		throw new Error(
-			"usePageTitle must be used within a PageTitleProvider",
-		);
+		throw new Error("usePageTitle must be used within a PageTitleProvider");
 	}
 
 	return context;
 };
 
-export const usePageTitle: PageTitleContext["useTitle"] = (
-	title,
-) => {
+export const usePageTitle: PageTitleContext["useTitle"] = (title) => {
 	const context = usePageTitleContext();
 	context.useTitle(title);
 	return context.title;

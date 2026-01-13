@@ -6,21 +6,11 @@ type Props = React.ComponentPropsWithoutRef<"input"> & {
 	isInvalid?: boolean;
 };
 
-function Input({
-	label,
-	isInvalid,
-	type = "text",
-	...props
-}: Props) {
+function Input({ label, isInvalid, type = "text", ...props }: Props) {
 	return (
 		<>
 			{label && <span>{label}</span>}
-			<input
-				type={type}
-				aria-invalid={isInvalid}
-				className={style.input}
-				{...props}
-			/>
+			<input type={type} aria-invalid={isInvalid} className={style.input} {...props} />
 		</>
 	);
 }

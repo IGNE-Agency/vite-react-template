@@ -13,17 +13,14 @@ type Props = React.ComponentPropsWithoutRef<"select"> & {
 };
 
 function Select({
+	// oxlint-disable-next-line no-unused-vars
 	label,
 	options,
 	isInvalid,
 	...props
 }: Props) {
 	return (
-		<select
-			aria-invalid={isInvalid}
-			className={style.select}
-			{...props}
-		>
+		<select aria-invalid={isInvalid} className={style.select} {...props}>
 			{options.map(({ value, label }) => (
 				<option key={value} value={value}>
 					{label}

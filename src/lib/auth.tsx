@@ -12,10 +12,7 @@ type AuthContext = readonly [
 	Dispatch<SetStateAction<string | null | undefined>>,
 ];
 
-const AuthContext = createContext<AuthContext>([
-	null,
-	() => {},
-]);
+const AuthContext = createContext<AuthContext>([null, () => {}]);
 
 type AuthProviderProps = Readonly<{
 	children?: ReactNode;
@@ -29,18 +26,10 @@ export const TOKEN_NAME = "token";
  * logged in or not. This is signalled by the presence
  * (or absence, respectively) of a token.
  */
-export const AuthProvider = ({
-	children,
-}: AuthProviderProps) => {
-	const state = useLocalStorage<string | null | undefined>(
-		TOKEN_NAME,
-	);
+export const AuthProvider = ({ children }: AuthProviderProps) => {
+	const state = useLocalStorage<string | null | undefined>(TOKEN_NAME);
 
-	return (
-		<AuthContext.Provider value={state}>
-			{children}
-		</AuthContext.Provider>
-	);
+	return <AuthContext.Provider value={state}>{children}</AuthContext.Provider>;
 };
 
 /** A hook for checking if we're logged in or not.
@@ -50,9 +39,7 @@ export const useAuth = () => {
 	const context = useContext(AuthContext);
 
 	if (!context) {
-		throw new Error(
-			"useAuth must be called in a descendant of an AuthProvider.",
-		);
+		throw new Error("useAuth must be called in a descendant of an AuthProvider.");
 	}
 
 	return context;

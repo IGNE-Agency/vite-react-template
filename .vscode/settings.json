@@ -1,11 +1,12 @@
 {
-	"editor.defaultFormatter": "biomejs.biome",
+	"oxc.fmt.experimental": true,
+	"editor.defaultFormatter": "oxc.oxc-vscode",
+	"oxc.fmt.configPath": ".oxfmtrc.jsonc",
 	"editor.codeActionsOnSave": {
-		"source.organizeImports.biome": "explicit"
+		"source.organizeImports.oxfmt": "explicit",
+		"source.fixAll.oxc": "always"
 	},
-	"[scss]": {
-		"editor.defaultFormatter": "esbenp.prettier-vscode"
-	},
+	"oxc.typeAware": true,
 	"typescript.tsdk": "node_modules\\typescript\\lib",
 	"search.exclude": {
 		"**.scss.d.ts": true

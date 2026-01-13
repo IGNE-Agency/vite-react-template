@@ -15,10 +15,7 @@ const Router = () => (
 		<Routes>
 			<Route element={<AuthLayout />}>
 				<Route path="login" element={<LoginPage />} />
-				<Route
-					path="forgot-password"
-					element={<ForgotPasswordPage />}
-				/>
+				<Route path="forgot-password" element={<ForgotPasswordPage />} />
 			</Route>
 			<Route element={<AppLayout />}>
 				<Route

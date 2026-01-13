@@ -1,9 +1,5 @@
 import { useAuth } from "lib/auth";
-import {
-	Navigate,
-	Outlet,
-	useLocation,
-} from "react-router";
+import { Navigate, Outlet, useLocation } from "react-router";
 
 // Could be extended by allowing only certain user roles, etc.
 type ProtectedRouteProps = {
@@ -17,20 +13,12 @@ type ProtectedRouteProps = {
  * or
  * <Route path="" element={<ProtectedRoute><SomePage /></ProtectedRoute>} />
  */
-export const ProtectedRoute = ({
-	children,
-}: ProtectedRouteProps) => {
+export const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
 	const [token] = useAuth();
 	const { pathname } = useLocation();
 
 	if (!token) {
-		return (
-			<Navigate
-				to="login"
-				replace
-				state={{ redirect: pathname }}
-			/>
-		);
+		return <Navigate to="login" replace state={{ redirect: pathname }} />;
 	}
 
 	return children ? children : <Outlet />;

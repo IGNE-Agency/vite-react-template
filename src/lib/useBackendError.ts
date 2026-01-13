@@ -19,8 +19,7 @@ import { ZodIssueCode } from "zod";
  *   "message": "Something went wrong"
  * }
  */
-export type BackendError =
-	components["schemas"]["V1Problem"];
+export type BackendError = components["schemas"]["V1Problem"];
 
 const useBackendError = () => {
 	const [backendErrors, setBackendErrors] = useState<{
@@ -31,33 +30,28 @@ const useBackendError = () => {
 		genericError: undefined,
 	});
 
-	const handleErrors = useCallback(
-		(backendError: BackendError | undefined) => {
-			if (backendError === undefined) {
-				setBackendErrors({
-					formIssues: undefined,
-					genericError: undefined,
-				});
-				return;
-			}
-
-			const formIssues = !backendError.errors
-				? undefined
-				: Object.entries(backendError.errors).map(
-						([key, messages]) => ({
-							code: ZodIssueCode.custom,
-							path: key.split("."),
-							message: messages[0],
-						}),
-					);
-
+	const handleErrors = useCallback((backendError: BackendError | undefined) => {
+		if (backendError === undefined) {
 			setBackendErrors({
-				formIssues,
-				genericError: backendError.message,
+				formIssues: undefined,
+				genericError: undefined,
 			});
-		},
-		[],
-	);
+			return;
+		}
+
+		const formIssues = !backendError.errors
+			? undefined
+			: Object.entries(backendError.errors).map(([key, messages]) => ({
+					code: ZodIssueCode.custom,
+					path: key.split("."),
+					message: messages[0],
+				}));
+
+		setBackendErrors({
+			formIssues,
+			genericError: backendError.message,
+		});
+	}, []);
 
 	return [backendErrors, handleErrors] as const;
 };

@@ -21,9 +21,7 @@ const AppHeader = () => {
 	const locale = useLocale();
 	const navigate = useNavigate();
 
-	const languageOptions = Object.keys(
-		i18n.options.resources || {},
-	)
+	const languageOptions = Object.keys(i18n.options.resources || {})
 		.toSorted((a, b) => a.localeCompare(b, locale))
 		.map((lang) => ({
 			value: lang,
@@ -35,25 +33,18 @@ const AppHeader = () => {
 
 	const handleLogout = () => {
 		setToken(undefined);
-		navigate("/");
+		void navigate("/");
 	};
 
 	return (
 		<header>
-			<div
-				className={classNames([style.header, style.row])}
-			>
+			<div className={classNames([style.header, style.row])}>
 				<nav className={style.row}>
 					{links.map((link) => (
 						<NavLink
 							key={link.to}
 							to={link.to}
-							className={({ isActive }) =>
-								classNames([
-									style.link,
-									isActive && style.active,
-								])
-							}
+							className={({ isActive }) => classNames([style.link, isActive && style.active])}
 						>
 							{link.icon}
 							<span>{t(`pages.${link.name}.title`)}</span>
@@ -65,13 +56,9 @@ const AppHeader = () => {
 						name="lang"
 						options={languageOptions}
 						defaultValue={i18n.resolvedLanguage}
-						onChange={({ currentTarget: { value } }) =>
-							i18n.changeLanguage(value)
-						}
+						onChange={({ currentTarget: { value } }) => i18n.changeLanguage(value)}
 					/>
-					<Button onClick={handleLogout}>
-						{t("layouts.app.logout")}
-					</Button>
+					<Button onClick={handleLogout}>{t("layouts.app.logout")}</Button>
 				</div>
 			</div>
 		</header>

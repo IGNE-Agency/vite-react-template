@@ -1,11 +1,6 @@
 import classNames from "classnames";
 import { ErrorText } from "components/error-text/error-text";
-import {
-	Button,
-	Form,
-	Input,
-	Issues,
-} from "components/form";
+import { Button, Form, Input, Issues } from "components/form";
 import { H1 } from "components/heading/heading";
 import { queryClient } from "lib/api";
 import { useAuth } from "lib/auth";
@@ -26,27 +21,20 @@ const LoginPageStateSchema = z.object({
 const LoginPage = () => {
 	const { t } = useTranslation();
 	usePageTitle(t("pages.login.title"));
-	const locationState = useLocationState(
-		LoginPageStateSchema,
-	);
+	const locationState = useLocationState(LoginPageStateSchema);
 	const [, setToken] = useAuth();
 	const navigate = useNavigate();
-	const [backendErrors, handleBackendErrors] =
-		useBackendError();
+	const [backendErrors, handleBackendErrors] = useBackendError();
 
-	const { mutate, isPending } = queryClient.useMutation(
-		"post",
-		"/api/v1/auth/login",
-		{
-			onError(error) {
-				handleBackendErrors(error);
-			},
-			onSuccess(token) {
-				setToken(token);
-				navigate(locationState?.redirect || "/");
-			},
+	const { mutate, isPending } = queryClient.useMutation("post", "/api/v1/auth/login", {
+		onError(error) {
+			handleBackendErrors(error);
 		},
-	);
+		onSuccess(token) {
+			setToken(token);
+			void navigate(locationState?.redirect || "/");
+		},
+	});
 
 	const zorm = useZorm("login", V1LoginRequestSchema, {
 		onValidSubmit: async (evt) => {
@@ -59,7 +47,7 @@ const LoginPage = () => {
 	// Demo purposes - Remove me
 	const handleFakeLogin = () => {
 		setToken("logged in");
-		navigate(locationState?.redirect || "/");
+		void navigate(locationState?.redirect || "/");
 	};
 
 	return (
@@ -67,11 +55,7 @@ const LoginPage = () => {
 			<H1 size="medium" className={style.textCenter}>
 				{t("pages.login.title")}
 			</H1>
-			<Form
-				ref={zorm.ref}
-				className={style.form}
-				disabled={isPending}
-			>
+			<Form ref={zorm.ref} className={style.form} disabled={isPending}>
 				<label className={style.label} htmlFor="email">
 					<Input
 						label={t("forms.fields.email")}
@@ -97,25 +81,14 @@ const LoginPage = () => {
 						))}
 					</label>
 
-					<Link
-						to="/forgot-password"
-						className={classNames([style.forgotPassword])}
-					>
+					<Link to="/forgot-password" className={classNames([style.forgotPassword])}>
 						{t("pages.login.forgotPassword")}
 					</Link>
 				</div>
 
-				{!!backendErrors.genericError && (
-					<ErrorText>
-						{backendErrors.genericError}
-					</ErrorText>
-				)}
-				<Button type="submit">
-					{t("forms.actions.login")}
-				</Button>
-				<Button onClick={handleFakeLogin}>
-					Fake login
-				</Button>
+				{!!backendErrors.genericError && <ErrorText>{backendErrors.genericError}</ErrorText>}
+				<Button type="submit">{t("forms.actions.login")}</Button>
+				<Button onClick={handleFakeLogin}>Fake login</Button>
 			</Form>
 		</>
 	);

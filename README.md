@@ -8,6 +8,9 @@ A template for quick-starting any React app.
 - [Vite React Template](#vite-react-template)
   - [🏃‍♂️ Getting started](#️-getting-started)
     - [🟢 OpenAPI](#-openapi)
+    - [💻 Editor setup](#-editor-setup)
+    - [🧹 Linting \& Formatting](#-linting--formatting)
+    - [Ready](#ready)
   - [🚀 Deployments](#-deployments)
     - [🔁 Github Workflows](#-github-workflows)
     - [🛠️ DIY](#️-diy)
@@ -36,6 +39,7 @@ This will read `./openapi.json` and generate `./src/lib/schema.gen.d.ts` and `./
 
 > [!IMPORTANT]
 > The provided spec is an example. You should delete `openapi.json`, and reference your own OpenAPI specification by changing the command in `./package.json`:
+>
 > ```jsonc
 > // package.json
 > {
@@ -44,15 +48,29 @@ This will read `./openapi.json` and generate `./src/lib/schema.gen.d.ts` and `./
 > 	},
 > 	// ...
 > }
+> ```
 
 ### 💻 Editor setup
 
-We [work with VSCode](https://code.visualstudio.com/). Project settings are applied automatically. Make sure you've installed [the BiomeJS editor extension](https://marketplace.visualstudio.com/items?itemName=biomejs.biome) to let your editor format files according to [the config in `biome.json`](./biome.json).
+We [work with VSCode](https://code.visualstudio.com/). Project settings are applied automatically. Make sure you've installed [the Oxc extension](https://marketplace.visualstudio.com/items?itemName=oxc.oxc-vscode) to enable linting and formatting in your editor.
 
-> [!IMPORTANT]
-> Because [Biome pushes for browser standards](https://github.com/biomejs/biome/issues/1285) over custom tooling, [SASS files have to still be formatted using Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode). This is configured by default if you're using VSCode.
+The project uses:
 
-For other editors, the same applies: make sure it understands how to format according to the Biome config.
+- **[Oxlint](https://oxc.rs/docs/guide/usage/linter)** – Fast, type-aware linting (config: [`.oxlintrc.jsonc`](./.oxlintrc.jsonc))
+- **[Oxfmt](https://oxc.rs/docs/guide/usage/formatter)** – Formatting for JS, TS, JSON, SCSS, HTML, Markdown, and more (config: [`.oxfmtrc.jsonc`](./.oxfmtrc.jsonc))
+
+For other editors, ensure they support Oxc or configure them to run `oxlint` and `oxfmt` accordingly.
+
+### 🧹 Linting & Formatting
+
+Run linting and formatting checks manually:
+
+```sh
+# Lint with type-aware rules
+bun run lint
+```
+
+Pre-commit hooks via [Lefthook](https://github.com/evilmartians/lefthook) automatically run these checks on staged files.
 
 ### Ready
 

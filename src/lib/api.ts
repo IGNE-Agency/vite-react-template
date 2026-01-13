@@ -10,8 +10,6 @@ const options: ClientOptions = {
 	baseUrl: "https://localhost:5173",
 };
 
-export const queryClient = createQueryClient(
-	createFetchClient<paths>(options),
-);
+export const queryClient = createQueryClient(createFetchClient<paths>(options));
 
 export const client = createClient<paths>(options);

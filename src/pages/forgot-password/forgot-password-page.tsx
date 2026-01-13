@@ -1,10 +1,5 @@
 import { ErrorText } from "components/error-text/error-text";
-import {
-	Button,
-	Form,
-	Input,
-	Issues,
-} from "components/form";
+import { Button, Form, Input, Issues } from "components/form";
 import { H1 } from "components/heading/heading";
 import { queryClient } from "lib/api";
 import { usePageTitle } from "lib/page-title";
@@ -20,8 +15,7 @@ const ForgotPasswordPage = () => {
 	const { t } = useTranslation();
 	usePageTitle(t("pages.forgotPassword.title"));
 	const [email, setEmail] = useState("");
-	const [backendErrors, handleBackendErrors] =
-		useBackendError();
+	const [backendErrors, handleBackendErrors] = useBackendError();
 
 	// DEV: showcase what it looks like with backend errors
 	// Normally you would just call `handleBackendErrors` in the `onError` mutation option
@@ -30,34 +24,28 @@ const ForgotPasswordPage = () => {
 			errors: {
 				email: ["Email does not exist"],
 			},
-			message:
-				"Showcase errors on load. This message is a generic error, unrelated to form.",
+			message: "Showcase errors on load. This message is a generic error, unrelated to form.",
 		});
 	}, [handleBackendErrors]);
 
-	const { mutate, isPending, isSuccess } =
-		queryClient.useMutation(
-			"post",
-			"/api/v1/auth/forgot-password",
-			{
-				onError(error) {
-					handleBackendErrors(error);
-				},
-			},
-		);
-
-	const zorm = useZorm(
-		"login",
-		V1ForgotPasswordRequestSchema,
+	const { mutate, isPending, isSuccess } = queryClient.useMutation(
+		"post",
+		"/api/v1/auth/forgot-password",
 		{
-			onValidSubmit: async (evt) => {
-				evt.preventDefault();
-				setEmail(evt.data.email);
-				mutate({ body: evt.data });
+			onError(error) {
+				handleBackendErrors(error);
 			},
-			customIssues: backendErrors.formIssues,
 		},
 	);
+
+	const zorm = useZorm("login", V1ForgotPasswordRequestSchema, {
+		onValidSubmit: async (evt) => {
+			evt.preventDefault();
+			setEmail(evt.data.email);
+			mutate({ body: evt.data });
+		},
+		customIssues: backendErrors.formIssues,
+	});
 
 	if (isSuccess) {
 		return (
@@ -84,11 +72,7 @@ const ForgotPasswordPage = () => {
 			<H1 size="medium" className={style.textCenter}>
 				{t("pages.forgotPassword.title")}
 			</H1>
-			<Form
-				ref={zorm.ref}
-				className={style.form}
-				disabled={isPending}
-			>
+			<Form ref={zorm.ref} className={style.form} disabled={isPending}>
 				<label className={style.label} htmlFor="email">
 					<Input
 						label={t("forms.fields.email")}
@@ -101,14 +85,8 @@ const ForgotPasswordPage = () => {
 					))}
 				</label>
 
-				{backendErrors.genericError && (
-					<ErrorText>
-						{backendErrors.genericError}
-					</ErrorText>
-				)}
-				<Button type="submit">
-					{t("forms.actions.requestNewPassword")}
-				</Button>
+				{backendErrors.genericError && <ErrorText>{backendErrors.genericError}</ErrorText>}
+				<Button type="submit">{t("forms.actions.requestNewPassword")}</Button>
 			</Form>
 		</>
 	);

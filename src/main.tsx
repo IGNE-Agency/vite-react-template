@@ -1,7 +1,4 @@
-import {
-	QueryClient,
-	QueryClientProvider,
-} from "@tanstack/react-query";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import ErrorBoundary from "components/error-boundary/error-boundary";
 import LoadingIndicator from "components/loading-indicator/loading-indicator";
 import { AuthProvider } from "lib/auth";
@@ -16,9 +13,7 @@ import "style/main.scss";
 const rootElement = document.getElementById("root");
 
 if (!rootElement) {
-	throw new Error(
-		"Something has gone terribly wrong. The app couldn't find its home :(",
-	);
+	throw new Error("Something has gone terribly wrong. The app couldn't find its home :(");
 }
 
 await i18n.init();
@@ -32,9 +27,7 @@ const App = () => {
 
 	return (
 		<StrictMode>
-			<ErrorBoundary
-				fallback={(error) => <ErrorPage error={error} />}
-			>
+			<ErrorBoundary fallback={(error) => <ErrorPage error={error} />}>
 				<Suspense fallback={<LoadingIndicator />}>
 					<QueryClientProvider client={client}>
 						<AuthProvider>
