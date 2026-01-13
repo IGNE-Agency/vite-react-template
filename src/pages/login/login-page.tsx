@@ -10,7 +10,7 @@ import {
 	Field,
 	FieldError,
 	FieldLabel,
-} from "components/form/field";
+} from "components/form/field/field";
 import { H1 } from "components/heading/heading";
 import { queryClient } from "lib/api";
 import { useAuth } from "lib/auth";
