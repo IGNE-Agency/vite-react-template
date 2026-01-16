@@ -3,10 +3,10 @@
 	"ignorePatterns": ["node_modules/**", "**/*.d.ts", "**/*.gen.ts", "*.d.ts", "*.gen.ts"],
 	"categories": {
 		"correctness": "error",
-		"suspicious": "error",
+		"suspicious": "error"
 	},
 	"rules": {
 		"eslint/no-console": "error",
-		"eslint/no-unused-vars": "warn",
-	},
+		"eslint/no-unused-vars": "warn"
+	}
 }
