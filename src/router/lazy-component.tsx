@@ -28,16 +28,16 @@ type LazyOptions = {
  * @example
  * // Lazy load a component
  * // eg. export default Dashboard
- * const Dashboard = dynamic(() => import('./pages/dashboard'))
+ * const Dashboard = lazyComponent(() => import('./pages/dashboard'))
  *
  * @example
  * // Lazy load a component and use a fallback component while loading
- * const Dashboard = dynamic(() => import('./pages/dashboard'), { fallback: <Skeleton /> })
+ * const Dashboard = lazyComponent(() => import('./pages/dashboard'), { fallback: <Skeleton /> })
  *
  * @example
  * // Lazy load a named exported component
  * // eg. export const Dashbard = () => {}
- * const Dashbard = dynamic(() => import('./pages/dashboard').then(mod => ({ default: mod.Dashboard })))
+ * const Dashbard = lazyComponent(() => import('./pages/dashboard').then(mod => ({ default: mod.Dashboard })))
  */
 export function lazyComponent<
 	TElement extends ComponentType<Props>,
