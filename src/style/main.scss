@@ -4,6 +4,10 @@
 @use "/src/style/variables/fonts.scss";
 @use "/src/style/variables/color.scss";
 
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
 body {
 	background-color: white;
 	color: black;
