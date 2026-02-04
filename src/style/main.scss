@@ -4,10 +4,6 @@
 @use "/src/style/variables/fonts.scss";
 @use "/src/style/variables/color.scss";
 
-:root {
-	interpolate-size: allow-keywords;
-}
-
 #root {
 	isolation: isolate;
 }
