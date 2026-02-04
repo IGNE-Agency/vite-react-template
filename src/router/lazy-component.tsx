@@ -10,16 +10,15 @@ import {
 // biome-ignore lint/suspicious/noExplicitAny: Component can accept any props
 type Props = any;
 
-type Loader<TComponent extends ComponentType<Props>> =
-	() => Promise<{
-		// Force a default module export type
-		default: TComponent;
-	}>;
+type Loader<Props extends {}> = () => Promise<{
+	// Always use default export. See examples how to use on non-default exported component.
+	default: ComponentType<Props>;
+}>;
 
-type LazyOptions = {
+type LazyOptions = Readonly<{
 	// For custom loader (eg. skeleton) pass null for no loader at all
 	fallback?: SuspenseProps["fallback"] | null;
-};
+}>;
 
 /**
  * Lazy load any component.
