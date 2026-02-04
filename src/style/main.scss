@@ -6,6 +6,7 @@
 
 body {
 	background-color: white;
+	isolation: isolate;
 	color: black;
 	font: var(--font-body-medium-regular);
 }
