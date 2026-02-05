@@ -20,32 +20,23 @@
 	"pages": {
 		"error": { "title": "Probleem" },
 		"forgotPassword": {
-			"title": "Wachtwoord vergeten",
-			"success": "Als er een account bestaat met het e-mailadres <email>{{email}}</email>, dan zal je binnenkort een e-mail ontvangen, met instructies om een nieuw wachtwoord in te stellen."
+			"title": "Wachtwoord vergeten"
 		},
 		"home": { "title": "Home" },
 		"login": {
 			"title": "Inloggen",
 			"forgotPassword": "Wachtwoord vergeten?"
 		},
-		"notFound": { "title": "Niet gevonden" },
-		"register": {
-			"title": "Registreren",
-			"alreadyHaveAnAccount": "Al een bestaand account?"
-		}
+		"notFound": { "title": "Niet gevonden" }
 	},
 	"forms": {
 		"fields": {
 			"email": "E-mailadres",
 			"password": "Wachtwoord",
-			"name": "Naam",
-			"role": "Rol"
+			"name": "Naam"
 		},
 		"actions": {
-			"login": "Inloggen",
-			"requestNewPassword": "Nieuw wachtwoord aanvragen",
-			"register": "Registreren"
-		},
-		"issues": {}
+			"login": "Inloggen"
+		}
 	}
 }

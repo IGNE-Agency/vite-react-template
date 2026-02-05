@@ -20,32 +20,23 @@
 	"pages": {
 		"error": { "title": "Error" },
 		"forgotPassword": {
-			"title": "Forgot password",
-			"success": "If there is an account registered under the email <email>{{email}}</email>, you will receive an email shortly, with instructions to reset your password."
+			"title": "Forgot password"
 		},
 		"home": { "title": "Home" },
 		"login": {
 			"title": "Login",
 			"forgotPassword": "Forgot password?"
 		},
-		"notFound": { "title": "Not found" },
-		"register": {
-			"title": "Register",
-			"alreadyHaveAnAccount": "Already have an account?"
-		}
+		"notFound": { "title": "Not found" }
 	},
 	"forms": {
 		"fields": {
 			"email": "Email address",
 			"password": "Password",
-			"name": "Name",
-			"role": "Role"
+			"name": "Name"
 		},
 		"actions": {
-			"login": "Login",
-			"requestNewPassword": "Request new password",
-			"register": "Register"
-		},
-		"issues": {}
+			"login": "Login"
+		}
 	}
 }
