@@ -18,8 +18,8 @@ const LoginPageStateSchema = z.object({
 
 // TODO: use newly generated type
 type ValidationError = {
-	message: string;
-	errors: { [k: string]: string };
+	message?: string;
+	errors?: { [k: string]: string[] | undefined };
 };
 
 const LoginPage = () => {
@@ -34,11 +34,10 @@ const LoginPage = () => {
 
 	const { isPending } = queryClient.useMutation(
 		"post",
-		"/api/auth/login",
+		"/api/v1/auth/login",
 		{
 			onError(error) {
-				// TODO: heyapi has typed error
-				setError(error as ValidationError);
+				setError(error);
 			},
 			onSuccess(token) {
 				setToken(token);
