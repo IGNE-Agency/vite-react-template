@@ -2,7 +2,11 @@ import classNames from "classnames";
 import { ErrorText } from "components/error-text/error-text";
 import { Button, Form, Input } from "components/form";
 import { H1 } from "components/heading/heading";
-import { queryClient } from "lib/api";
+import {
+	postApiAuthLogin,
+	// postApiAuthLogin,
+	type ValidationError,
+} from "lib/api/heyapi";
 import { useAuth } from "lib/auth";
 import useLocationState from "lib/location-state";
 import { usePageTitle } from "lib/page-title";
@@ -16,12 +20,6 @@ const LoginPageStateSchema = z.object({
 	redirect: z.string().optional(),
 });
 
-// TODO: use newly generated type
-type ValidationError = {
-	message?: string;
-	errors?: { [k: string]: string[] | undefined };
-};
-
 const LoginPage = () => {
 	const { t } = useTranslation();
 	usePageTitle(t("pages.login.title"));
@@ -30,36 +28,38 @@ const LoginPage = () => {
 	);
 	const [, setToken] = useAuth();
 	const navigate = useNavigate();
+	// We don't yet have a recommended form lib
+	// For now go for simple controlled inputs with backend validation
+	const [email, setEmail] = useState("");
+	const [password, setPassword] = useState("");
 	const [error, setError] = useState<ValidationError>();
-
-	const { isPending } = queryClient.useMutation(
-		"post",
-		"/api/v1/auth/login",
-		{
-			onError(error) {
-				setError(error);
-			},
-			onSuccess(token) {
-				setToken(token);
-				navigate(locationState?.redirect || "/");
-			},
-		},
-	);
+	const [isPending, setIsPending] = useState(false);
 
 	const handleSubmit = async (
 		evt: React.FormEvent<HTMLFormElement>,
 	) => {
 		evt.preventDefault();
-		const formData = Object.fromEntries(
-			new FormData(evt.currentTarget),
-		);
+		setIsPending(true);
 
 		// This would require an actual backend
-		// await mutate({ body: formData })
+		// Note that login and logout are probably the only endpoints that do NOT use tanstack query
+		const { data: token, error } = await postApiAuthLogin({
+			body: { email, password },
+		});
 
-		// biome-ignore lint/suspicious/noConsole: this is an example
-		console.info("Loggin in with formdata", formData);
-		setToken("logged in");
+		if (error) {
+			setError(error);
+			return;
+		}
+
+		setToken(token);
+		navigate(locationState?.redirect || "/");
+		setIsPending(false);
+	};
+
+	// REMOVE ME
+	const handleFakeLogin = () => {
+		setToken("fake");
 		navigate(locationState?.redirect || "/");
 	};
 
@@ -79,6 +79,8 @@ const LoginPage = () => {
 						isInvalid={!!error?.errors?.email}
 						name="email"
 						id="email"
+						value={email}
+						onChange={(evt) => setEmail(evt.target.value)}
 					/>
 					<ErrorText>{error?.errors?.email}</ErrorText>
 				</label>
@@ -90,6 +92,10 @@ const LoginPage = () => {
 							isInvalid={!!error?.errors?.password}
 							name="password"
 							id="password"
+							value={password}
+							onChange={(evt) =>
+								setPassword(evt.target.value)
+							}
 						/>
 						<ErrorText>{error?.errors?.password}</ErrorText>
 					</label>
@@ -105,7 +111,10 @@ const LoginPage = () => {
 				<ErrorText>{error?.message}</ErrorText>
 
 				<Button type="submit">
-					{t("forms.actions.login")}
+					{t("forms.actions.login")} (note: no backend)
+				</Button>
+				<Button type="button" onClick={handleFakeLogin}>
+					Fake login
 				</Button>
 			</Form>
 		</>
