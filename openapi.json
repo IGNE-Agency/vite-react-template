@@ -3,7 +3,7 @@
 	"info": {
 		"title": "Example API",
 		"description": "An example API for Igne's vite-react-template",
-		"version": "1.0.0"
+		"version": "2.0.0"
 	},
 	"servers": [
 		{
@@ -16,12 +16,24 @@
 			"auth-cookie": { "type": "apiKey", "in": "cookie", "name": "auth-cookie" }
 		},
 		"schemas": {
-			"V1Problem": {
+			"GenericError": {
 				"type": "object",
 				"properties": {
-					"message": { "type": "string" },
+					"message": {
+						"type": "string"
+					}
+				}
+			},
+			"ValidationError": {
+				"type": "object",
+				"properties": {
+					"message": {
+						"type": "string",
+						"description": "Error overview"
+					},
 					"errors": {
 						"type": "object",
+						"description": "A detailed description of each field that failed validation.",
 						"additionalProperties": {
 							"type": "array",
 							"items": {
@@ -31,319 +43,123 @@
 					}
 				}
 			},
-			"V1RegisterRequest": {
+			"LoginRequest": {
 				"type": "object",
 				"properties": {
-					"name": { "type": "string" },
-					"email": { "format": "email", "type": "string" },
-					"password": { "type": "string" }
-				},
-				"required": ["name", "email", "password"]
-			},
-			"V1RegisterResponse": {
-				"type": "string"
-			},
-			"V1LoginRequest": {
-				"type": "object",
-				"properties": {
-					"email": { "format": "email", "type": "string" },
-					"password": { "type": "string" }
+					"email": {
+						"type": "string",
+						"format": "email"
+					},
+					"password": {
+						"type": "string"
+					}
 				},
 				"required": ["email", "password"]
 			},
-			"V1LoginResponse": {
-				"type": "string"
+			"LoginResponse": {
+				"type": "string",
+				"description": "Token to use in subsequent requests."
 			},
-			"V1ForgotPasswordRequest": {
+			"ForgotPasswordRequest": {
 				"type": "object",
 				"properties": {
-					"email": { "format": "email", "type": "string" }
+					"email": {
+						"type": "string",
+						"format": "email"
+					}
 				},
 				"required": ["email"]
-			},
-			"V1GetCurrentUserResponse": {
-				"type": "object",
-				"required": ["id", "name", "email", "createdAt", "updatedAt"],
-				"properties": {
-					"id": { "type": "string", "format": "uuid" },
-					"name": { "type": "string" },
-					"email": { "type": "string", "format": "email" },
-					"profileImage": {
-						"type": "object",
-						"required": [
-							"id",
-							"data",
-							"createdBy",
-							"createdAt",
-							"updatedBy",
-							"updatedAt"
-						],
-						"properties": {
-							"id": { "type": "string", "format": "uuid" },
-							"name": { "type": "string" },
-							"data": { "type": "string", "format": "bytea" },
-							"createdBy": {
-								"type": "object",
-								"properties": {
-									"id": { "type": "string", "format": "uuid" },
-									"name": { "type": "string" },
-									"email": { "type": "string", "format": "email" }
-								}
-							},
-							"createdAt": {
-								"type": "string",
-								"format": "date-time"
-							},
-							"updatedBy": {
-								"type": "object",
-								"properties": {
-									"id": { "type": "string", "format": "uuid" },
-									"name": { "type": "string" },
-									"email": { "type": "string", "format": "email" }
-								}
-							},
-							"updatedAt": { "type": "string", "format": "date-time" }
+			}
+		},
+		"responses": {
+			"ValidationException": {
+				"description": "Validation error",
+				"content": {
+					"application\/json": {
+						"schema": {
+							"$ref": "#/components/schemas/ValidationError"
 						}
-					},
-					"createdAt": { "type": "string", "format": "date-time" },
-					"updatedAt": { "type": "string", "format": "date-time" }
+					}
 				}
 			},
-			"V1GetUserByIdResponse": {
-				"type": "object",
-				"required": ["id", "name", "email", "createdAt", "updatedAt"],
-				"properties": {
-					"id": { "type": "string", "format": "uuid" },
-					"name": { "type": "string" },
-					"email": { "type": "string", "format": "email" },
-					"profileImage": {
-						"type": "object",
-						"required": [
-							"id",
-							"data",
-							"createdBy",
-							"createdAt",
-							"updatedBy",
-							"updatedAt"
-						],
-						"properties": {
-							"id": { "type": "string", "format": "uuid" },
-							"name": { "type": "string" },
-							"data": { "type": "string", "format": "bytea" },
-							"createdBy": {
-								"type": "object",
-								"properties": {
-									"id": { "type": "string", "format": "uuid" },
-									"name": { "type": "string" },
-									"email": { "type": "string", "format": "email" }
-								}
-							},
-							"createdAt": {
-								"type": "string",
-								"format": "date-time"
-							},
-							"updatedBy": {
-								"type": "object",
-								"properties": {
-									"id": { "type": "string", "format": "uuid" },
-									"name": { "type": "string" },
-									"email": { "type": "string", "format": "email" }
-								}
-							},
-							"updatedAt": { "type": "string", "format": "date-time" }
+			"AuthenticationException": {
+				"description": "Unauthenticated",
+				"content": {
+					"application\/json": {
+						"schema": {
+							"$ref": "#/components/schemas/GenericError"
 						}
-					},
-					"createdAt": { "type": "string", "format": "date-time" },
-					"updatedAt": { "type": "string", "format": "date-time" }
-				}
-			},
-			"V1UpdateUserByIdRequest": {
-				"type": "object",
-				"properties": {
-					"name": { "type": "string" },
-					"email": { "format": "email", "type": "string" }
-				}
-			},
-			"V1GetProjectsResponse": {
-				"type": "object",
-				"required": [
-					"items",
-					"pageNumber",
-					"totalPages",
-					"pageSize",
-					"hasNextPage",
-					"hasPreviousPage"
-				],
-				"properties": {
-					"items": {
-						"type": "array",
-						"items": {
-							"type": "object",
-							"readOnly": true,
-							"required": [
-								"id",
-								"createdAt",
-								"updatedAt",
-								"createdBy",
-								"updatedBy"
-							],
-							"properties": {
-								"name": { "type": "string" },
-								"createdAt": {
-									"type": "string",
-									"format": "date-time"
-								},
-								"updatedAt": {
-									"type": "string",
-									"format": "date-time"
-								},
-								"createdBy": {
-									"type": "object",
-									"readOnly": true,
-									"required": ["id", "name", "email"],
-									"properties": {
-										"id": { "type": "string", "format": "uuid" },
-										"name": { "type": "string" },
-										"email": { "type": "string", "format": "email" }
-									}
-								},
-								"updatedBy": {
-									"type": "object",
-									"readOnly": true,
-									"required": ["id", "name", "email"],
-									"properties": {
-										"id": { "type": "string", "format": "uuid" },
-										"name": { "type": "string" },
-										"email": { "type": "string", "format": "email" }
-									}
-								}
-							}
-						},
-						"readOnly": true
-					},
-					"pageNumber": { "type": "number" },
-					"totalPages": { "type": "number" },
-					"pageSize": { "type": "number" },
-					"hasNextPage": { "type": "boolean" },
-					"hasPreviousPage": { "type": "boolean" }
-				},
-				"readOnly": true
-			},
-			"V1CreateProjectResponse": {
-				"type": "string",
-				"format": "uri"
-			},
-			"V1CreateProjectRequest": {
-				"type": "object",
-				"properties": { "name": { "type": "string" } }
-			},
-			"V1GetProjectByIdRequest": {
-				"type": "object",
-				"readOnly": true,
-				"required": ["id", "createdBy", "createdAt", "updatedBy", "updatedAt"],
-				"properties": {
-					"id": { "type": "string", "format": "uuid" },
-					"name": { "type": "string", "format": "uuid" },
-					"createdBy": {
-						"type": "object",
-						"readOnly": true,
-						"required": ["id", "name", "email"],
-						"properties": {
-							"id": { "type": "string", "format": "uuid" },
-							"name": { "type": "string" },
-							"email": { "type": "string", "format": "email" }
-						}
-					},
-					"createdAt": { "type": "string", "format": "date-time" },
-					"updatedBy": {
-						"type": "object",
-						"readOnly": true,
-						"required": ["id", "name", "email"],
-						"properties": {
-							"id": { "type": "string", "format": "uuid" },
-							"name": { "type": "string" },
-							"email": { "type": "string", "format": "email" }
-						}
-					},
-					"updatedAt": { "type": "string", "format": "date-time" }
+					}
 				}
 			}
 		}
 	},
 	"security": [{ "auth-cookie": [] }],
 	"paths": {
-		"/api/v1/auth/login": {
+		"/api/auth/login": {
 			"post": {
 				"responses": {
 					"200": {
-						"description": "Logs in and sets an authentication cookie.",
+						"description": "Logs in and returns token on success.",
 						"content": {
 							"text/plain": {
 								"schema": {
-									"$ref": "#/components/schemas/V1LoginResponse"
+									"$ref": "#/components/schemas/LoginResponse"
 								}
 							}
 						}
 					},
-					"400": {
-						"description": "Bad request",
-						"content": {
-							"application/problem+json": {
-								"schema": { "$ref": "#/components/schemas/V1Problem" }
-							}
-						}
+					"422": {
+						"$ref": "#/components/responses/ValidationException"
 					}
 				},
-				"operationId": "postApiV1AuthLogin",
+				"operationId": "postApiAuthLogin",
 				"tags": ["Authentication"],
 				"parameters": [],
 				"requestBody": {
 					"content": {
 						"application/json": {
 							"schema": {
-								"$ref": "#/components/schemas/V1LoginRequest"
+								"$ref": "#/components/schemas/LoginRequest"
 							}
 						}
 					}
 				}
 			}
 		},
-		"/api/v1/auth/logout": {
+		"/api/auth/logout": {
 			"get": {
 				"responses": {
 					"200": {
-						"description": "Logs out and clears the authentication cookie."
+						"description": "Invalidates the token."
 					},
-					"401": { "description": "Missing or malformed token." }
+					"401": {
+						"$ref": "#/components/responses/AuthenticationException"
+					}
 				},
-				"operationId": "getApiV1AuthLogout",
+				"operationId": "getApiAuthLogout",
 				"tags": ["Authentication"],
 				"parameters": []
 			}
 		},
-		"/api/v1/auth/forgot-password": {
+		"/api/auth/forgot-password": {
 			"post": {
 				"responses": {
 					"200": {
 						"description": "If there is a user with the given email address, a recovery email will be sent to that address."
 					},
-					"400": {
-						"description": "Bad request",
-						"content": {
-							"application/problem+json": {
-								"schema": { "$ref": "#/components/schemas/V1Problem" }
-							}
-						}
+					"422": {
+						"$ref": "#/components/responses/ValidationException"
 					}
 				},
-				"operationId": "postApiV1AuthForgotPassword",
+				"operationId": "postApiAuthForgotPassword",
 				"tags": ["Authentication"],
 				"parameters": [],
 				"requestBody": {
 					"content": {
 						"application/json": {
 							"schema": {
-								"$ref": "#/components/schemas/V1ForgotPasswordRequest"
+								"$ref": "#/components/schemas/ForgotPasswordRequest"
 							}
 						}
 					}

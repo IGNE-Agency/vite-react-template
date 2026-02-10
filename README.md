@@ -21,52 +21,33 @@ To run this project, [use `bun`](https://bun.sh/):
 ```sh
 # Install dependencies
 bun install
+bun run gen
+bun run dev
 ```
 
 ### 🟢 OpenAPI
 
-Before you start developing, make sure you have generated the necessary schemas and validators from your OpenAPI spec:
+If the api endpoints changed, you need to re-generate the api-related files.
 
 ```sh
 # Run code generators for API schemas and validators
-bun run openapi
+bun run gen
 ```
 
-This will read `./openapi.json` and generate `./src/lib/schema.gen.d.ts` and `./src/lib/validators.gen.ts`. These two files provide typesafe API clients and form validators.
+This will read the provided openapi spec and generate some files. These files provide typesafe API clients and form validators.
 
-> [!IMPORTANT]
-> The provided spec is an example. You should delete `openapi.json`, and reference your own OpenAPI specification by changing the command in `./package.json`:
-> ```jsonc
-> // package.json
-> {
-> 	"scripts": {
-> 		"openapi": "bunx --bun openapi-typescript <PATH_OR_URL_TO_YOUR_OPENAPI_SPEC_JSON> -o ./src/lib/schema.gen.d.ts && bun run generate-schemas.ts <PATH_OR_URL_TO_YOUR_OPENAPI_SPEC_JSON> ./src/lib/validators.gen.ts",
-> 	},
-> 	// ...
-> }
+> ⚠️ The provided spec is an example. You should delete `openapi.json` and reference your own OpenAPI specification by changing the `input` in `heyapi.config.ts`
 
 ### 💻 Editor setup
 
-We [work with VSCode](https://code.visualstudio.com/). Project settings are applied automatically. Make sure you've installed [the BiomeJS editor extension](https://marketplace.visualstudio.com/items?itemName=biomejs.biome) to let your editor format files according to [the config in `biome.json`](./biome.json).
+Most of us [work with VSCode](https://code.visualstudio.com/) or clones thereof. Project settings are applied automatically. Make sure you've installed the [BiomeJS](https://marketplace.visualstudio.com/items?itemName=biomejs.biome) and [prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) editor extensions. They let your editor format files.  
+You should find them in the "Recommended" section of the extensions tab.
 
-> [!IMPORTANT]
-> Because [Biome pushes for browser standards](https://github.com/biomejs/biome/issues/1285) over custom tooling, [SASS files have to still be formatted using Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode). This is configured by default if you're using VSCode.
-
-For other editors, the same applies: make sure it understands how to format according to the Biome config.
-
-### Ready
-
-Now you're ready for takeoff!
-
-Start a developing session with the following command:
-
-```sh
-bun run dev
-```
+If you use another editor, the same applies: make sure it understands how to format according to the Biome & prettier configs.
 
 ## 🚀 Deployments
 
-### 🔁 Github Workflows
+### 🔁 Github Workflows / Bitbucket pipeline (todo)
 
 Use the provided Github Workflows, just add the last step in [.github/workflows/deploy_develop.yml](.github/workflows/deploy_develop.yml).
 
@@ -83,8 +64,7 @@ bun run build --mode develop
 
 The app is now built in `./dist` and ready to be hosted.
 
-> [!IMPORTANT]
-> Note that the web app is configured to send requests to the server it's hosted on. This is to prevent CORS issues while developing our projects.
+> ⚠️ Note that the web app is configured to send requests to the server it's hosted on. This is to prevent CORS issues while developing our projects.
 >
 > In order to support this, the server must reverse proxy requests according to [the following rules in `vite.config.ts`](./vite.config.ts):
 >
