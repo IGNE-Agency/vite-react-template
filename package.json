@@ -25,7 +25,7 @@
 		"react-i18next": "16.2.4",
 		"react-router": "7.9.5",
 		"react-zorm": "0.9.0",
-		"reset-css": "5.0.2",
+		"the-new-css-reset": "1.11.3",
 		"zod": "3.25.76",
 		"zod-i18n-map": "2.27.0"
 	},
