@@ -1,27 +1,26 @@
 import classNames from "classnames";
 import { ErrorText } from "components/error-text/error-text";
-import {
-	Button,
-	Form,
-	Input,
-	Issues,
-} from "components/form";
+import { Button, Form, Input } from "components/form";
 import { H1 } from "components/heading/heading";
 import { queryClient } from "lib/api";
 import { useAuth } from "lib/auth";
 import useLocationState from "lib/location-state";
 import { usePageTitle } from "lib/page-title";
-import useBackendError from "lib/useBackendError";
-import { V1LoginRequestSchema } from "lib/validators.gen";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router";
-import { useZorm } from "react-zorm";
 import { z } from "zod";
 import style from "./login-page.module.scss";
 
 const LoginPageStateSchema = z.object({
 	redirect: z.string().optional(),
 });
+
+// TODO: use newly generated type
+type ValidationError = {
+	message?: string;
+	errors?: { [k: string]: string[] | undefined };
+};
 
 const LoginPage = () => {
 	const { t } = useTranslation();
@@ -31,15 +30,14 @@ const LoginPage = () => {
 	);
 	const [, setToken] = useAuth();
 	const navigate = useNavigate();
-	const [backendErrors, handleBackendErrors] =
-		useBackendError();
+	const [error, setError] = useState<ValidationError>();
 
-	const { mutate, isPending } = queryClient.useMutation(
+	const { isPending } = queryClient.useMutation(
 		"post",
 		"/api/v1/auth/login",
 		{
 			onError(error) {
-				handleBackendErrors(error);
+				setError(error);
 			},
 			onSuccess(token) {
 				setToken(token);
@@ -48,16 +46,19 @@ const LoginPage = () => {
 		},
 	);
 
-	const zorm = useZorm("login", V1LoginRequestSchema, {
-		onValidSubmit: async (evt) => {
-			evt.preventDefault();
-			mutate({ body: evt.data });
-		},
-		customIssues: backendErrors.formIssues,
-	});
+	const handleSubmit = async (
+		evt: React.FormEvent<HTMLFormElement>,
+	) => {
+		evt.preventDefault();
+		const formData = Object.fromEntries(
+			new FormData(evt.currentTarget),
+		);
 
-	// Demo purposes - Remove me
-	const handleFakeLogin = () => {
+		// This would require an actual backend
+		// await mutate({ body: formData })
+
+		// biome-ignore lint/suspicious/noConsole: this is an example
+		console.info("Loggin in with formdata", formData);
 		setToken("logged in");
 		navigate(locationState?.redirect || "/");
 	};
@@ -68,33 +69,29 @@ const LoginPage = () => {
 				{t("pages.login.title")}
 			</H1>
 			<Form
-				ref={zorm.ref}
+				onSubmit={handleSubmit}
 				className={style.form}
 				disabled={isPending}
 			>
 				<label className={style.label} htmlFor="email">
 					<Input
 						label={t("forms.fields.email")}
-						isInvalid={zorm.errors.email(Boolean)}
-						name={zorm.fields.email()}
+						isInvalid={!!error?.errors?.email}
+						name="email"
 						id="email"
 					/>
-					{zorm.errors.email((...issues) => (
-						<Issues issues={issues} />
-					))}
+					<ErrorText>{error?.errors?.email}</ErrorText>
 				</label>
 				<div className={style.label}>
 					<label className={style.label} htmlFor="password">
 						<Input
 							type="password"
 							label={t("forms.fields.password")}
-							isInvalid={zorm.errors.password(Boolean)}
-							name={zorm.fields.password()}
+							isInvalid={!!error?.errors?.password}
+							name="password"
 							id="password"
 						/>
-						{zorm.errors.password((...issues) => (
-							<Issues issues={issues} />
-						))}
+						<ErrorText>{error?.errors?.password}</ErrorText>
 					</label>
 
 					<Link
@@ -105,16 +102,10 @@ const LoginPage = () => {
 					</Link>
 				</div>
 
-				{!!backendErrors.genericError && (
-					<ErrorText>
-						{backendErrors.genericError}
-					</ErrorText>
-				)}
+				<ErrorText>{error?.message}</ErrorText>
+
 				<Button type="submit">
 					{t("forms.actions.login")}
-				</Button>
-				<Button onClick={handleFakeLogin}>
-					Fake login
 				</Button>
 			</Form>
 		</>
