@@ -21,9 +21,10 @@ const AppHeader = () => {
 	const locale = useLocale();
 	const navigate = useNavigate();
 
-	const languageOptions = Object.keys(
-		i18n.options.resources || {},
+	const languageOptions = (
+		i18n.options.supportedLngs as Readonly<string[]>
 	)
+		.filter((lng) => lng !== "cimode")
 		.toSorted((a, b) => a.localeCompare(b, locale))
 		.map((lang) => ({
 			value: lang,
