@@ -11,10 +11,7 @@ export default defineConfig([
 				name: "@hey-api/sdk",
 				// validator: true, // optional: https://heyapi.dev/openapi-ts/plugins/sdk#validators
 			},
-			{
-				name: "zod",
-				compatibilityVersion: 3, // TODO: very temporary until next PR
-			},
+			"zod",
 		],
 	},
 ]);

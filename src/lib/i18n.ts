@@ -6,15 +6,12 @@ import {
 	useTranslation,
 } from "react-i18next";
 import { z } from "zod";
-import { zodI18nMap } from "zod-i18n-map";
-import {
-	default as ZodEnUs,
-	default as ZodNlNl,
-} from "zod-i18n-map/locales/nl/zod.json";
+import { en, nl } from "zod/locales";
 
 const LOCALSTORAGE_LOCALE_KEY = "locale";
 const FALLBACK_LNG =
 	localStorage.getItem(LOCALSTORAGE_LOCALE_KEY) ?? "nl-NL";
+const zodLocales = { en, nl };
 
 /**
  * Reads a file path and returns the filename.
@@ -54,10 +51,20 @@ const supportedLanguages = Object.fromEntries(
 		]),
 	),
 );
+const supportedLocales = Object.keys(supportedLanguages);
 
-const supportedLanguageNames = Object.keys(
-	supportedLanguages,
-);
+/**
+ * Switch language of zod default messages
+ * If we ever need to support more then 2 (nl, en) we should spend more time to figure
+ * out how to dynamically import. Spent too much time on this, but no banana.
+ */
+const loadZodLocale = async (locale: string) => {
+	// biome-ignore format: because it gets ugly
+	const lng = locale.substring(0, 2) as keyof typeof zodLocales;
+	if (lng in zodLocales) {
+		z.config(zodLocales[lng]());
+	}
+};
 
 /**
  * Run this once before loading the app so the
@@ -73,22 +80,15 @@ export const init = async () => {
 		)
 		.use(initReactI18next)
 		.init({
-			// Supported and fallback languages are the same
-			supportedLngs: supportedLanguageNames,
+			// Fallback language should be one of supported languages
+			supportedLngs: supportedLocales,
 			fallbackLng: FALLBACK_LNG,
-
-			// Use zod error translations together with backend plugin
-			partialBundledLanguages: true,
-			resources: {
-				"nl-NL": { zod: ZodNlNl },
-				"en-US": { zod: ZodEnUs },
-			},
-
-			// Default to FALLBACK_LNG, even when automatic detection
-			// says otherwise.
+			// Default to FALLBACK_LNG, even when automatic detection says otherwise.
 			lng: FALLBACK_LNG,
 		});
-	z.setErrorMap(zodI18nMap);
+
+	i18n.on("languageChanged", loadZodLocale);
+	loadZodLocale(FALLBACK_LNG);
 };
 
 export default i18n;
