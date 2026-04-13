@@ -17,7 +17,18 @@ export default defineConfig(({ mode }) => {
 				babel: { plugins: ["babel-plugin-react-compiler"] },
 			}),
 			viteTsConfigPaths(),
-			svgr(),
+			svgr({
+				svgrOptions: {
+					plugins: [
+						"@svgr/plugin-svgo",
+						"@svgr/plugin-jsx",
+					],
+					svgoConfig: {
+						floatPrecision: 2,
+						plugins: ["preset-default"],
+					},
+				},
+			}),
 			// While Vite should automatically handle SASS, it has some problems with modules.
 			// This plugin fixes the issue as the PR isn't ready yet.
 			// https://github.com/vitejs/vite/pull/16018
