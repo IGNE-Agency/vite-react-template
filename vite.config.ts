@@ -23,9 +23,21 @@ export default defineConfig(({ mode }) => {
 						"@svgr/plugin-svgo",
 						"@svgr/plugin-jsx",
 					],
+					svgProps: { fill: "currentColor" },
 					svgoConfig: {
-						floatPrecision: 2,
-						plugins: ["preset-default"],
+						multipass: true,
+						floatPrecision: 1,
+						plugins: [
+							{
+								name: "preset-default",
+								params: {
+									overrides: {
+										// https://github.com/svg/svgo/issues/1128
+										removeViewBox: false,
+									},
+								},
+							},
+						],
 					},
 				},
 			}),
