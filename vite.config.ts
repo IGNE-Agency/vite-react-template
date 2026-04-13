@@ -23,7 +23,7 @@ export default defineConfig(({ mode }) => {
 						"@svgr/plugin-svgo",
 						"@svgr/plugin-jsx",
 					],
-					svgProps: { fill: "currentColor" },
+					// svgProps: { fill: "currentColor" }, // enable this with caution, wether it works depends on the icon set used
 					svgoConfig: {
 						multipass: true,
 						floatPrecision: 1,
@@ -32,7 +32,6 @@ export default defineConfig(({ mode }) => {
 								name: "preset-default",
 								params: {
 									overrides: {
-										// https://github.com/svg/svgo/issues/1128
 										removeViewBox: false,
 									},
 								},
