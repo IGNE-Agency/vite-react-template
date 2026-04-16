@@ -22,6 +22,7 @@ type LazyOptions = Readonly<{
 
 /**
  * Lazy load any component.
+ * Tanstack router automatically lazy-loads, but you can still use this for modal content for example.
  * Supports component props & a custom (or no) loader.
  *
  * @example

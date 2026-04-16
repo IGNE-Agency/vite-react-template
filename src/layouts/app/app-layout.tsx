@@ -1,4 +1,4 @@
-import { Outlet } from "react-router";
+import { Outlet } from "@tanstack/react-router";
 import style from "./app-layout.module.scss";
 import AppHeader from "./header/app-header";
 

@@ -1,4 +1,5 @@
 import * as path from "node:path";
+import { tanstackRouter } from "@tanstack/router-plugin/vite";
 import react from "@vitejs/plugin-react";
 import { defineConfig, loadEnv } from "vite";
 import { patchCssModules } from "vite-css-modules";
@@ -12,6 +13,10 @@ export default defineConfig(({ mode }) => {
 
 	return {
 		plugins: [
+			tanstackRouter({
+				routesDirectory: "./src/routes",
+				autoCodeSplitting: true,
+			}),
 			https(),
 			react({
 				babel: { plugins: ["babel-plugin-react-compiler"] },

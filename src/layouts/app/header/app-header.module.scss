@@ -16,8 +16,8 @@
 	gap: var(--unit-1);
 	color: black;
 	text-decoration: none;
-}
 
-.active {
-	text-decoration: underline;
+	&[data-status="active"] {
+		text-decoration: underline;
+	}
 }

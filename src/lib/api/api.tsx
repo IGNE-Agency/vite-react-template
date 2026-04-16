@@ -1,9 +1,5 @@
-import {
-	QueryClient,
-	QueryClientProvider,
-} from "@tanstack/react-query";
+import { QueryClient } from "@tanstack/react-query";
 import env from "env";
-import type { ReactNode } from "react";
 import { client } from "./heyapi/client.gen";
 import { applyMiddleware } from "./middleware";
 
@@ -38,15 +34,3 @@ export const queryClient = new QueryClient({
 		},
 	},
 });
-
-export const TanstackQueryProvider = ({
-	children,
-}: {
-	children: ReactNode;
-}) => {
-	return (
-		<QueryClientProvider client={queryClient}>
-			{children}
-		</QueryClientProvider>
-	);
-};
