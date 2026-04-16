@@ -10,7 +10,14 @@ export const Route = createFileRoute("/_app")({
 		if (!context.token) {
 			throw redirect({
 				to: "/login",
-				search: { redirect: location.pathname },
+				search: {
+					// After logging in, send them back where they came from
+					// but prevent setting it when it's "/"
+					redirect:
+						location.pathname !== "/"
+							? location.pathname
+							: undefined,
+				},
 			});
 		}
 	},
