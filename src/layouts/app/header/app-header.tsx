@@ -1,10 +1,11 @@
+import { Link, useNavigate } from "@tanstack/react-router";
 import Logo from "assets/icons/logo.svg?react";
 import classNames from "classnames";
 import { Button, Select } from "components/form";
 import { useAuth } from "lib/auth";
 import { useLocale } from "lib/i18n";
+import { flushSync } from "react-dom";
 import { useTranslation } from "react-i18next";
-import { NavLink, useNavigate } from "react-router";
 import style from "./app-header.module.scss";
 
 const links = [
@@ -35,8 +36,8 @@ const AppHeader = () => {
 		}));
 
 	const handleLogout = () => {
-		setToken(undefined);
-		navigate("/");
+		flushSync(() => setToken(undefined));
+		navigate({ to: "/login" });
 	};
 
 	return (
@@ -46,19 +47,14 @@ const AppHeader = () => {
 			>
 				<nav className={style.row}>
 					{links.map((link) => (
-						<NavLink
+						<Link
 							key={link.to}
 							to={link.to}
-							className={({ isActive }) =>
-								classNames([
-									style.link,
-									isActive && style.active,
-								])
-							}
+							className={style.link}
 						>
 							{link.icon}
 							<span>{t(`pages.${link.name}.title`)}</span>
-						</NavLink>
+						</Link>
 					))}
 				</nav>
 				<div className={style.row}>

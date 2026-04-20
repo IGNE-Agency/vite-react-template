@@ -1,3 +1,8 @@
+import {
+	getRouteApi,
+	Link,
+	useNavigate,
+} from "@tanstack/react-router";
 import classNames from "classnames";
 import { ErrorText } from "components/error-text/error-text";
 import { Button, Form, Input } from "components/form";
@@ -8,24 +13,17 @@ import {
 	type ValidationError,
 } from "lib/api/heyapi";
 import { useAuth } from "lib/auth";
-import useLocationState from "lib/location-state";
 import { usePageTitle } from "lib/page-title";
 import { useState } from "react";
+import { flushSync } from "react-dom";
 import { useTranslation } from "react-i18next";
-import { Link, useNavigate } from "react-router";
-import { z } from "zod";
 import style from "./login-page.module.scss";
-
-const LoginPageStateSchema = z.object({
-	redirect: z.string().optional(),
-});
 
 const LoginPage = () => {
 	const { t } = useTranslation();
 	usePageTitle(t("pages.login.title"));
-	const locationState = useLocationState(
-		LoginPageStateSchema,
-	);
+	const routeApi = getRouteApi("/_auth/login");
+	const { redirect } = routeApi.useSearch();
 	const [, setToken] = useAuth();
 	const navigate = useNavigate();
 	// We don't yet have a recommended form lib
@@ -42,7 +40,7 @@ const LoginPage = () => {
 		setIsPending(true);
 
 		// This would require an actual backend
-		// Note that login and logout are probably the only endpoints that do NOT use tanstack query
+		// Note that auth endpoints are probably the only ones that do NOT use tanstack query
 		const { data: token, error } = await postApiAuthLogin({
 			body: { email, password },
 		});
@@ -52,15 +50,15 @@ const LoginPage = () => {
 			return;
 		}
 
-		setToken(token);
-		navigate(locationState?.redirect || "/");
+		flushSync(() => setToken(token));
+		navigate({ to: redirect || "/" });
 		setIsPending(false);
 	};
 
-	// REMOVE ME
+	// TODO: REMOVE ME
 	const handleFakeLogin = () => {
-		setToken("fake");
-		navigate(locationState?.redirect || "/");
+		flushSync(() => setToken("fake"));
+		navigate({ to: redirect || "/" });
 	};
 
 	return (
