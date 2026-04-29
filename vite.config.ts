@@ -14,8 +14,8 @@ export default defineConfig(({ mode }) => {
 	return {
 		plugins: [
 			tanstackRouter({
-				routesDirectory: "./src/routes",
 				autoCodeSplitting: true,
+				quoteStyle: "double",
 			}),
 			https(),
 			react({
