@@ -1,15 +1,12 @@
+import { QueryClientProvider } from "@tanstack/react-query";
 import ErrorBoundary from "components/error-boundary/error-boundary";
 import LoadingIndicator from "components/loading-indicator/loading-indicator";
 import { queryClient } from "lib/api/api";
-import { AuthProvider } from "lib/auth";
 import * as i18n from "lib/i18n";
-import { PageTitleProvider } from "lib/page-title";
-import ErrorPage from "pages/error/error-page";
+import { AppRouter } from "lib/router";
 import { StrictMode, Suspense } from "react";
 import { createRoot } from "react-dom/client";
-import { AppRouter } from "./router/router";
 import "style/main.scss";
-import { QueryClientProvider } from "@tanstack/react-query";
 
 const rootElement = document.getElementById("root");
 
@@ -29,15 +26,11 @@ const App = () => {
 	return (
 		<StrictMode>
 			<ErrorBoundary
-				fallback={(error) => <ErrorPage error={error} />}
+				fallback={(error) => <pre>{error.toString()}</pre>}
 			>
 				<Suspense fallback={<LoadingIndicator />}>
 					<QueryClientProvider client={queryClient}>
-						<AuthProvider>
-							<PageTitleProvider name="Template">
-								<AppRouter queryClient={queryClient} />
-							</PageTitleProvider>
-						</AuthProvider>
+						<AppRouter queryClient={queryClient} />
 					</QueryClientProvider>
 				</Suspense>
 			</ErrorBoundary>

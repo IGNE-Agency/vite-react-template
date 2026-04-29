@@ -1,6 +1,6 @@
-import * as path from "node:path";
 import { tanstackRouter } from "@tanstack/router-plugin/vite";
 import react from "@vitejs/plugin-react";
+import * as path from "node:path";
 import { defineConfig, loadEnv } from "vite";
 import { patchCssModules } from "vite-css-modules";
 import https from "vite-plugin-mkcert";
@@ -74,6 +74,7 @@ export default defineConfig(({ mode }) => {
 			open: true,
 			proxy: {
 				[env.VITE_API_BASEURL]: {
+					// TODO: Change to your actual backend
 					target: "CHANGE_ME",
 					secure: true,
 					changeOrigin: true,

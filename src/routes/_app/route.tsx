@@ -2,17 +2,20 @@ import {
 	createFileRoute,
 	redirect,
 } from "@tanstack/react-router";
-import AppLayout from "layouts/app/app-layout";
+import { getApiUsersCurrentOptions } from "lib/api/heyapi/@tanstack/react-query.gen";
+import AppLayout from "./-layout";
 
 export const Route = createFileRoute("/_app")({
-	beforeLoad: ({ context, location }) => {
+	beforeLoad: async ({ context, location }) => {
 		// TODO: replace with more flexible permission system: https://github.com/IGNE-Agency/vite-react-template/issues/43
-		if (!context.token) {
+		try {
+			await context.queryClient.ensureQueryData(
+				getApiUsersCurrentOptions(),
+			);
+		} catch {
 			throw redirect({
 				to: "/login",
 				search: {
-					// After logging in, send them back where they came from
-					// but prevent setting it when it's "/"
 					redirect:
 						location.pathname !== "/"
 							? location.pathname

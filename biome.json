@@ -11,7 +11,7 @@
 			"**",
 			"!**/node_modules",
 			"!src/lib/api/heyapi",
-			"!**/*.d.ts",
+			"!**/*.module.scss.d.ts",
 			"!**/*.gen.ts"
 		]
 	},

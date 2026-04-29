@@ -2,11 +2,10 @@ import { Link, useNavigate } from "@tanstack/react-router";
 import Logo from "assets/icons/logo.svg?react";
 import classNames from "classnames";
 import { Button, Select } from "components/form";
-import { useAuth } from "lib/auth";
+import { postApiAuthLogout } from "lib/api/heyapi";
 import { useLocale } from "lib/i18n";
-import { flushSync } from "react-dom";
 import { useTranslation } from "react-i18next";
-import style from "./app-header.module.scss";
+import style from "./-header.module.scss";
 
 const links = [
 	{
@@ -18,7 +17,6 @@ const links = [
 
 const AppHeader = () => {
 	const { t, i18n } = useTranslation();
-	const [, setToken] = useAuth();
 	const locale = useLocale();
 	const navigate = useNavigate();
 
@@ -35,8 +33,8 @@ const AppHeader = () => {
 				}).of(lang) ?? "",
 		}));
 
-	const handleLogout = () => {
-		flushSync(() => setToken(undefined));
+	const handleLogout = async () => {
+		await postApiAuthLogout();
 		navigate({ to: "/login" });
 	};
 
