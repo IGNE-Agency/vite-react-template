@@ -12,7 +12,6 @@
 	"dependencies": {
 		"@tanstack/react-query": "5.100.6",
 		"@tanstack/react-router": "1.168.26",
-		"@uidotdev/usehooks": "2.4.1",
 		"babel-plugin-react-compiler": "1.0.0",
 		"classnames": "2.5.1",
 		"i18next": "26.0.8",
@@ -21,6 +20,7 @@
 		"react-dom": "19.2.5",
 		"react-i18next": "17.0.6",
 		"the-new-css-reset": "1.11.3",
+		"usehooks-ts": "3.1.1",
 		"zod": "4.4.1"
 	},
 	"devDependencies": {

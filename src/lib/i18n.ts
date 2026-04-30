@@ -5,13 +5,11 @@ import {
 	initReactI18next,
 	useTranslation,
 } from "react-i18next";
-import { z } from "zod";
-import { en, nl } from "zod/locales";
+import * as z from "zod";
 
 const LOCALSTORAGE_LOCALE_KEY = "locale";
 const FALLBACK_LNG =
 	localStorage.getItem(LOCALSTORAGE_LOCALE_KEY) ?? "nl-NL";
-const zodLocales = { en, nl };
 
 /**
  * Reads a file path and returns the filename.
@@ -53,17 +51,32 @@ const supportedLanguages = Object.fromEntries(
 );
 const supportedLocales = Object.keys(supportedLanguages);
 
+const zodLocaleModules: Readonly<
+	Record<string, () => Promise<z.core.$ZodConfig>>
+> = Object.fromEntries(
+	Object.entries(
+		import.meta.glob(
+			[
+				"/node_modules/zod/v4/locales/*.js",
+				"!/node_modules/zod/v4/locales/index.js",
+			],
+			{
+				import: "default",
+			},
+		),
+	).map(([path, loader]) => [
+		path.split("/").at(-1)?.replace(".js", ""),
+		loader,
+	]),
+);
+
 /**
  * Switch language of zod default messages
- * If we ever need to support more then 2 (nl, en) we should spend more time to figure
- * out how to dynamically import. Spent too much time on this, but no banana.
  */
 const loadZodLocale = async (locale: string) => {
-	// biome-ignore format: because it gets ugly
-	const lng = locale.substring(0, 2) as keyof typeof zodLocales;
-	if (lng in zodLocales) {
-		z.config(zodLocales[lng]());
-	}
+	const lng = new Intl.Locale(locale).language;
+	const loader = zodLocaleModules[lng];
+	z.config(await loader());
 };
 
 /**
