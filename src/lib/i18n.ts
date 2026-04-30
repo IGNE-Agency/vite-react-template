@@ -1,5 +1,5 @@
 import i18n from "i18next";
-import Backend from "i18next-http-backend";
+import Backend from "i18next-fetch-backend";
 import { useEffect, useMemo } from "react";
 import {
 	initReactI18next,
@@ -85,12 +85,7 @@ const loadZodLocale = async (locale: string) => {
  */
 export const init = async () => {
 	await i18n
-		.use(
-			new Backend(null, {
-				loadPath: (lng) =>
-					supportedLanguages[lng.toString()],
-			}),
-		)
+		.use(Backend)
 		.use(initReactI18next)
 		.init({
 			// Fallback language should be one of supported languages
@@ -98,6 +93,9 @@ export const init = async () => {
 			fallbackLng: FALLBACK_LNG,
 			// Default to FALLBACK_LNG, even when automatic detection says otherwise.
 			lng: FALLBACK_LNG,
+			backend: {
+				loadPath: (lng: string) => supportedLanguages[lng],
+			},
 		});
 
 	i18n.on("languageChanged", loadZodLocale);
