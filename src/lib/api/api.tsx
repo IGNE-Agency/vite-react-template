@@ -1,6 +1,7 @@
 import { QueryClient } from "@tanstack/react-query";
 import env from "env";
 import { client } from "./heyapi/client.gen";
+import { HttpError } from "./http-error";
 import { applyMiddleware } from "./middleware";
 
 // Configure generated fetch client
@@ -21,12 +22,8 @@ export const queryClient = new QueryClient({
 			staleTime: 0,
 			gcTime: 5 * 60 * 1000, // 5 minutes
 			retry: (fails, error) => {
-				// TODO: Use interceptor to re-throw as `HttpError`, including the status code. That is way better than message sniffing.
-				if (
-					error.message
-						.toLowerCase()
-						.startsWith("unauthenticated")
-				) {
+				// Never retry client errors — they won't resolve on their own
+				if (error instanceof HttpError && error.isClientError) {
 					return false;
 				}
 				return fails < 3;
