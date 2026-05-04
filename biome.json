@@ -12,7 +12,8 @@
 			"!**/node_modules",
 			"!src/lib/api/heyapi",
 			"!**/*.module.scss.d.ts",
-			"!**/*.gen.ts"
+			"!**/*.gen.ts",
+			"!src/paraglide"
 		]
 	},
 	"formatter": {

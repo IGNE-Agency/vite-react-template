@@ -5,8 +5,8 @@ import { Button, Select } from "components/form";
 import { postApiAuthLogout } from "lib/api/heyapi";
 import { useLocale } from "lib/i18n";
 import * as m from "paraglide/messages";
-import { locales, setLocale } from "paraglide/runtime";
 import type { Locale } from "paraglide/runtime";
+import { locales, setLocale } from "paraglide/runtime";
 import style from "./-header.module.scss";
 
 const links = [

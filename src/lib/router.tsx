@@ -3,7 +3,10 @@ import {
 	createRouter,
 	RouterProvider,
 } from "@tanstack/react-router";
-import { deLocalizeUrl, localizeUrl } from "paraglide/runtime";
+import {
+	deLocalizeUrl,
+	localizeUrl,
+} from "paraglide/runtime";
 import { routeTree } from "../routeTree.gen";
 
 export type RouterContext = Readonly<{

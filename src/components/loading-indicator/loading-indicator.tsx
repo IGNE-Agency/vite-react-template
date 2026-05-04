@@ -32,7 +32,10 @@ const LoadingIndicator = () => {
 			setMessageFn(() => next);
 		};
 
-		const interval = setInterval(updateLoadingMessage, 5000);
+		const interval = setInterval(
+			updateLoadingMessage,
+			5000,
+		);
 		return () => clearInterval(interval);
 	});
 

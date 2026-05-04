@@ -1,5 +1,5 @@
-import { useMemo } from "react";
 import { getLocale } from "paraglide/runtime";
+import { useMemo } from "react";
 import { z } from "zod";
 import { en, nl } from "zod/locales";
 
@@ -15,5 +15,8 @@ export const loadZodLocale = (locale: string) => {
 
 export const useLocale = () => {
 	const language = getLocale();
-	return useMemo(() => new Intl.Locale(language), [language]);
+	return useMemo(
+		() => new Intl.Locale(language),
+		[language],
+	);
 };
