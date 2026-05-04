@@ -8,6 +8,7 @@ dist
 
 # Generated files
 src/lib/api/heyapi
+src/paraglide
 **/*.gen.*
 **/*.scss.d.ts
 **/*.sass.d.ts
