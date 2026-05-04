@@ -1,6 +1,6 @@
 # Vite React Template
 
-A template for quick-starting any React app.
+A template for quick-starting any React app!
 
 <details>
 <summary>Table of Contents</summary>
