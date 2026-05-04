@@ -10,16 +10,15 @@
 		"preview": "vite preview"
 	},
 	"dependencies": {
+		"@inlang/paraglide-js": "2.18.0",
+		"@inlang/plugin-message-format": "4.4.0",
 		"@tanstack/react-query": "5.90.7",
 		"@tanstack/react-router": "1.168.22",
 		"@uidotdev/usehooks": "2.4.1",
 		"babel-plugin-react-compiler": "1.0.0",
 		"classnames": "2.5.1",
-		"i18next": "25.6.2",
-		"i18next-http-backend": "3.0.2",
 		"react": "19.2.0",
 		"react-dom": "19.2.0",
-		"react-i18next": "16.2.4",
 		"the-new-css-reset": "1.11.3",
 		"zod": "4.3.6"
 	},

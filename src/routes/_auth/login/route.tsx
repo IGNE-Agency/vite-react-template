@@ -12,8 +12,8 @@ import {
 	postApiAuthLogin,
 	type ValidationError,
 } from "lib/api/heyapi";
+import * as m from "paraglide/messages";
 import { useState } from "react";
-import { useTranslation } from "react-i18next";
 import z from "zod";
 import style from "./-login.module.scss";
 
@@ -29,8 +29,7 @@ export const Route = createFileRoute("/_auth/login")({
 });
 
 function LoginPage() {
-	const { t } = useTranslation();
-	useDocumentTitle(t("pages.login.title"));
+	useDocumentTitle(m.pages_login_title());
 	const { redirect } = Route.useSearch();
 	const navigate = useNavigate();
 	const [email, setEmail] = useState("");
@@ -61,7 +60,7 @@ function LoginPage() {
 	return (
 		<>
 			<H1 size="medium" className={style.textCenter}>
-				{t("pages.login.title")}
+				{m.pages_login_title()}
 			</H1>
 			<Form
 				onSubmit={handleSubmit}
@@ -70,7 +69,7 @@ function LoginPage() {
 			>
 				<label className={style.label} htmlFor="email">
 					<Input
-						label={t("forms.fields.email")}
+						label={m.forms_fields_email()}
 						isInvalid={!!error?.errors?.email}
 						name="email"
 						id="email"
@@ -83,7 +82,7 @@ function LoginPage() {
 					<label className={style.label} htmlFor="password">
 						<Input
 							type="password"
-							label={t("forms.fields.password")}
+							label={m.forms_fields_password()}
 							isInvalid={!!error?.errors?.password}
 							name="password"
 							id="password"
@@ -98,12 +97,12 @@ function LoginPage() {
 						to="/forgot-password"
 						className={classNames([style.forgotPassword])}
 					>
-						{t("pages.login.forgotPassword")}
+						{m.pages_login_forgot_password()}
 					</Link>
 				</div>
 				<ErrorText>{error?.message}</ErrorText>
 				<Button type="submit">
-					{t("forms.actions.login")}
+					{m.forms_actions_login()}
 				</Button>
 			</Form>
 		</>

@@ -5,16 +5,15 @@ import {
 import { useDocumentTitle } from "@uidotdev/usehooks";
 import { H1 } from "components/heading/heading";
 import type { RouterContext } from "lib/router";
-import { useTranslation } from "react-i18next";
+import * as m from "paraglide/messages";
 import style from "./-not-found.module.scss";
 
 const NotFoundPage = () => {
-	const { t } = useTranslation();
-	useDocumentTitle(t("pages.notFound.title"));
+	useDocumentTitle(m.pages_not_found_title());
 
 	return (
 		<H1 size="medium" className={style.page}>
-			{t("pages.notFound.title")}
+			{m.pages_not_found_title()}
 		</H1>
 	);
 };

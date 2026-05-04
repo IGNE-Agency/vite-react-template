@@ -3,6 +3,7 @@ import {
 	createRouter,
 	RouterProvider,
 } from "@tanstack/react-router";
+import { deLocalizeUrl, localizeUrl } from "paraglide/runtime";
 import { routeTree } from "../routeTree.gen";
 
 export type RouterContext = Readonly<{
@@ -16,6 +17,10 @@ const router = createRouter({
 		queryClient: null!,
 	},
 	defaultPreload: "intent",
+	rewrite: {
+		input: ({ url }) => deLocalizeUrl(url),
+		output: ({ url }) => localizeUrl(url),
+	},
 });
 
 export const AppRouter = ({

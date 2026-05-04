@@ -1,3 +1,4 @@
+import { paraglideVitePlugin } from "@inlang/paraglide-js";
 import { tanstackRouter } from "@tanstack/router-plugin/vite";
 import react from "@vitejs/plugin-react";
 import * as path from "node:path";
@@ -13,6 +14,12 @@ export default defineConfig(({ mode }) => {
 
 	return {
 		plugins: [
+			paraglideVitePlugin({
+				project: "./project.inlang",
+				outdir: "./src/paraglide",
+				strategy: ["url", "localStorage", "baseLocale"],
+				emitTsDeclarations: true,
+			}),
 			tanstackRouter({
 				autoCodeSplitting: true,
 				quoteStyle: "double",

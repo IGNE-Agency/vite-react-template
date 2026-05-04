@@ -1,48 +1,45 @@
 import Spinner from "assets/icons/spinner.svg?react";
+import * as m from "paraglide/messages";
 import { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
 import style from "./loading-indicator.module.scss";
 
-const LoadingIndicator = () => {
-	const { t } = useTranslation();
+// TODO: update the messages for your client! (probably one message is enough)
+const messageFns = [
+	m.loading_message_0,
+	m.loading_message_1,
+	m.loading_message_2,
+	m.loading_message_3,
+	m.loading_message_4,
+];
 
-	// TODO: update the messages for your client! (probably one message is enough)
-	const messages = t(
-		"components.loadingIndicator.messages",
-		{
-			returnObjects: true,
-		},
-	) as ReadonlyArray<string>;
-	const [message, setMessage] = useState(
-		messages[Math.floor(Math.random() * messages.length)],
+const LoadingIndicator = () => {
+	const [messageFn, setMessageFn] = useState(
+		() =>
+			messageFns[
+				Math.floor(Math.random() * messageFns.length)
+			],
 	);
 
 	useEffect(() => {
 		const updateLoadingMessage = () => {
-			let newMessage = message;
-			while (newMessage === message) {
-				newMessage =
-					messages[
-						Math.floor(Math.random() * messages.length)
+			let next = messageFn;
+			while (next === messageFn) {
+				next =
+					messageFns[
+						Math.floor(Math.random() * messageFns.length)
 					];
 			}
-			setMessage(newMessage);
+			setMessageFn(() => next);
 		};
 
-		const interval = setInterval(
-			updateLoadingMessage,
-			5000,
-		);
-
-		return () => {
-			clearInterval(interval);
-		};
+		const interval = setInterval(updateLoadingMessage, 5000);
+		return () => clearInterval(interval);
 	});
 
 	return (
 		<div className={style.loadingIndicator}>
 			<Spinner width="3em" />
-			<p>{message}</p>
+			<p>{messageFn()}</p>
 		</div>
 	);
 };

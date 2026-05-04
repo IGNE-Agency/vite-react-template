@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useDocumentTitle } from "@uidotdev/usehooks";
 import { H1 } from "components/heading/heading";
-import { useTranslation } from "react-i18next";
+import * as m from "paraglide/messages";
 import style from "./-index.module.scss";
 
 export const Route = createFileRoute("/_app/")({
@@ -9,12 +9,11 @@ export const Route = createFileRoute("/_app/")({
 });
 
 function HomePage() {
-	const { t } = useTranslation();
-	useDocumentTitle(t("pages.home.title"));
+	useDocumentTitle(m.pages_home_title());
 
 	return (
 		<div className={style.page}>
-			<H1 size="medium">{t("pages.home.title")}</H1>
+			<H1 size="medium">{m.pages_home_title()}</H1>
 		</div>
 	);
 }
