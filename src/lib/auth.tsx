@@ -1,4 +1,4 @@
-import { useLocalStorage } from "@uidotdev/usehooks";
+import { useLocalStorage } from "usehooks-ts";
 import {
 	createContext,
 	type Dispatch,
@@ -32,12 +32,13 @@ export const TOKEN_NAME = "token";
 export const AuthProvider = ({
 	children,
 }: AuthProviderProps) => {
-	const state = useLocalStorage<string | null | undefined>(
+	const [value, setValue] = useLocalStorage<string | null | undefined>(
 		TOKEN_NAME,
+		null,
 	);
 
 	return (
-		<AuthContext.Provider value={state}>
+		<AuthContext.Provider value={[value, setValue]}>
 			{children}
 		</AuthContext.Provider>
 	);
