@@ -1,4 +1,4 @@
-import { getLocale } from "paraglide/runtime";
+import { getLocale } from "lib/paraglide/runtime";
 import { useMemo } from "react";
 import { z } from "zod";
 import { en, nl } from "zod/locales";

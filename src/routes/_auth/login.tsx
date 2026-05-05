@@ -11,8 +11,8 @@ import { H1 } from "components/heading/heading";
 import {
 	postApiAuthLogin,
 	type ValidationError,
-} from "lib/api/heyapi";
-import * as m from "paraglide/messages";
+} from "lib/heyapi";
+import * as m from "lib/paraglide/messages";
 import { useState } from "react";
 import z from "zod";
 import style from "./login.module.scss";

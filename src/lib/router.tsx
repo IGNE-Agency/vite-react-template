@@ -6,7 +6,7 @@ import {
 import {
 	deLocalizeUrl,
 	localizeUrl,
-} from "paraglide/runtime";
+} from "lib/paraglide/runtime";
 import { routeTree } from "../routeTree.gen";
 
 export type RouterContext = Readonly<{

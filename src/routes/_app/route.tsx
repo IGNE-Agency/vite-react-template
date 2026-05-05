@@ -3,7 +3,7 @@ import {
 	redirect,
 } from "@tanstack/react-router";
 import AppLayout from "layouts/app-layout/app-layout";
-import { getApiUsersCurrentOptions } from "lib/api/heyapi/@tanstack/react-query.gen";
+import { getApiUsersCurrentOptions } from "lib/heyapi/@tanstack/react-query.gen";
 
 export const Route = createFileRoute("/_app")({
 	beforeLoad: async ({ context, location }) => {

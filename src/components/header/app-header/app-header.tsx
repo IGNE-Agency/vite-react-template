@@ -2,11 +2,11 @@ import { Link, useNavigate } from "@tanstack/react-router";
 import Logo from "assets/icons/logo.svg?react";
 import classNames from "classnames";
 import { Button, Select } from "components/form";
-import { postApiAuthLogout } from "lib/api/heyapi";
+import { postApiAuthLogout } from "lib/heyapi";
 import { useLocale } from "lib/i18n";
-import * as m from "paraglide/messages";
-import type { Locale } from "paraglide/runtime";
-import { locales, setLocale } from "paraglide/runtime";
+import * as m from "lib/paraglide/messages";
+import type { Locale } from "lib/paraglide/runtime";
+import { locales, setLocale } from "lib/paraglide/runtime";
 import style from "./-header.module.scss";
 
 const links = [

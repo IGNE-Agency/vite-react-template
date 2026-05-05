@@ -7,8 +7,8 @@ dist
 **/desktop.ini
 
 # Generated files
-src/lib/api/heyapi
-src/paraglide
+src/lib/heyapi
+src/lib/paraglide
 **/*.gen.*
 **/*.scss.d.ts
 **/*.sass.d.ts

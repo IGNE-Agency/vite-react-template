@@ -1,5 +1,5 @@
 import Spinner from "assets/icons/spinner.svg?react";
-import * as m from "paraglide/messages";
+import * as m from "lib/paraglide/messages";
 import { useEffect, useState } from "react";
 import style from "./loading-indicator.module.scss";
 

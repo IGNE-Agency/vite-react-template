@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useDocumentTitle } from "@uidotdev/usehooks";
 import { H1 } from "components/heading/heading";
-import * as m from "paraglide/messages";
+import * as m from "lib/paraglide/messages";
 import style from "./forgot-password.module.scss";
 
 export const Route = createFileRoute(

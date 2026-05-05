@@ -17,14 +17,14 @@ export default defineConfig(({ mode }) => {
 		plugins: [
 			paraglideVitePlugin({
 				project: "./project.inlang",
-				outdir: "./src/paraglide",
+				outdir: "./src/lib/paraglide",
 				strategy: ["url", "localStorage", "baseLocale"],
 				emitTsDeclarations: true,
 			}),
 			heyApiPlugin({
 				config: {
 					input: "./openapi.json",
-					output: "src/lib/api/heyapi",
+					output: "src/lib/heyapi",
 					plugins: [
 						"@hey-api/typescript",
 						"@tanstack/react-query",

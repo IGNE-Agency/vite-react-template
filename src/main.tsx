@@ -1,10 +1,10 @@
 import { QueryClientProvider } from "@tanstack/react-query";
 import ErrorBoundary from "components/error-boundary/error-boundary";
 import LoadingIndicator from "components/loading-indicator/loading-indicator";
-import { queryClient } from "lib/api/api";
+import { queryClient } from "lib/api";
 import { loadZodLocale } from "lib/i18n";
+import { getLocale } from "lib/paraglide/runtime";
 import { AppRouter } from "lib/router";
-import { getLocale } from "paraglide/runtime";
 import { StrictMode, Suspense, useEffect } from "react";
 import { createRoot } from "react-dom/client";
 import "style/main.scss";
