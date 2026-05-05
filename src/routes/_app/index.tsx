@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useDocumentTitle } from "@uidotdev/usehooks";
 import { H1 } from "components/heading/heading";
 import * as m from "paraglide/messages";
-import style from "./-index.module.scss";
+import style from "./index.module.scss";
 
 export const Route = createFileRoute("/_app/")({
 	component: HomePage,

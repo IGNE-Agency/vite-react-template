@@ -1,3 +1,4 @@
+import { heyApiPlugin } from "@hey-api/vite-plugin";
 import { paraglideVitePlugin } from "@inlang/paraglide-js";
 import { tanstackRouter } from "@tanstack/router-plugin/vite";
 import react from "@vitejs/plugin-react";
@@ -20,9 +21,25 @@ export default defineConfig(({ mode }) => {
 				strategy: ["url", "localStorage", "baseLocale"],
 				emitTsDeclarations: true,
 			}),
+			heyApiPlugin({
+				config: {
+					input: "./openapi.json",
+					output: "src/lib/api/heyapi",
+					plugins: [
+						"@hey-api/typescript",
+						"@tanstack/react-query",
+						{
+							name: "@hey-api/sdk",
+							// validator: true, // optional: https://heyapi.dev/openapi-ts/plugins/sdk#validators
+						},
+						"zod",
+					],
+				}}),
 			tanstackRouter({
 				autoCodeSplitting: true,
 				quoteStyle: "double",
+				semicolons: true,
+				routeFileIgnorePattern: "\\.module\\.scss",
 			}),
 			https(),
 			react({
@@ -67,6 +84,46 @@ export default defineConfig(({ mode }) => {
 		},
 		build: {
 			target: "esnext",
+			rollupOptions: {
+				output: {
+					manualChunks(id) {
+						if (
+							id.includes("/node_modules/react/") ||
+							id.includes("/node_modules/react-dom/") ||
+							id.includes("/node_modules/scheduler/")
+						) {
+							return "vendor-react";
+						}
+						if (
+							id.includes(
+								"/node_modules/@tanstack/react-router",
+							) ||
+							id.includes(
+								"/node_modules/@tanstack/router-core",
+							) ||
+							id.includes("/node_modules/@tanstack/history")
+						) {
+							return "vendor-router";
+						}
+						if (
+							id.includes(
+								"/node_modules/@tanstack/react-query",
+							) ||
+							id.includes(
+								"/node_modules/@tanstack/query-core",
+							)
+						) {
+							return "vendor-query";
+						}
+						if (
+							id.includes("/node_modules/i18next") ||
+							id.includes("/node_modules/react-i18next")
+						) {
+							return "vendor-i18n";
+						}
+					},
+				},
+			},
 		},
 		resolve: {
 			// vite-tsconfig-paths doesn't work in SASS files

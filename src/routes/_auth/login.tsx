@@ -15,7 +15,7 @@ import {
 import * as m from "paraglide/messages";
 import { useState } from "react";
 import z from "zod";
-import style from "./-login.module.scss";
+import style from "./login.module.scss";
 
 const loginSearchSchema = z.object({
 	redirect: z.optional(

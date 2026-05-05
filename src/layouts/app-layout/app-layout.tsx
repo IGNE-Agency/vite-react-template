@@ -1,6 +1,6 @@
 import { Outlet } from "@tanstack/react-router";
-import AppHeader from "./-header";
-import style from "./-layout.module.scss";
+import AppHeader from "components/header/app-header/app-header";
+import style from "./app-layout.module.scss";
 
 const AppLayout = () => (
 	<div className={style.layout}>
