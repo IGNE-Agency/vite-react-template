@@ -33,7 +33,7 @@ export default defineConfig(({ mode }) => {
 				autoCodeSplitting: true,
 				quoteStyle: "double",
 				semicolons: true,
-				routeFileIgnorePattern: "\\.module\\.scss$",
+				routeFileIgnorePattern: "\\.module\\.scss",
 			}),
 			https(),
 			react({
