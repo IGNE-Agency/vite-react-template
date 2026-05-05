@@ -29,7 +29,7 @@ export const Route = createFileRoute("/_auth/login")({
 });
 
 function LoginPage() {
-	useDocumentTitle(m.pages_login_title());
+	useDocumentTitle(m.login_title());
 	const { redirect } = Route.useSearch();
 	const navigate = useNavigate();
 	const [email, setEmail] = useState("");
@@ -60,7 +60,7 @@ function LoginPage() {
 	return (
 		<>
 			<H1 size="medium" className={style.textCenter}>
-				{m.pages_login_title()}
+				{m.login_title()}
 			</H1>
 			<Form
 				onSubmit={handleSubmit}
@@ -69,7 +69,7 @@ function LoginPage() {
 			>
 				<label className={style.label} htmlFor="email">
 					<Input
-						label={m.forms_fields_email()}
+						label={m.login_email()}
 						isInvalid={!!error?.errors?.email}
 						name="email"
 						id="email"
@@ -82,7 +82,7 @@ function LoginPage() {
 					<label className={style.label} htmlFor="password">
 						<Input
 							type="password"
-							label={m.forms_fields_password()}
+							label={m.login_password()}
 							isInvalid={!!error?.errors?.password}
 							name="password"
 							id="password"
@@ -97,12 +97,12 @@ function LoginPage() {
 						to="/forgot-password"
 						className={classNames([style.forgotPassword])}
 					>
-						{m.pages_login_forgot_password()}
+						{m.login_forgot_password()}
 					</Link>
 				</div>
 				<ErrorText>{error?.message}</ErrorText>
 				<Button type="submit">
-					{m.forms_actions_login()}
+					{m.login_submit()}
 				</Button>
 			</Form>
 		</>

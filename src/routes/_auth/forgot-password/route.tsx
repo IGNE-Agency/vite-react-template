@@ -11,11 +11,11 @@ export const Route = createFileRoute(
 });
 
 function ForgotPasswordPage() {
-	useDocumentTitle(m.pages_forgot_password_title());
+	useDocumentTitle(m.forgot_password_title());
 
 	return (
 		<H1 size="medium" className={style.textCenter}>
-			{m.pages_forgot_password_title()}
+			{m.forgot_password_title()}
 		</H1>
 	);
 }

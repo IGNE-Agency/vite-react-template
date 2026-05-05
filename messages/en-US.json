@@ -1,21 +1,26 @@
 {
 	"$schema": "https://inlang.com/schema/inlang-message-format",
+
 	"roles_user": "User",
 	"roles_admin": "Administrator",
+
 	"loading_message_0": "Initializing knobs & buttons...",
 	"loading_message_1": "Discombobulating the Metric Accumulator...",
 	"loading_message_2": "Crossing the T's and dotting the I's...",
 	"loading_message_3": "One mississippi, two mississippi...",
 	"loading_message_4": "Pretend we're playing elevator music...",
-	"layouts_app_logout": "Log out",
-	"pages_error_title": "Error",
-	"pages_forgot_password_title": "Forgot password",
-	"pages_home_title": "Home",
-	"pages_login_title": "Login",
-	"pages_login_forgot_password": "Forgot password?",
-	"pages_not_found_title": "Not found",
-	"forms_fields_email": "Email address",
-	"forms_fields_password": "Password",
-	"forms_fields_name": "Name",
-	"forms_actions_login": "Login"
+
+	"nav_logout": "Log out",
+
+	"home_title": "Home",
+
+	"login_title": "Login",
+	"login_email": "Email address",
+	"login_password": "Password",
+	"login_forgot_password": "Forgot password?",
+	"login_submit": "Login",
+
+	"forgot_password_title": "Forgot password",
+
+	"not_found_title": "Not found"
 }

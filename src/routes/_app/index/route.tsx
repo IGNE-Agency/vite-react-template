@@ -9,11 +9,11 @@ export const Route = createFileRoute("/_app/")({
 });
 
 function HomePage() {
-	useDocumentTitle(m.pages_home_title());
+	useDocumentTitle(m.home_title());
 
 	return (
 		<div className={style.page}>
-			<H1 size="medium">{m.pages_home_title()}</H1>
+			<H1 size="medium">{m.home_title()}</H1>
 		</div>
 	);
 }

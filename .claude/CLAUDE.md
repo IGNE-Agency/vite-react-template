@@ -1,0 +1,6 @@
+- Scope keys to their feature, not a generic layer — `login_email` not `field_email`. Identical strings across features should still have separate keys so they can evolve independently.
+- Reserve `common_` only for structural UI strings unlikely to ever diverge, like `common_save` or `common_cancel`. Field labels don't qualify.
+- Use `{feature}_{concept}` as the default pattern: `login_submit`, `nav_logout`, `error_page_title`.
+- This project uses Paraglide JS. When in doubt about message format, arrays, pluralization, or other Paraglide-specific behavior, consult the docs at https://inlang.com/m/gerre34r/library-inlang-paraglideJs before making assumptions.
+- The Paraglide Vite plugin compiles `messages/*.json` into `src/paraglide/` automatically during `bun dev` / `bun build`. Never manually edit files under `src/paraglide/` — they are overwritten on every build.
+- Separate logical groups of keys with a blank line (roles, loading messages, nav, pages, etc.).

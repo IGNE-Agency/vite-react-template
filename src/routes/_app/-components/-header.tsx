@@ -13,7 +13,7 @@ const links = [
 	{
 		to: "/" as const,
 		icon: <Logo width="1rem" />,
-		label: m.pages_home_title,
+		label: m.home_title,
 	},
 ];
 
@@ -63,7 +63,7 @@ const AppHeader = () => {
 						}
 					/>
 					<Button onClick={handleLogout}>
-						{m.layouts_app_logout()}
+						{m.nav_logout()}
 					</Button>
 				</div>
 			</div>

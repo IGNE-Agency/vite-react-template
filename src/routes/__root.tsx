@@ -9,11 +9,11 @@ import * as m from "paraglide/messages";
 import style from "./-not-found.module.scss";
 
 const NotFoundPage = () => {
-	useDocumentTitle(m.pages_not_found_title());
+	useDocumentTitle(m.not_found_title());
 
 	return (
 		<H1 size="medium" className={style.page}>
-			{m.pages_not_found_title()}
+			{m.not_found_title()}
 		</H1>
 	);
 };
