@@ -60,6 +60,24 @@ export default defineConfig(({ mode }) => {
 		},
 		build: {
 			target: "esnext",
+			rollupOptions: {
+				output: {
+					manualChunks(id) {
+						if (id.includes("/node_modules/react/") || id.includes("/node_modules/react-dom/") || id.includes("/node_modules/scheduler/")) {
+							return "vendor-react";
+						}
+						if (id.includes("/node_modules/@tanstack/react-router") || id.includes("/node_modules/@tanstack/router-core") || id.includes("/node_modules/@tanstack/history")) {
+							return "vendor-router";
+						}
+						if (id.includes("/node_modules/@tanstack/react-query") || id.includes("/node_modules/@tanstack/query-core")) {
+							return "vendor-query";
+						}
+						if (id.includes("/node_modules/i18next") || id.includes("/node_modules/react-i18next")) {
+							return "vendor-i18n";
+						}
+					},
+				},
+			},
 		},
 		resolve: {
 			// vite-tsconfig-paths doesn't work in SASS files
