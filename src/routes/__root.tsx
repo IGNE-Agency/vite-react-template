@@ -6,7 +6,7 @@ import { useDocumentTitle } from "@uidotdev/usehooks";
 import { H1 } from "components/heading/heading";
 import type { RouterContext } from "lib/router";
 import { useTranslation } from "react-i18next";
-import style from "./-not-found.module.scss";
+import style from "./not-found.module.scss";
 
 const NotFoundPage = () => {
 	const { t } = useTranslation();

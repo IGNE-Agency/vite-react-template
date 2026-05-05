@@ -16,6 +16,8 @@ export default defineConfig(({ mode }) => {
 			tanstackRouter({
 				autoCodeSplitting: true,
 				quoteStyle: "double",
+				semicolons: true,
+				routeFileIgnorePattern: "\\.module\\.scss$",
 			}),
 			https(),
 			react({

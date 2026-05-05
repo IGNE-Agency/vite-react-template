@@ -5,7 +5,7 @@ import { Button, Select } from "components/form";
 import { postApiAuthLogout } from "lib/api/heyapi";
 import { useLocale } from "lib/i18n";
 import { useTranslation } from "react-i18next";
-import style from "./-header.module.scss";
+import style from "./app-header.module.scss";
 
 const links = [
 	{

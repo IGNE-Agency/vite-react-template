@@ -15,7 +15,7 @@ import {
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import z from "zod";
-import style from "./-login.module.scss";
+import style from "./login.module.scss";
 
 const loginSearchSchema = z.object({
 	redirect: z.optional(
