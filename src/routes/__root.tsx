@@ -6,7 +6,7 @@ import { useDocumentTitle } from "@uidotdev/usehooks";
 import { H1 } from "components/heading/heading";
 import type { RouterContext } from "lib/router";
 import * as m from "paraglide/messages";
-import style from "./-not-found.module.scss";
+import style from "./not-found.module.scss";
 
 const NotFoundPage = () => {
 	useDocumentTitle(m.not_found_title());
