@@ -1,10 +1,9 @@
+import * as path from "node:path";
 import { heyApiPlugin } from "@hey-api/vite-plugin";
 import { paraglideVitePlugin } from "@inlang/paraglide-js";
 import { tanstackRouter } from "@tanstack/router-plugin/vite";
 import react from "@vitejs/plugin-react";
-import * as path from "node:path";
 import { defineConfig, loadEnv } from "vite";
-import { patchCssModules } from "vite-css-modules";
 import https from "vite-plugin-mkcert";
 import svgr from "vite-plugin-svgr";
 import viteTsConfigPaths from "vite-tsconfig-paths";
@@ -68,13 +67,6 @@ export default defineConfig(({ mode }) => {
 						],
 					},
 				},
-			}),
-			// While Vite should automatically handle SASS, it has some problems with modules.
-			// This plugin fixes the issue as the PR isn't ready yet.
-			// https://github.com/vitejs/vite/pull/16018
-			// As a small bonus, it generates types for us :)
-			patchCssModules({
-				generateSourceTypes: true,
 			}),
 		],
 		css: {

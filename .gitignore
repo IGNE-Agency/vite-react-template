@@ -10,8 +10,6 @@ dist
 src/lib/heyapi
 src/lib/paraglide
 **/*.gen.*
-**/*.scss.d.ts
-**/*.sass.d.ts
 **/*.tsbuildinfo
 
 # Environment
