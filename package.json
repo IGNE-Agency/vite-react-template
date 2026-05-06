@@ -4,10 +4,12 @@
 	"type": "module",
 	"scripts": {
 		"dev": "bun i && bun vite",
-		"build": "bun vite build && bun tsc",
+		"build": "bun i --frozen-lockfile && bun vite build && bun tsc",
 		"lint": "bun biome check src && bun prettier --check 'src/**/*.{s,}css'"
 	},
 	"dependencies": {
+		"@inlang/paraglide-js": "2.18.0",
+		"@inlang/plugin-message-format": "4.4.0",
 		"@tanstack/react-query": "5.100.6",
 		"@tanstack/react-router": "1.168.26",
 		"babel-plugin-react-compiler": "1.0.0",
@@ -38,7 +40,6 @@
 		"sass": "1.99.0",
 		"typescript": "5.9.3",
 		"vite": "7.2.2",
-		"vite-css-modules": "1.15.0",
 		"vite-plugin-mkcert": "1.17.9",
 		"vite-plugin-svgr": "5.2.0",
 		"vite-tsconfig-paths": "6.1.1"

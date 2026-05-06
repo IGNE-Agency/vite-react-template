@@ -1,19 +1,12 @@
 {
-	"$schema": "https://biomejs.dev/schemas/2.3.4/schema.json",
+	"$schema": "https://biomejs.dev/schemas/2.4.13/schema.json",
 	"vcs": {
-		"enabled": false,
+		"enabled": true,
 		"clientKind": "git",
-		"useIgnoreFile": false
+		"useIgnoreFile": true
 	},
 	"files": {
-		"ignoreUnknown": false,
-		"includes": [
-			"**",
-			"!**/node_modules",
-			"!src/lib/api/heyapi",
-			"!**/*.d.ts",
-			"!**/*.gen.ts"
-		]
+		"ignoreUnknown": false
 	},
 	"formatter": {
 		"enabled": true,

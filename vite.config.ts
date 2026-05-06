@@ -1,9 +1,9 @@
+import * as path from "node:path";
 import { heyApiPlugin } from "@hey-api/vite-plugin";
+import { paraglideVitePlugin } from "@inlang/paraglide-js";
 import { tanstackRouter } from "@tanstack/router-plugin/vite";
 import react from "@vitejs/plugin-react";
-import * as path from "node:path";
 import { defineConfig, loadEnv } from "vite";
-import { patchCssModules } from "vite-css-modules";
 import https from "vite-plugin-mkcert";
 import svgr from "vite-plugin-svgr";
 import viteTsConfigPaths from "vite-tsconfig-paths";
@@ -14,10 +14,16 @@ export default defineConfig(({ mode }) => {
 
 	return {
 		plugins: [
+			paraglideVitePlugin({
+				project: "./project.inlang",
+				outdir: "./src/lib/paraglide",
+				strategy: ["url", "localStorage", "baseLocale"],
+				emitTsDeclarations: true,
+			}),
 			heyApiPlugin({
 				config: {
 					input: "./openapi.json",
-					output: "src/lib/api/heyapi",
+					output: "src/lib/heyapi",
 					plugins: [
 						"@hey-api/typescript",
 						"@tanstack/react-query",
@@ -27,11 +33,12 @@ export default defineConfig(({ mode }) => {
 						},
 						"zod",
 					],
-				},
-			}),
+				}}),
 			tanstackRouter({
-				routesDirectory: "./src/routes",
 				autoCodeSplitting: true,
+				quoteStyle: "double",
+				semicolons: true,
+				routeFileIgnorePattern: "\\.module\\.scss",
 			}),
 			https(),
 			react({
@@ -61,13 +68,6 @@ export default defineConfig(({ mode }) => {
 					},
 				},
 			}),
-			// While Vite should automatically handle SASS, it has some problems with modules.
-			// This plugin fixes the issue as the PR isn't ready yet.
-			// https://github.com/vitejs/vite/pull/16018
-			// As a small bonus, it generates types for us :)
-			patchCssModules({
-				generateSourceTypes: true,
-			}),
 		],
 		css: {
 			modules: {
@@ -79,16 +79,38 @@ export default defineConfig(({ mode }) => {
 			rollupOptions: {
 				output: {
 					manualChunks(id) {
-						if (id.includes("/node_modules/react/") || id.includes("/node_modules/react-dom/") || id.includes("/node_modules/scheduler/")) {
+						if (
+							id.includes("/node_modules/react/") ||
+							id.includes("/node_modules/react-dom/") ||
+							id.includes("/node_modules/scheduler/")
+						) {
 							return "vendor-react";
 						}
-						if (id.includes("/node_modules/@tanstack/react-router") || id.includes("/node_modules/@tanstack/router-core") || id.includes("/node_modules/@tanstack/history")) {
+						if (
+							id.includes(
+								"/node_modules/@tanstack/react-router",
+							) ||
+							id.includes(
+								"/node_modules/@tanstack/router-core",
+							) ||
+							id.includes("/node_modules/@tanstack/history")
+						) {
 							return "vendor-router";
 						}
-						if (id.includes("/node_modules/@tanstack/react-query") || id.includes("/node_modules/@tanstack/query-core")) {
+						if (
+							id.includes(
+								"/node_modules/@tanstack/react-query",
+							) ||
+							id.includes(
+								"/node_modules/@tanstack/query-core",
+							)
+						) {
 							return "vendor-query";
 						}
-						if (id.includes("/node_modules/i18next") || id.includes("/node_modules/react-i18next")) {
+						if (
+							id.includes("/node_modules/i18next") ||
+							id.includes("/node_modules/react-i18next")
+						) {
 							return "vendor-i18n";
 						}
 					},
@@ -108,6 +130,7 @@ export default defineConfig(({ mode }) => {
 			open: true,
 			proxy: {
 				[env.VITE_API_BASEURL]: {
+					// TODO: Change to your actual backend
 					target: "CHANGE_ME",
 					secure: true,
 					changeOrigin: true,

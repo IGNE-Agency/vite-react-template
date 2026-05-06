@@ -8,7 +8,13 @@
 		"editor.defaultFormatter": "esbenp.prettier-vscode"
 	},
 	"js/ts.tsdk.path": "node_modules/typescript/lib",
+	"files.readonlyInclude": {
+		"**/routeTree.gen.ts": true
+	},
+	"files.watcherExclude": {
+		"**/routeTree.gen.ts": true
+	},
 	"search.exclude": {
-		"**.scss.d.ts": true
+		"**/routeTree.gen.ts": true
 	}
 }

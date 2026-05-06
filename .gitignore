@@ -7,10 +7,9 @@ dist
 **/desktop.ini
 
 # Generated files
-src/lib/api/heyapi
+src/lib/heyapi
+src/lib/paraglide
 **/*.gen.*
-**/*.scss.d.ts
-**/*.sass.d.ts
 **/*.tsbuildinfo
 
 # Environment

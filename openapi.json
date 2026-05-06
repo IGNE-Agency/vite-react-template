@@ -56,11 +56,17 @@
 				},
 				"required": ["email", "password"]
 			},
-			"LoginResponse": {
-				"type": "string",
-				"description": "Token to use in subsequent requests."
-			},
 			"ForgotPasswordRequest": {
+				"type": "object",
+				"properties": {
+					"email": {
+						"type": "string",
+						"format": "email"
+					}
+				},
+				"required": ["email"]
+			},
+			"UserDTO": {
 				"type": "object",
 				"properties": {
 					"email": {
@@ -75,7 +81,7 @@
 			"ValidationException": {
 				"description": "Validation error",
 				"content": {
-					"application\/json": {
+					"application/json": {
 						"schema": {
 							"$ref": "#/components/schemas/ValidationError"
 						}
@@ -85,7 +91,7 @@
 			"AuthenticationException": {
 				"description": "Unauthenticated",
 				"content": {
-					"application\/json": {
+					"application/json": {
 						"schema": {
 							"$ref": "#/components/schemas/GenericError"
 						}
@@ -99,18 +105,14 @@
 		"/api/auth/login": {
 			"post": {
 				"responses": {
-					"200": {
-						"description": "Logs in and returns token on success.",
-						"content": {
-							"text/plain": {
-								"schema": {
-									"$ref": "#/components/schemas/LoginResponse"
-								}
-							}
-						}
+					"204": {
+						"description": "Logs in and sets cookie on success."
 					},
 					"422": {
 						"$ref": "#/components/responses/ValidationException"
+					},
+					"401": {
+						"$ref": "#/components/responses/AuthenticationException"
 					}
 				},
 				"operationId": "postApiAuthLogin",
@@ -128,24 +130,33 @@
 			}
 		},
 		"/api/auth/logout": {
-			"get": {
+			"post": {
+				"operationId": "postApiAuthLogout",
+				"tags": ["Authentication"],
+				"summary": "Logs out the current user by invalidating the auth cookie.",
 				"responses": {
-					"200": {
-						"description": "Invalidates the token."
+					"204": {
+						"description": "Logs out and invalidates the auth cookie.",
+						"headers": {
+							"Set-Cookie": {
+								"description": "Clears the auth cookie.",
+								"schema": {
+									"type": "string",
+									"example": "auth-cookie=; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=0"
+								}
+							}
+						}
 					},
 					"401": {
 						"$ref": "#/components/responses/AuthenticationException"
 					}
-				},
-				"operationId": "getApiAuthLogout",
-				"tags": ["Authentication"],
-				"parameters": []
+				}
 			}
 		},
 		"/api/auth/forgot-password": {
 			"post": {
 				"responses": {
-					"200": {
+					"204": {
 						"description": "If there is a user with the given email address, a recovery email will be sent to that address."
 					},
 					"422": {
@@ -162,6 +173,28 @@
 								"$ref": "#/components/schemas/ForgotPasswordRequest"
 							}
 						}
+					}
+				}
+			}
+		},
+		"/api/users/current": {
+			"get": {
+				"operationId": "getApiUsersCurrent",
+				"tags": ["Users"],
+				"summary": "Get the current authenticated user's details.",
+				"responses": {
+					"200": {
+						"description": "Returns the details of the current authenticated user.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/UserDTO"
+								}
+							}
+						}
+					},
+					"401": {
+						"$ref": "#/components/responses/AuthenticationException"
 					}
 				}
 			}
