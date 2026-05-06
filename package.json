@@ -4,7 +4,7 @@
 	"type": "module",
 	"scripts": {
 		"dev": "bun i && bun vite",
-		"build": "bun vite build && bun tsc",
+		"build": "bun i --frozen-lockfile && bun vite build && bun tsc",
 		"lint": "bun biome check src && bun prettier --check 'src/**/*.{s,}css'"
 	},
 	"dependencies": {
