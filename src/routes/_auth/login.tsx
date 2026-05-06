@@ -1,19 +1,19 @@
 import {
-	createFileRoute,
-	Link,
-	useNavigate,
+    createFileRoute,
+    Link,
+    useNavigate,
 } from "@tanstack/react-router";
-import { useDocumentTitle } from "@uidotdev/usehooks";
 import classNames from "classnames";
 import { ErrorText } from "components/error-text/error-text";
 import { Button, Form, Input } from "components/form";
 import { H1 } from "components/heading/heading";
 import {
-	postApiAuthLogin,
-	type ValidationError,
+    postApiAuthLogin,
+    type ValidationError,
 } from "lib/heyapi";
 import * as m from "lib/paraglide/messages";
 import { useState } from "react";
+import { useDocumentTitle } from "usehooks-ts";
 import z from "zod";
 import style from "./login.module.scss";
 

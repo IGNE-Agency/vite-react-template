@@ -1,11 +1,11 @@
 import {
-	createRootRouteWithContext,
-	Outlet,
+    createRootRouteWithContext,
+    Outlet,
 } from "@tanstack/react-router";
-import { useDocumentTitle } from "@uidotdev/usehooks";
 import { H1 } from "components/heading/heading";
-import type { RouterContext } from "lib/router";
 import * as m from "lib/paraglide/messages";
+import type { RouterContext } from "lib/router";
+import { useDocumentTitle } from "usehooks-ts";
 import style from "./not-found.module.scss";
 
 const NotFoundPage = () => {
