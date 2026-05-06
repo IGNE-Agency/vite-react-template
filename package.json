@@ -8,7 +8,6 @@
 		"lint": "bun biome check src && bun prettier --check 'src/**/*.{s,}css'"
 	},
 	"dependencies": {
-		"@uidotdev/usehooks": "2.4.1",
 		"@tanstack/react-query": "5.100.6",
 		"@tanstack/react-router": "1.168.26",
 		"babel-plugin-react-compiler": "1.0.0",

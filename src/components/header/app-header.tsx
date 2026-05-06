@@ -2,28 +2,26 @@ import { Link, useNavigate } from "@tanstack/react-router";
 import Logo from "assets/icons/logo.svg?react";
 import classNames from "classnames";
 import { Button, Select } from "components/form";
-import { postApiAuthLogout } from "lib/api/heyapi";
+import { postApiAuthLogout } from "lib/heyapi";
 import { useLocale } from "lib/i18n";
-import { useTranslation } from "react-i18next";
+import * as m from "lib/paraglide/messages";
+import type { Locale } from "lib/paraglide/runtime";
+import { locales, setLocale } from "lib/paraglide/runtime";
 import style from "./app-header.module.scss";
 
 const links = [
 	{
-		to: "/",
+		to: "/" as const,
 		icon: <Logo width="1rem" />,
-		name: "home",
+		label: m.home_title,
 	},
 ];
 
 const AppHeader = () => {
-	const { t, i18n } = useTranslation();
 	const locale = useLocale();
 	const navigate = useNavigate();
 
-	const languageOptions = (
-		i18n.options.supportedLngs as Readonly<string[]>
-	)
-		.filter((lng) => lng !== "cimode")
+	const languageOptions = locales
 		.toSorted((a, b) => a.localeCompare(b, locale))
 		.map((lang) => ({
 			value: lang,
@@ -51,7 +49,7 @@ const AppHeader = () => {
 							className={style.link}
 						>
 							{link.icon}
-							<span>{t(`pages.${link.name}.title`)}</span>
+							<span>{link.label()}</span>
 						</Link>
 					))}
 				</nav>
@@ -59,13 +57,13 @@ const AppHeader = () => {
 					<Select
 						name="lang"
 						options={languageOptions}
-						defaultValue={i18n.resolvedLanguage}
+						defaultValue={locale.toString()}
 						onChange={({ currentTarget: { value } }) =>
-							i18n.changeLanguage(value)
+							setLocale(value as Locale)
 						}
 					/>
 					<Button onClick={handleLogout}>
-						{t("layouts.app.logout")}
+						{m.nav_logout()}
 					</Button>
 				</div>
 			</div>

@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useDocumentTitle } from "@uidotdev/usehooks";
 import { H1 } from "components/heading/heading";
 import { useTranslation } from "react-i18next";
+import { useDocumentTitle } from "usehooks-ts";
 import style from "./forgot-password.module.scss";
 
 export const Route = createFileRoute(

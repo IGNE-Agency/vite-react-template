@@ -3,7 +3,6 @@ import {
 	Link,
 	useNavigate,
 } from "@tanstack/react-router";
-import { useDocumentTitle } from "@uidotdev/usehooks";
 import classNames from "classnames";
 import { ErrorText } from "components/error-text/error-text";
 import { Button, Form, Input } from "components/form";
@@ -14,6 +13,7 @@ import {
 } from "lib/api/heyapi";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useDocumentTitle } from "usehooks-ts";
 import z from "zod";
 import style from "./login.module.scss";
 
