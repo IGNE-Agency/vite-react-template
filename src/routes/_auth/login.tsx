@@ -1,5 +1,5 @@
 import {
-	getRouteApi,
+	createFileRoute,
 	Link,
 	useNavigate,
 } from "@tanstack/react-router";
@@ -9,25 +9,29 @@ import { Button, Form, Input } from "components/form";
 import { H1 } from "components/heading/heading";
 import {
 	postApiAuthLogin,
-	// postApiAuthLogin,
 	type ValidationError,
-} from "lib/api/heyapi";
-import { useAuth } from "lib/auth";
-import { usePageTitle } from "lib/page-title";
+} from "lib/heyapi";
+import * as m from "lib/paraglide/messages";
 import { useState } from "react";
-import { flushSync } from "react-dom";
-import { useTranslation } from "react-i18next";
-import style from "./login-page.module.scss";
+import { useDocumentTitle } from "usehooks-ts";
+import z from "zod";
+import style from "./login.module.scss";
 
-const LoginPage = () => {
-	const { t } = useTranslation();
-	usePageTitle(t("pages.login.title"));
-	const routeApi = getRouteApi("/_auth/login");
-	const { redirect } = routeApi.useSearch();
-	const [, setToken] = useAuth();
+const loginSearchSchema = z.object({
+	redirect: z.optional(
+		z.string().startsWith("/").catch("/"),
+	),
+});
+
+export const Route = createFileRoute("/_auth/login")({
+	validateSearch: loginSearchSchema,
+	component: LoginPage,
+});
+
+function LoginPage() {
+	useDocumentTitle(m.login_title());
+	const { redirect } = Route.useSearch();
 	const navigate = useNavigate();
-	// We don't yet have a recommended form lib
-	// For now go for simple controlled inputs with backend validation
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [error, setError] = useState<ValidationError>();
@@ -39,32 +43,24 @@ const LoginPage = () => {
 		evt.preventDefault();
 		setIsPending(true);
 
-		// This would require an actual backend
-		// Note that auth endpoints are probably the only ones that do NOT use tanstack query
-		const { data: token, error } = await postApiAuthLogin({
+		// Auth endpoints do not use TanStack Query
+		const result = await postApiAuthLogin({
 			body: { email, password },
 		});
 
-		if (error) {
-			setError(error);
+		if (result.error) {
+			setError(result.error);
+			setIsPending(false);
 			return;
 		}
 
-		flushSync(() => setToken(token));
-		navigate({ to: redirect || "/" });
-		setIsPending(false);
-	};
-
-	// TODO: REMOVE ME
-	const handleFakeLogin = () => {
-		flushSync(() => setToken("fake"));
 		navigate({ to: redirect || "/" });
 	};
 
 	return (
 		<>
 			<H1 size="medium" className={style.textCenter}>
-				{t("pages.login.title")}
+				{m.login_title()}
 			</H1>
 			<Form
 				onSubmit={handleSubmit}
@@ -73,7 +69,7 @@ const LoginPage = () => {
 			>
 				<label className={style.label} htmlFor="email">
 					<Input
-						label={t("forms.fields.email")}
+						label={m.login_email()}
 						isInvalid={!!error?.errors?.email}
 						name="email"
 						id="email"
@@ -86,7 +82,7 @@ const LoginPage = () => {
 					<label className={style.label} htmlFor="password">
 						<Input
 							type="password"
-							label={t("forms.fields.password")}
+							label={m.login_password()}
 							isInvalid={!!error?.errors?.password}
 							name="password"
 							id="password"
@@ -97,26 +93,18 @@ const LoginPage = () => {
 						/>
 						<ErrorText>{error?.errors?.password}</ErrorText>
 					</label>
-
 					<Link
 						to="/forgot-password"
 						className={classNames([style.forgotPassword])}
 					>
-						{t("pages.login.forgotPassword")}
+						{m.login_forgot_password()}
 					</Link>
 				</div>
-
 				<ErrorText>{error?.message}</ErrorText>
-
 				<Button type="submit">
-					{t("forms.actions.login")} (note: no backend)
-				</Button>
-				<Button type="button" onClick={handleFakeLogin}>
-					Fake login
+					{m.login_submit()}
 				</Button>
 			</Form>
 		</>
 	);
-};
-
-export default LoginPage;
+}

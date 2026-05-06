@@ -10,15 +10,16 @@
 		"strict": true,
 		"forceConsistentCasingInFileNames": true,
 		"noFallthroughCasesInSwitch": true,
-		"module": "esnext",
-		"moduleResolution": "node",
+		"module": "preserve",
+		"moduleResolution": "bundler",
 		"resolveJsonModule": true,
 		"isolatedModules": true,
 		"noEmit": true,
 		"jsx": "react-jsx",
-		"rootDir": "./src",
-		"baseUrl": "./src",
-		"incremental": true
+		"incremental": true,
+		"paths": {
+			"*": ["./src/*"]
+		}
 	},
 	"include": ["src"]
 }
