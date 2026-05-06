@@ -15,7 +15,6 @@
 		"**/routeTree.gen.ts": true
 	},
 	"search.exclude": {
-		"**.scss.d.ts": true,
 		"**/routeTree.gen.ts": true
 	}
 }

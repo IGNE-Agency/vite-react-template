@@ -9,8 +9,6 @@ dist
 # Generated files
 src/lib/api/heyapi
 **/*.gen.*
-**/*.scss.d.ts
-**/*.sass.d.ts
 **/*.tsbuildinfo
 
 # Environment
