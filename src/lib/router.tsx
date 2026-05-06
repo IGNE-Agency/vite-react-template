@@ -3,34 +3,36 @@ import {
 	createRouter,
 	RouterProvider,
 } from "@tanstack/react-router";
-import { useAuth } from "lib/auth";
+import {
+	deLocalizeUrl,
+	localizeUrl,
+} from "lib/paraglide/runtime";
 import { routeTree } from "../routeTree.gen";
 
-export interface RouterContext {
+export type RouterContext = Readonly<{
 	queryClient: QueryClient;
-	token: string | null | undefined;
-}
+}>;
 
 const router = createRouter({
 	routeTree,
 	context: {
 		// biome-ignore lint/style/noNonNullAssertion: will immediately get instantiated
 		queryClient: null!,
-		token: null,
 	},
 	defaultPreload: "intent",
+	rewrite: {
+		input: ({ url }) => deLocalizeUrl(url),
+		output: ({ url }) => localizeUrl(url),
+	},
 });
 
 export const AppRouter = ({
 	queryClient,
-}: {
-	queryClient: QueryClient;
-}) => {
-	const [token] = useAuth();
+}: RouterContext) => {
 	return (
 		<RouterProvider
 			router={router}
-			context={{ queryClient, token }}
+			context={{ queryClient }}
 		/>
 	);
 };
