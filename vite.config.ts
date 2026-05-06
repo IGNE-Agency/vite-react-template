@@ -1,5 +1,6 @@
 import * as path from "node:path";
 import { heyApiPlugin } from "@hey-api/vite-plugin";
+import { paraglideVitePlugin } from "@inlang/paraglide-js";
 import { tanstackRouter } from "@tanstack/router-plugin/vite";
 import react from "@vitejs/plugin-react";
 import { defineConfig, loadEnv } from "vite";
@@ -13,10 +14,16 @@ export default defineConfig(({ mode }) => {
 
 	return {
 		plugins: [
+			paraglideVitePlugin({
+				project: "./project.inlang",
+				outdir: "./src/lib/paraglide",
+				strategy: ["url", "localStorage", "baseLocale"],
+				emitTsDeclarations: true,
+			}),
 			heyApiPlugin({
 				config: {
 					input: "./openapi.json",
-					output: "src/lib/api/heyapi",
+					output: "src/lib/heyapi",
 					plugins: [
 						"@hey-api/typescript",
 						"@tanstack/react-query",
@@ -26,8 +33,7 @@ export default defineConfig(({ mode }) => {
 						},
 						"zod",
 					],
-				},
-			}),
+				}}),
 			tanstackRouter({
 				autoCodeSplitting: true,
 				quoteStyle: "double",

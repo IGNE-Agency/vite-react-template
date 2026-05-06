@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { H1 } from "components/heading/heading";
-import { useTranslation } from "react-i18next";
+import * as m from "lib/paraglide/messages";
 import { useDocumentTitle } from "usehooks-ts";
 import style from "./forgot-password.module.scss";
 
@@ -11,12 +11,11 @@ export const Route = createFileRoute(
 });
 
 function ForgotPasswordPage() {
-	const { t } = useTranslation();
-	useDocumentTitle(t("pages.forgotPassword.title"));
+	useDocumentTitle(m.forgot_password_title());
 
 	return (
 		<H1 size="medium" className={style.textCenter}>
-			{t("pages.forgotPassword.title")}
+			{m.forgot_password_title()}
 		</H1>
 	);
 }
