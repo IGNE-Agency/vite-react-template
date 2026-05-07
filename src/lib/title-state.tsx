@@ -136,7 +136,11 @@ export const FaviconManager = () => {
 					const y = BADGE_RADIUS;
 					ctx.beginPath();
 					ctx.arc(x, y, BADGE_RADIUS, 0, 2 * Math.PI);
-					ctx.fillStyle = "#ef4444";
+					ctx.fillStyle = getComputedStyle(
+						document.documentElement,
+					)
+						.getPropertyValue("--color-error-500")
+						.trim();
 					ctx.fill();
 				}
 
