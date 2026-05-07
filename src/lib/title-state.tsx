@@ -1,5 +1,5 @@
 import { useRouterState } from "@tanstack/react-router";
-import { APP_TITLE, TITLE_DELIMITER } from "lib/title";
+import { APP_TITLE, buildTitle } from "lib/title";
 import {
 	createContext,
 	type ReactNode,
@@ -78,10 +78,24 @@ export const useTitleState = (): TitleStateContextValue => {
 const FAVICON_SIZE = 128;
 const BADGE_RADIUS = 24;
 
+let cachedFaviconSvg: string | null = null;
+
+const loadFaviconSvg = (): Promise<string> => {
+	if (cachedFaviconSvg !== null) {
+		return Promise.resolve(cachedFaviconSvg);
+	}
+	return fetch("/favicon.svg")
+		.then((r) => r.text())
+		.then((svg) => {
+			cachedFaviconSvg = svg;
+			return svg;
+		});
+};
+
 /**
- * Overlays a red badge on the favicon when `hasUrgentEvent` is true.
- * Restores the original favicon when the flag clears.
- * Render once alongside `TitleManager` in the root component.
+ * Overlays a red badge on the favicon when `hasUrgentEvent` or a notification count is present.
+ * Restores the original favicon when both flags clear.
+ * Render once in the root component.
  */
 export const FaviconManager = () => {
 	const { notificationCount, hasUrgentEvent } =
@@ -91,54 +105,50 @@ export const FaviconManager = () => {
 	useEffect(() => {
 		let cancelled = false;
 
-		// Fetch as text to avoid SVG canvas-taint issues
-		fetch("/favicon.svg")
-			.then((r) => r.text())
-			.then((svg) => {
-				if (cancelled) return;
-				const blob = new Blob([svg], {
-					type: "image/svg+xml",
-				});
-				const url = URL.createObjectURL(blob);
-				const img = new Image();
-
-				img.onload = () => {
-					URL.revokeObjectURL(url);
-					if (cancelled) return;
-
-					const canvas = document.createElement("canvas");
-					canvas.width = FAVICON_SIZE;
-					canvas.height = FAVICON_SIZE;
-					const ctx = canvas.getContext("2d");
-					if (!ctx) return;
-
-					ctx.drawImage(
-						img,
-						0,
-						0,
-						FAVICON_SIZE,
-						FAVICON_SIZE,
-					);
-
-					if (hasUrgentEvent || hasNotifications) {
-						const x = FAVICON_SIZE - BADGE_RADIUS;
-						const y = BADGE_RADIUS;
-						ctx.beginPath();
-						ctx.arc(x, y, BADGE_RADIUS, 0, 2 * Math.PI);
-						ctx.fillStyle = "#ef4444";
-						ctx.fill();
-					}
-
-					const link =
-						document.querySelector<HTMLLinkElement>(
-							'link[rel="icon"]',
-						);
-					if (link)
-						link.href = canvas.toDataURL("image/png");
-				};
-
-				img.src = url;
+		loadFaviconSvg().then((svg) => {
+			if (cancelled) return;
+			const blob = new Blob([svg], {
+				type: "image/svg+xml",
 			});
+			const url = URL.createObjectURL(blob);
+			const img = new Image();
+
+			img.onload = () => {
+				URL.revokeObjectURL(url);
+				if (cancelled) return;
+
+				const canvas = document.createElement("canvas");
+				canvas.width = FAVICON_SIZE;
+				canvas.height = FAVICON_SIZE;
+				const ctx = canvas.getContext("2d");
+				if (!ctx) return;
+
+				ctx.drawImage(
+					img,
+					0,
+					0,
+					FAVICON_SIZE,
+					FAVICON_SIZE,
+				);
+
+				if (hasUrgentEvent || hasNotifications) {
+					const x = FAVICON_SIZE - BADGE_RADIUS;
+					const y = BADGE_RADIUS;
+					ctx.beginPath();
+					ctx.arc(x, y, BADGE_RADIUS, 0, 2 * Math.PI);
+					ctx.fillStyle = "#ef4444";
+					ctx.fill();
+				}
+
+				const link =
+					document.querySelector<HTMLLinkElement>(
+						'link[rel="icon"]',
+					);
+				if (link) link.href = canvas.toDataURL("image/png");
+			};
+
+			img.src = url;
+		});
 
 		return () => {
 			cancelled = true;
@@ -157,15 +167,16 @@ export const TitleManager = () => {
 
 	const pageTitle = matches
 		.flatMap((match) => match.meta ?? [])
-		.findLast((meta) => meta?.title)?.title;
-
-	const countSuffix =
-		notificationCount > 0 ? ` (${notificationCount})` : "";
-	const base = pageTitle
-		? `${pageTitle}${countSuffix} ${TITLE_DELIMITER} ${APP_TITLE}`
-		: APP_TITLE;
+		.findLast((tag) => tag?.title)?.title;
 
 	return (
-		<title>{hasUrgentEvent ? `(!) ${base}` : base}</title>
+		<title>
+			{pageTitle
+				? buildTitle(pageTitle, {
+						notificationCount,
+						hasUrgentEvent,
+					})
+				: APP_TITLE}
+		</title>
 	);
 };
