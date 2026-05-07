@@ -39,6 +39,10 @@ const AppHeader = () => {
 		}));
 
 	const handleLogout = async () => {
+		setTitleState({
+			notificationCount: 0,
+			hasUrgentEvent: false,
+		});
 		await postApiAuthLogout();
 		navigate({ to: "/login" });
 	};
@@ -63,18 +67,20 @@ const AppHeader = () => {
 				<div className={style.row}>
 					<Button
 						onClick={() =>
-							setTitleState({
+							setTitleState((prev) => ({
+								...prev,
 								notificationCount: notificationCount + 1,
-							})
+							}))
 						}
 					>
 						{m.nav_add_notification()}
 					</Button>
 					<Button
 						onClick={() =>
-							setTitleState({
+							setTitleState((prev) => ({
+								...prev,
 								hasUrgentEvent: !hasUrgentEvent,
-							})
+							}))
 						}
 					>
 						{m.nav_toggle_urgent()}

@@ -2,7 +2,9 @@ import { useRouterState } from "@tanstack/react-router";
 import { APP_TITLE, buildTitle } from "lib/title";
 import {
 	createContext,
+	Dispatch,
 	type ReactNode,
+	SetStateAction,
 	useContext,
 	useEffect,
 	useState,
@@ -15,7 +17,7 @@ type TitleState = Readonly<{
 
 type TitleStateContextValue = TitleState &
 	Readonly<{
-		setTitleState: (patch: Partial<TitleState>) => void;
+		setTitleState: Dispatch<SetStateAction<TitleState>>;
 	}>;
 
 const TitleStateContext =
@@ -27,13 +29,10 @@ export const TitleStateProvider = ({
 }: {
 	children: ReactNode;
 }) => {
-	const [state, setState] = useState<TitleState>({
+	const [state, setTitleState] = useState<TitleState>({
 		notificationCount: 0,
 		hasUrgentEvent: false,
 	});
-
-	const setTitleState = (patch: Partial<TitleState>) =>
-		setState((prev) => ({ ...prev, ...patch }));
 
 	return (
 		<TitleStateContext value={{ ...state, setTitleState }}>
