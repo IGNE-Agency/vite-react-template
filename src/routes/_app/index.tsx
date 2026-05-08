@@ -1,11 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { H1 } from "components/heading/heading";
 import * as m from "lib/paraglide/messages";
+import { makePageTitle } from "lib/title";
 import style from "./index.module.scss";
 
 export const Route = createFileRoute("/_app/")({
 	head: () => ({
-		meta: [{ title: m.home_title() }],
+		meta: [{ title: makePageTitle(m.home_title()) }],
 	}),
 	component: HomePage,
 });

@@ -12,6 +12,7 @@ import {
 	type ValidationError,
 } from "lib/heyapi";
 import * as m from "lib/paraglide/messages";
+import { makePageTitle } from "lib/title";
 import { useState } from "react";
 import z from "zod";
 import style from "./login.module.scss";
@@ -25,7 +26,7 @@ const loginSearchSchema = z.object({
 export const Route = createFileRoute("/_auth/login")({
 	validateSearch: loginSearchSchema,
 	head: () => ({
-		meta: [{ title: m.login_title() }],
+		meta: [{ title: makePageTitle(m.login_title()) }],
 	}),
 	component: LoginPage,
 });
