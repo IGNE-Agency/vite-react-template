@@ -1,8 +1,8 @@
-import * as path from "node:path";
 import { heyApiPlugin } from "@hey-api/vite-plugin";
 import { paraglideVitePlugin } from "@inlang/paraglide-js";
 import { tanstackRouter } from "@tanstack/router-plugin/vite";
 import react from "@vitejs/plugin-react";
+import * as path from "node:path";
 import { defineConfig, loadEnv } from "vite";
 import https from "vite-plugin-mkcert";
 import svgr from "vite-plugin-svgr";
@@ -21,31 +21,17 @@ export default defineConfig(({ mode }) => {
 				emitTsDeclarations: true,
 				urlPatterns: [
 					{
-						pattern: "/",
-						localized: [
-							["en-US", "/en-US"],
-							["nl-NL", "/"],
-						],
-					},
-					{
 						pattern: "/login",
 						localized: [
-							["en-US", "/en-US/login"],
+							["en-US", "/login"],
 							["nl-NL", "/inloggen"],
 						],
 					},
 					{
 						pattern: "/forgot-password",
 						localized: [
-							["en-US", "/en-US/forgot-password"],
+							["en-US", "/forgot-password"],
 							["nl-NL", "/wachtwoord-vergeten"],
-						],
-					},
-					{
-						pattern: "/:path(.*)?",
-						localized: [
-							["en-US", "/en-US/:path(.*)?"],
-							["nl-NL", "/:path(.*)?"],
 						],
 					},
 				],
@@ -63,7 +49,8 @@ export default defineConfig(({ mode }) => {
 						},
 						"zod",
 					],
-				}}),
+				},
+			}),
 			tanstackRouter({
 				autoCodeSplitting: true,
 				quoteStyle: "double",
