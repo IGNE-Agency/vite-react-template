@@ -1,4 +1,8 @@
-import { Link, useNavigate } from "@tanstack/react-router";
+import {
+	Link,
+	type LinkProps,
+	useNavigate,
+} from "@tanstack/react-router";
 import Logo from "assets/icons/logo.svg?react";
 import classNames from "classnames";
 import { Button, Select } from "components/form";
@@ -7,13 +11,19 @@ import { useLocale } from "lib/i18n";
 import * as m from "lib/paraglide/messages";
 import type { Locale } from "lib/paraglide/runtime";
 import { locales, setLocale } from "lib/paraglide/runtime";
-import { useTitleState } from "lib/title-state";
+import type { ReactNode } from "react";
 import style from "./app-header.module.scss";
 
-const links = [
+type AppHeaderLink = Readonly<{
+	to: LinkProps["to"];
+	icon: ReactNode;
+	// biome-ignore lint/suspicious/noExplicitAny: Really should be any
+	label: (...args: any[]) => ReactNode;
+}>;
+
+const links: ReadonlyArray<AppHeaderLink> = [
 	{
-		// TODO: How do we get this from the router config so we know it's safe?
-		to: "/" as const,
+		to: "/",
 		icon: <Logo width="1rem" />,
 		label: m.home_title,
 	},
@@ -22,11 +32,6 @@ const links = [
 const AppHeader = () => {
 	const locale = useLocale();
 	const navigate = useNavigate();
-	const {
-		notificationCount,
-		hasUrgentEvent,
-		setTitleState,
-	} = useTitleState();
 
 	const languageOptions = locales
 		.toSorted((a, b) => a.localeCompare(b, locale))
@@ -39,10 +44,6 @@ const AppHeader = () => {
 		}));
 
 	const handleLogout = async () => {
-		setTitleState({
-			notificationCount: 0,
-			hasUrgentEvent: false,
-		});
 		await postApiAuthLogout();
 		navigate({ to: "/login" });
 	};
@@ -65,26 +66,6 @@ const AppHeader = () => {
 					))}
 				</nav>
 				<div className={style.row}>
-					<Button
-						onClick={() =>
-							setTitleState((prev) => ({
-								...prev,
-								notificationCount: notificationCount + 1,
-							}))
-						}
-					>
-						{m.nav_add_notification()}
-					</Button>
-					<Button
-						onClick={() =>
-							setTitleState((prev) => ({
-								...prev,
-								hasUrgentEvent: !hasUrgentEvent,
-							}))
-						}
-					>
-						{m.nav_toggle_urgent()}
-					</Button>
 					<Select
 						name="lang"
 						options={languageOptions}

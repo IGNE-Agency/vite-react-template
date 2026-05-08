@@ -1,15 +1,14 @@
 import {
 	createRootRouteWithContext,
+	HeadContent,
 	Outlet,
+	redirect,
+	Scripts,
 } from "@tanstack/react-router";
 import { H1 } from "components/heading/heading";
 import * as m from "lib/paraglide/messages";
+import { shouldRedirect } from "lib/paraglide/runtime";
 import type { RouterContext } from "lib/router";
-import {
-	FaviconManager,
-	TitleManager,
-	TitleStateProvider,
-} from "lib/title-state";
 import style from "./not-found.module.scss";
 
 const NotFoundPage = () => (
@@ -20,12 +19,20 @@ const NotFoundPage = () => (
 
 export const Route =
 	createRootRouteWithContext<RouterContext>()({
+		beforeLoad: async () => {
+			const decision = await shouldRedirect({
+				url: window.location.href,
+			});
+			if (decision.redirectUrl) {
+				throw redirect({ href: decision.redirectUrl.href });
+			}
+		},
 		component: () => (
-			<TitleStateProvider>
-				<TitleManager />
-				<FaviconManager />
+			<>
+				<HeadContent />
 				<Outlet />
-			</TitleStateProvider>
+				<Scripts />
+			</>
 		),
 		notFoundComponent: NotFoundPage,
 	});

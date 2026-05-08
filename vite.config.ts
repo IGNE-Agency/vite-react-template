@@ -19,6 +19,36 @@ export default defineConfig(({ mode }) => {
 				outdir: "./src/lib/paraglide",
 				strategy: ["url", "localStorage", "baseLocale"],
 				emitTsDeclarations: true,
+				urlPatterns: [
+					{
+						pattern: "/",
+						localized: [
+							["en-US", "/en-US"],
+							["nl-NL", "/"],
+						],
+					},
+					{
+						pattern: "/login",
+						localized: [
+							["en-US", "/en-US/login"],
+							["nl-NL", "/inloggen"],
+						],
+					},
+					{
+						pattern: "/forgot-password",
+						localized: [
+							["en-US", "/en-US/forgot-password"],
+							["nl-NL", "/wachtwoord-vergeten"],
+						],
+					},
+					{
+						pattern: "/:path(.*)?",
+						localized: [
+							["en-US", "/en-US/:path(.*)?"],
+							["nl-NL", "/:path(.*)?"],
+						],
+					},
+				],
 			}),
 			heyApiPlugin({
 				config: {
