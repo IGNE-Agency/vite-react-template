@@ -7,6 +7,7 @@ import { defineConfig, loadEnv } from "vite";
 import https from "vite-plugin-mkcert";
 import svgr from "vite-plugin-svgr";
 import viteTsConfigPaths from "vite-tsconfig-paths";
+import { name } from "./package.json";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
@@ -19,6 +20,7 @@ export default defineConfig(({ mode }) => {
 				outdir: "./src/lib/paraglide",
 				strategy: ["url", "localStorage", "baseLocale"],
 				emitTsDeclarations: true,
+				localStorageKey: `${name}-lang`,
 			}),
 			heyApiPlugin({
 				config: {
@@ -33,7 +35,8 @@ export default defineConfig(({ mode }) => {
 						},
 						"zod",
 					],
-				}}),
+				},
+			}),
 			tanstackRouter({
 				autoCodeSplitting: true,
 				quoteStyle: "double",
