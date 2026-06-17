@@ -7,6 +7,7 @@ import { defineConfig, loadEnv } from "vite";
 import https from "vite-plugin-mkcert";
 import svgr from "vite-plugin-svgr";
 import viteTsConfigPaths from "vite-tsconfig-paths";
+import { name } from "./package.json";
 import { translatedPathnames } from "./router-i18n";
 
 // https://vitejs.dev/config/
@@ -21,6 +22,7 @@ export default defineConfig(({ mode }) => {
 				strategy: ["url", "localStorage", "baseLocale"],
 				emitTsDeclarations: true,
 				urlPatterns: translatedPathnames,
+				localStorageKey: `${name}-lang`,
 			}),
 			heyApiPlugin({
 				config: {
