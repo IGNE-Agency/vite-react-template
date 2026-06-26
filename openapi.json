@@ -19,29 +19,48 @@
 			"GenericError": {
 				"type": "object",
 				"properties": {
-					"message": {
-						"type": "string"
+					"type": {
+						"type": "string",
+						"description": "URI to error type spec"
+					},
+					"title": {
+						"type": "string",
+						"description": "Error message"
 					}
-				}
+				},
+				"required": ["type", "title"]
 			},
 			"ValidationError": {
 				"type": "object",
 				"properties": {
-					"message": {
+					"type": {
 						"type": "string",
-						"description": "Error overview"
+						"description": "URI to error type spec"
+					},
+					"title": {
+						"type": "string",
+						"description": "Error message"
 					},
 					"errors": {
-						"type": "object",
-						"description": "A detailed description of each field that failed validation.",
-						"additionalProperties": {
-							"type": "array",
-							"items": {
-								"type": "string"
-							}
+						"type": "array",
+						"items": {
+							"type": "object",
+							"description": "A detailed description of each field that failed validation.",
+							"properties": {
+								"detail": {
+									"type": "string",
+									"description": "Field error message"
+								},
+								"path": {
+									"type": "string",
+									"description": "Field path in dot notation"
+								}
+							},
+							"required": ["detail", "path"]
 						}
 					}
-				}
+				},
+				"required": ["type", "title"]
 			},
 			"LoginRequest": {
 				"type": "object",

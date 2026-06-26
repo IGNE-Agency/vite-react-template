@@ -27,6 +27,11 @@ const links: ReadonlyArray<AppHeaderLink> = [
 		icon: <Logo width="1rem" />,
 		label: m.home_title,
 	},
+	{
+		to: "/form-example",
+		icon: "📋",
+		label: () => "Form",
+	},
 ];
 
 const AppHeader = () => {
