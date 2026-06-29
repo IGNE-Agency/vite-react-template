@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "@tanstack/react-router";
 import Logo from "assets/icons/logo.svg?react";
-import classNames from "classnames";
+import clsx from "clsx";
 import { Button, Select } from "components/form";
 import { postApiAuthLogout } from "lib/heyapi";
 import { useLocale } from "lib/i18n";
@@ -38,9 +38,7 @@ const AppHeader = () => {
 
 	return (
 		<header>
-			<div
-				className={classNames([style.header, style.row])}
-			>
+			<div className={clsx([style.header, style.row])}>
 				<nav className={style.row}>
 					{links.map((link) => (
 						<Link
