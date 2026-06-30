@@ -40,7 +40,7 @@ function LoginPage() {
 	const [isPending, setIsPending] = useState(false);
 
 	const handleSubmit = async (
-		evt: React.FormEvent<HTMLFormElement>,
+		evt: React.SubmitEvent<HTMLFormElement>,
 	) => {
 		evt.preventDefault();
 		setIsPending(true);

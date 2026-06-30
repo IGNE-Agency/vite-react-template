@@ -2,7 +2,7 @@ import {
 	createFormHook,
 	createFormHookContexts,
 } from "@tanstack/react-form";
-import { Input } from "components/form";
+import Input from "components/form/input/tsf-input";
 
 export const {
 	fieldContext,

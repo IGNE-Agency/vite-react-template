@@ -1,11 +1,54 @@
 import { parseErrorString } from "lib/api/error-helpers";
 import { zValidationError } from "lib/heyapi/zod.gen";
 
-const pascalCaseToSnakeCase = (string: string) => {
-	return string
-		.split(/\.?(?=[A-Z])/)
-		.join("_")
-		.toLowerCase();
+/**
+ * Field errors can be of multiple types. This transforms to an array of strings.
+ * TODO: make sure this can handle the error types for your project
+ */
+export const normalizeFieldErrors = (
+	errors: unknown,
+): string[] => {
+	const errorArray = Array.isArray(errors)
+		? errors
+		: [errors];
+	return errorArray.flatMap((error) => {
+		if (typeof error === "string") return [error];
+		if (
+			typeof error === "object" &&
+			"message" in error &&
+			typeof error.message === "string"
+		)
+			return [error.message];
+		return [];
+	});
+};
+
+/**
+ * Returns a flattened array of error from given fields
+ */
+export const getFieldErrors = <
+	TState extends {
+		fieldMeta: Record<
+			string,
+			{ errors: unknown } | undefined
+		>;
+	},
+	TField extends keyof TState["fieldMeta"],
+>(
+	state: TState,
+	fields: TField[],
+): string[] =>
+	fields.flatMap((field) =>
+		normalizeFieldErrors(state.fieldMeta[field]?.errors),
+	);
+
+/**
+ * Backend uses snake_case, this converts to camelCase
+ */
+const snakeCaseToCamelCase = (string: string) => {
+	return string.replace(/_([a-z])/g, (_, letter) =>
+		letter.toUpperCase(),
+	);
 };
 
 /**
@@ -20,7 +63,7 @@ export const apiErrorToFormErrors = (error: unknown) => {
 			form: parsed.data.title,
 			fields: Object.fromEntries(
 				parsed.data.errors?.map(({ path, detail }) => [
-					pascalCaseToSnakeCase(path),
+					snakeCaseToCamelCase(path),
 					detail,
 				]) || [],
 			),

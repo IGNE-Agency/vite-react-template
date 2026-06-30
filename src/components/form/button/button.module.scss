@@ -1,4 +1,4 @@
-@use "style/variables/mixins.scss";
+@use "../form.scss";
 
 .button {
 	cursor: pointer;
@@ -10,6 +10,6 @@
 	color: black;
 
 	&:disabled {
-		@include mixins.disabled;
+		@include form.disabled;
 	}
 }

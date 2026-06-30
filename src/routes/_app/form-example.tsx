@@ -3,9 +3,13 @@ import { useMutation } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { ErrorText } from "components/error-text/error-text";
 import { Button, Form } from "components/form";
+import formStyle from "components/form/form.module.scss";
 import { H1 } from "components/heading/heading";
 import { useAppForm } from "lib/forms";
-import { mutateAndValidate } from "lib/forms/submit-helpers";
+import {
+	getFieldErrors,
+	mutateAndValidate,
+} from "lib/forms/validation-helpers";
 import type { ValidationError } from "lib/heyapi";
 import { makePageTitle } from "lib/title";
 import z from "zod";
@@ -34,9 +38,15 @@ const fakeSubmit = async (_value: any, ok = true) =>
 					type: "ValidationError",
 					title: "There was an issue with your input",
 					errors: [
+						// -- Try out errors on these fields
+						// {
+						// 	path: "email",
+						// 	detail: "This email already exists",
+						// },
 						{
-							path: "email",
-							detail: "This email already exists",
+							path: "postal_code",
+							detail:
+								"Could not find an address with the data you supplied",
 						},
 					],
 				} satisfies ValidationError);
@@ -58,7 +68,7 @@ function FormTest() {
 		mutationFn: (value: ValidationType) =>
 			fakeSubmit(value, false),
 		onSuccess: () => {
-			// biome-ignore lint/suspicious/noConsole: TODO: DEV
+			// biome-ignore lint/suspicious/noConsole: DEV
 			console.log("Success!");
 		},
 	});
@@ -86,25 +96,61 @@ function FormTest() {
 			<H1 size="medium">Form example</H1>
 
 			<Form
+				className={formStyle.form}
 				onSubmit={(evt) => {
 					evt.preventDefault();
 					form.handleSubmit();
 				}}
+				disabled={mutation.isPending}
 			>
-				<form.Subscribe
-					selector={(state) => state.errorMap.onSubmit}
-				>
-					{(error) =>
-						// TODO: Investigate error type -I expect an object with form and fields, why can it be string?
-						error ? (
-							typeof error === "string" ? (
-								<ErrorText>1 {error}</ErrorText>
-							) : (
-								<ErrorText>2 {error.form}</ErrorText>
-							)
-						) : null
-					}
-				</form.Subscribe>
+				<form.AppField name="email">
+					{(field) => (
+						<field.Input
+							label="Your e-mail"
+							autoComplete="email"
+						/>
+					)}
+				</form.AppField>
+
+				{/*
+				  Good candidate to use with `withFieldGroup`:
+				  https://tanstack.com/form/latest/docs/framework/solid/guides/form-composition#reusing-groups-of-fields-in-multiple-forms
+				*/}
+				<div className={style.address}>
+					<form.AppField name="postalCode">
+						{(field) => (
+							<field.Input label="Postal code" noError />
+						)}
+					</form.AppField>
+					<form.AppField name="houseNumber">
+						{(field) => (
+							<field.Input label="House number" noError />
+						)}
+					</form.AppField>
+					<form.AppField name="houseNumberAdd">
+						{(field) => (
+							<field.Input label="Addition" noError />
+						)}
+					</form.AppField>
+					<form.Subscribe
+						selector={(state) =>
+							getFieldErrors(state, [
+								"postalCode",
+								"houseNumber",
+								"houseNumberAdd",
+							])
+						}
+					>
+						{(errors) =>
+							errors.length > 0 ? (
+								<ErrorText className={style.addressError}>
+									{errors}
+								</ErrorText>
+							) : null
+						}
+					</form.Subscribe>
+				</div>
+
 				<Button type="submit">Submit</Button>
 			</Form>
 		</div>
