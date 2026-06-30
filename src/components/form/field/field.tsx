@@ -31,6 +31,7 @@ const Field = ({
 		>
 			{label && (
 				<BaseField.Label
+					id={`${id}-label`}
 					className={style.label}
 					htmlFor={id}
 				>

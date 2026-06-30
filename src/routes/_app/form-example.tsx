@@ -12,6 +12,7 @@ import {
 } from "lib/forms/validation-helpers";
 import type { ValidationError } from "lib/heyapi";
 import { makePageTitle } from "lib/title";
+import { useState } from "react";
 import z from "zod";
 import style from "./form-example.module.scss";
 
@@ -61,18 +62,33 @@ export const Route = createFileRoute("/_app/form-example")({
 		meta: [{ title: makePageTitle("Form test") }],
 	}),
 	component: FormTest,
+	loader: () => ({
+		// Suppose options are set by cms
+		allOptions: [
+			{ label: "I like apples!", value: "apples" },
+			{ label: "I like humans!", value: "humans" },
+			{ label: "I eat puppies!", value: "puppies" },
+		],
+	}),
 });
 
 function FormTest() {
+	const [disabled, setDisabled] = useState(false);
+	const { allOptions } = Route.useLoaderData();
+
 	const mutation = useMutation({
-		mutationFn: (value: ValidationType) =>
-			fakeSubmit(value, false),
+		mutationFn: (values: ValidationType) => {
+			// biome-ignore lint/suspicious/noConsole: DEV -show what is submitted
+			console.log("Will submit data:", values);
+			return fakeSubmit(values, true); // CHANGE this to false to test erros
+		},
 		onSuccess: () => {
-			// biome-ignore lint/suspicious/noConsole: DEV
+			// biome-ignore lint/suspicious/noConsole: DEV -show succes
 			console.log("Success!");
 		},
 	});
 
+	// Note: Only filled in so it's easier to test
 	const defaultValues: ValidationType = {
 		email: "test@test.nl",
 		postalCode: "1234AZ",
@@ -101,7 +117,7 @@ function FormTest() {
 					evt.preventDefault();
 					form.handleSubmit();
 				}}
-				disabled={mutation.isPending}
+				disabled={mutation.isPending || disabled}
 			>
 				<form.AppField name="email">
 					{(field) => (
@@ -157,8 +173,23 @@ function FormTest() {
 					)}
 				</form.AppField>
 
+				<form.AppField name="options">
+					{(field) => (
+						<field.CheckboxGroup
+							label="Pick your options"
+							items={allOptions}
+						/>
+					)}
+				</form.AppField>
+
 				<Button type="submit">Submit</Button>
 			</Form>
+			<Button
+				type="button"
+				onClick={() => setDisabled((d) => !d)}
+			>
+				Toggle disabled state
+			</Button>
 		</div>
 	);
 }

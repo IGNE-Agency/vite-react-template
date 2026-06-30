@@ -1,9 +1,7 @@
-import { Checkbox as BaseCheckbox } from "@base-ui/react/checkbox";
 import { useFieldContext } from "lib/forms";
 import { normalizeFieldErrors } from "lib/forms/validation-helpers";
 import Field, { type FieldProps } from "../field/field";
-import CheckIcon from "./check.svg?react";
-import style from "./checkbox.module.scss";
+import Checkbox from "./checkbox";
 
 // Using TSF `name` as id
 type CheckboxProps = Omit<
@@ -31,26 +29,17 @@ const TSFCheckbox = ({
 			noError={noError}
 			className={className}
 		>
-			<label htmlFor={field.name} className={style.label}>
-				<BaseCheckbox.Root
-					id={field.name}
-					className={style.control}
-					checked={field.state.value}
-					onCheckedChange={(checked) =>
-						field.handleChange(checked)
-					}
-					onBlur={field.handleBlur}
-					aria-invalid={!field.state.meta.isValid}
-					{...props}
-				>
-					<BaseCheckbox.Indicator
-						className={style.indicator}
-					>
-						<CheckIcon />
-					</BaseCheckbox.Indicator>
-				</BaseCheckbox.Root>
-				{label}
-			</label>
+			<Checkbox
+				id={field.name}
+				label={label}
+				checked={field.state.value}
+				onCheckedChange={(checked) =>
+					field.handleChange(checked)
+				}
+				onBlur={field.handleBlur}
+				aria-invalid={!field.state.meta.isValid}
+				{...props}
+			/>
 		</Field>
 	);
 };
