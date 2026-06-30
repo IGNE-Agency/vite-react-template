@@ -2,6 +2,7 @@ import {
 	createFormHook,
 	createFormHookContexts,
 } from "@tanstack/react-form";
+import Checkbox from "components/form/checkbox/tsf-checkbox";
 import Input from "components/form/input/tsf-input";
 
 export const {
@@ -23,6 +24,7 @@ export const { useAppForm, withForm } = createFormHook({
 	formContext,
 
 	fieldComponents: {
+		Checkbox,
 		Input,
 	},
 	formComponents: {},

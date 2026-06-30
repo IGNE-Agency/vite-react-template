@@ -22,7 +22,7 @@ const validationSchema = z.object({
 	}),
 	houseNumber: z.string().regex(/\d+/),
 	houseNumberAdd: z.string(),
-	agree: z.boolean(),
+	agree: z.literal<boolean>(true),
 	options: z.array(z.string()),
 });
 type ValidationType = z.infer<typeof validationSchema>;
@@ -150,6 +150,12 @@ function FormTest() {
 						}
 					</form.Subscribe>
 				</div>
+
+				<form.AppField name="agree">
+					{(field) => (
+						<field.Checkbox label="I agree with whatever dude." />
+					)}
+				</form.AppField>
 
 				<Button type="submit">Submit</Button>
 			</Form>
