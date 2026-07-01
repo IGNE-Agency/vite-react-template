@@ -86,6 +86,12 @@ Before implementing any interactive widget (dialog, popover, menu, select, check
 
 ---
 
+## Routing
+
+- Any new route must declare its URL translations in `router-i18n.ts` (`translatedPathnames`), keyed by its router path with a localized path per locale. Non-index routes are required to have translations.
+
+---
+
 ## i18n
 
 - This project uses Paraglide JS. When in doubt about message format, arrays, pluralization, or other Paraglide-specific behavior, consult the docs at https://inlang.com/m/gerre34r/library-inlang-paraglideJs before making assumptions.
