@@ -1,6 +1,6 @@
 import {
 	Link,
-	type LinkProps,
+	linkOptions,
 	useNavigate,
 } from "@tanstack/react-router";
 import Logo from "assets/icons/logo.svg?react";
@@ -11,23 +11,15 @@ import { useLocale } from "lib/i18n";
 import * as m from "lib/paraglide/messages";
 import type { Locale } from "lib/paraglide/runtime";
 import { locales, setLocale } from "lib/paraglide/runtime";
-import type { ReactNode } from "react";
 import style from "./app-header.module.scss";
 
-type AppHeaderLink = Readonly<{
-	to: LinkProps["to"];
-	icon: ReactNode;
-	// biome-ignore lint/suspicious/noExplicitAny: Really should be any
-	label: (...args: any[]) => ReactNode;
-}>;
-
-const links: ReadonlyArray<AppHeaderLink> = [
+const links = linkOptions([
 	{
 		to: "/",
 		icon: <Logo width="1rem" />,
 		label: m.home_title,
 	},
-];
+]);
 
 const AppHeader = () => {
 	const locale = useLocale();
