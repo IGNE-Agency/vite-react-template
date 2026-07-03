@@ -77,10 +77,10 @@ function FormTest() {
 	const { allOptions } = Route.useLoaderData();
 
 	const mutation = useMutation({
-		mutationFn: (values: ValidationType) => {
+		mutationFn: ({ body }: { body: ValidationType }) => {
 			// biome-ignore lint/suspicious/noConsole: DEV -show what is submitted
-			console.log("Will submit data:", values);
-			return fakeSubmit(values, true); // CHANGE this to false to test erros
+			console.log("Will submit data:", body);
+			return fakeSubmit(body, true); // CHANGE this to false to test erros
 		},
 		onSuccess: () => {
 			// biome-ignore lint/suspicious/noConsole: DEV -show succes
@@ -103,7 +103,8 @@ function FormTest() {
 		validationLogic: revalidateLogic(),
 		validators: {
 			onDynamic: validationSchema,
-			onSubmitAsync: mutateAndValidate(mutation),
+			onSubmitAsync: ({ value }) =>
+				mutateAndValidate(mutation, { body: value }),
 		},
 	});
 

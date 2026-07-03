@@ -79,21 +79,23 @@ type Mutatable<TVariables> = {
 };
 
 /**
- * Connect TanStack Form with -Query to handle backend errors.
+ * Submit form and handle possible errors.
  * This is a temporary solution until TSF supports it out of the box:
  *   https://github.com/TanStack/form/issues/2188
  *
  * @example
  * validators: {
- *   onSubmitAsync: mutateAndValidate(mutation),
+ *   onSubmitAsync: async ({ value }) =>
+ *     mutateAndValidate(mutation, { body: value }),
  * }
  */
-export const mutateAndValidate =
-	<TVariables>(mutation: Mutatable<TVariables>) =>
-	async ({ value }: { value: TVariables }) => {
-		try {
-			await mutation.mutateAsync(value);
-		} catch (error) {
-			return apiErrorToFormErrors(error);
-		}
-	};
+export const mutateAndValidate = async <TVariables>(
+	mutation: Mutatable<TVariables>,
+	variables: TVariables,
+) => {
+	try {
+		await mutation.mutateAsync(variables);
+	} catch (error) {
+		return apiErrorToFormErrors(error);
+	}
+};
