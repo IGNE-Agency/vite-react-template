@@ -1,3 +1,5 @@
+import { revalidateLogic } from "@tanstack/react-form";
+import { useMutation } from "@tanstack/react-query";
 import {
 	createFileRoute,
 	Link,
@@ -5,15 +7,18 @@ import {
 } from "@tanstack/react-router";
 import classNames from "classnames";
 import { ErrorText } from "components/error-text/error-text";
-import { Button, Form, Input } from "components/form";
+import { Button, Form } from "components/form";
 import { H1 } from "components/heading/heading";
+import { useAppForm } from "lib/forms";
 import {
-	postApiAuthLogin,
-	type ValidationError,
-} from "lib/heyapi";
+	mutateAndValidate,
+	normalizeFieldErrors,
+} from "lib/forms/validation-helpers";
+import type { LoginRequest } from "lib/heyapi";
+import { postApiAuthLoginMutation } from "lib/heyapi/@tanstack/react-query.gen";
+import { zLoginRequest } from "lib/heyapi/zod.gen";
 import * as m from "lib/paraglide/messages";
 import { makePageTitle } from "lib/title";
-import { useState } from "react";
 import z from "zod";
 import style from "./login.module.scss";
 
@@ -34,30 +39,25 @@ export const Route = createFileRoute("/_auth/login")({
 function LoginPage() {
 	const { redirect } = Route.useSearch();
 	const navigate = useNavigate();
-	const [email, setEmail] = useState("");
-	const [password, setPassword] = useState("");
-	const [error, setError] = useState<ValidationError>();
-	const [isPending, setIsPending] = useState(false);
 
-	const handleSubmit = async (
-		evt: React.SubmitEvent<HTMLFormElement>,
-	) => {
-		evt.preventDefault();
-		setIsPending(true);
+	const mutation = useMutation({
+		...postApiAuthLoginMutation(),
+		gcTime: 0,
+		onSuccess: () => navigate({ to: redirect || "/" }),
+	});
 
-		// Auth endpoints do not use TanStack Query
-		const result = await postApiAuthLogin({
-			body: { email, password },
-		});
-
-		if (result.error) {
-			setError(result.error);
-			setIsPending(false);
-			return;
-		}
-
-		navigate({ to: redirect || "/" });
-	};
+	const form = useAppForm({
+		defaultValues: {
+			email: "",
+			password: "",
+		} satisfies LoginRequest,
+		validationLogic: revalidateLogic(),
+		validators: {
+			onDynamic: zLoginRequest,
+			onSubmitAsync: ({ value }) =>
+				mutateAndValidate(mutation, { body: value }),
+		},
+	});
 
 	return (
 		<>
@@ -65,36 +65,31 @@ function LoginPage() {
 				{m.login_title()}
 			</H1>
 			<Form
-				onSubmit={handleSubmit}
+				onSubmit={(evt) => {
+					evt.preventDefault();
+					form.handleSubmit();
+				}}
 				className={style.form}
-				disabled={isPending}
+				disabled={mutation.isPending}
 			>
-				<label className={style.label} htmlFor="email">
-					<Input
-						label={m.login_email()}
-						isInvalid={!!error?.errors?.email}
-						name="email"
-						id="email"
-						value={email}
-						onChange={(evt) => setEmail(evt.target.value)}
-					/>
-					<ErrorText>{error?.errors?.email}</ErrorText>
-				</label>
-				<div className={style.label}>
-					<label className={style.label} htmlFor="password">
-						<Input
-							type="password"
-							label={m.login_password()}
-							isInvalid={!!error?.errors?.password}
-							name="password"
-							id="password"
-							value={password}
-							onChange={(evt) =>
-								setPassword(evt.target.value)
-							}
+				<form.AppField name="email">
+					{(field) => (
+						<field.Input
+							label={m.login_email()}
+							autoComplete="email"
 						/>
-						<ErrorText>{error?.errors?.password}</ErrorText>
-					</label>
+					)}
+				</form.AppField>
+				<div className={style.label}>
+					<form.AppField name="password">
+						{(field) => (
+							<field.Input
+								type="password"
+								label={m.login_password()}
+								autoComplete="current-password"
+							/>
+						)}
+					</form.AppField>
 					<Link
 						to="/forgot-password"
 						className={classNames([style.forgotPassword])}
@@ -102,7 +97,21 @@ function LoginPage() {
 						{m.login_forgot_password()}
 					</Link>
 				</div>
-				<ErrorText>{error?.message}</ErrorText>
+
+				<form.Subscribe
+					selector={(state) => {
+						const errBag = state.errorMap.onSubmit;
+						return typeof errBag === "string"
+							? errBag
+							: errBag?.form;
+					}}
+				>
+					{(formError) => (
+						<ErrorText>
+							{normalizeFieldErrors(formError)}
+						</ErrorText>
+					)}
+				</form.Subscribe>
 				<Button type="submit">{m.login_submit()}</Button>
 			</Form>
 		</>
