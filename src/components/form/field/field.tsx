@@ -42,6 +42,24 @@ export type FieldLabelProps = BaseField.Label.Props & {
 };
 
 /**
+ * A paragraph styled like a field label
+ */
+const FieldLabelLike = ({
+	children,
+	required,
+	...props
+}: FieldLabelLikeProps) =>
+	children && (
+		<p className={style.label} {...props}>
+			{children} {required && m.forms_optional()}
+		</p>
+	);
+export type FieldLabelLikeProps =
+	React.ComponentProps<"p"> & {
+		required?: boolean;
+	};
+
+/**
  * Styled Field.Description
  */
 const FieldDescription = ({
@@ -74,14 +92,12 @@ const FieldError = ({
 		)}
 	/>
 );
-// export type FieldErrorProps = BaseField.Error.Props & {
-// 	id: string;
-// };
 
 export default {
 	...BaseField,
 	Root: FieldRoot,
 	Label: FieldLabel,
+	LabelLike: FieldLabelLike,
 	Description: FieldDescription,
 	Error: FieldError,
 };

@@ -70,9 +70,9 @@ export const Route = createFileRoute("/_app/form-example")({
 			{ label: "I like apples!", value: "apples" },
 			{
 				label: "I like puppies very much!",
-				value: "humans",
+				value: "puppies",
 			},
-			{ label: "I eat squirrels!", value: "puppies" },
+			{ label: "I eat squirrels!", value: "squirrels" },
 		],
 	}),
 });
@@ -171,7 +171,10 @@ function FormTest() {
 
 				<form.AppField name="agree">
 					{(field) => (
-						<field.Checkbox label="I agree with whatever dude." />
+						<field.Checkbox
+							fieldLabel="You have to agree to this!"
+							label="Sure, whatever dude."
+						/>
 					)}
 				</form.AppField>
 

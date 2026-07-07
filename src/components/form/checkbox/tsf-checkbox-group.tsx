@@ -1,4 +1,5 @@
 import { CheckboxGroup as BaseCheckboxGroup } from "@base-ui/react/checkbox-group";
+import { Field as BaseField } from "@base-ui/react/field";
 import { useFieldContext } from "lib/forms";
 import Field from "../field/field";
 import Checkbox from "./checkbox";
@@ -17,7 +18,7 @@ type Props = {
 };
 
 /**
- * Simple CheckboxGroup intended for checking items in an optional list
+ * A list of multiple checkboxes for tanstack form.
  * All checkboxes have the same name. The value will be an array of checked checkbox strings
  */
 const TSFCheckboxGroup = ({
@@ -30,10 +31,9 @@ const TSFCheckboxGroup = ({
 
 	return (
 		<Field.Root>
-			<Field.Label required={required}>
+			<Field.LabelLike required={required}>
 				{fieldLabel}
-			</Field.Label>
-
+			</Field.LabelLike>
 			<BaseCheckboxGroup
 				aria-labelledby={`${field.name}-label`}
 				className={style.checkboxGroup}
@@ -41,14 +41,24 @@ const TSFCheckboxGroup = ({
 				onValueChange={(value) => field.handleChange(value)}
 			>
 				{items.map(({ label, value }) => (
-					<Checkbox
+					<Field.Item
 						key={value}
-						id={`${field.name}-${value}`}
-						value={value}
-						label={label}
-						onBlur={field.handleBlur}
-						aria-invalid={!field.state.meta.isValid}
-					/>
+						render={(props) => (
+							<BaseField.Label
+								className={style.label}
+								{...props}
+							/>
+						)}
+					>
+						<Checkbox
+							id={`${field.name}-${value}`}
+							value={value}
+							onBlur={field.handleBlur}
+							aria-invalid={!field.state.meta.isValid}
+						/>
+
+						{label}
+					</Field.Item>
 				))}
 			</BaseCheckboxGroup>
 			<Field.Error>{field.getMeta().errors}</Field.Error>
