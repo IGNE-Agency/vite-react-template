@@ -30,7 +30,7 @@ The suffix format (in this case `Menu`Trigger), prevents issues with reserved co
 ```tsx
 //...
 
-type MenuTriggerProps = BaseMenu.Trigger.Props & { icon: "chevron" | "arrow" }
+export type MenuTriggerProps = BaseMenu.Trigger.Props & { icon: "chevron" | "arrow" }
 const MenuTrigger = ({children, icon, ...rest}: MenuTriggerProps) =>
   <BaseMenu.Trigger {...rest}>{children}{icon ? <ChevronRight /> <Arrow />}</BaseMenu.Trigger>
 
