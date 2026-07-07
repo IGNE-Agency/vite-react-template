@@ -1,4 +1,4 @@
-import classNames from "classnames";
+import clsx from "clsx";
 import style from "./form.module.scss";
 
 type FormProps = React.ComponentProps<"form"> & {
@@ -12,7 +12,7 @@ const Form = ({
 	...props
 }: FormProps) => {
 	return (
-		<form className={classNames([className])} {...props}>
+		<form className={clsx([className])} {...props}>
 			<fieldset
 				disabled={disabled}
 				className={style.disablerFieldset}

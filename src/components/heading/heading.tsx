@@ -1,4 +1,4 @@
-import classNames from "classnames";
+import clsx from "clsx";
 import type { JSX } from "react";
 import style from "./heading.module.scss";
 
@@ -33,10 +33,7 @@ export const Heading = ({
 
 	return (
 		<El
-			className={classNames(
-				style[`size-${size}`],
-				className,
-			)}
+			className={clsx(style[`size-${size}`], className)}
 			{...props}
 		>
 			{children}
