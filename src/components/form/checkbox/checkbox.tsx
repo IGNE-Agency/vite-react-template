@@ -2,7 +2,7 @@ import { Checkbox as BaseCheckbox } from "@base-ui/react/checkbox";
 import CheckIcon from "./check.svg?react";
 import style from "./checkbox.module.scss";
 
-type CheckboxProps = React.ComponentProps<
+export type CheckboxProps = React.ComponentProps<
 	typeof BaseCheckbox.Root
 > & {
 	label: string;
@@ -24,7 +24,7 @@ const Checkbox = ({
 					<CheckIcon />
 				</BaseCheckbox.Indicator>
 			</BaseCheckbox.Root>
-			{label}
+			<span>{label}</span>
 		</label>
 	);
 };

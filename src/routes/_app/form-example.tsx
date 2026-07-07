@@ -24,7 +24,9 @@ const validationSchema = z.object({
 	houseNumber: z.string().regex(/\d+/),
 	houseNumberAdd: z.string(),
 	agree: z.literal<boolean>(true),
-	options: z.array(z.string()),
+	options: z
+		.array(z.string())
+		.min(1, "Kies minimaal één optie"),
 });
 type ValidationType = z.infer<typeof validationSchema>;
 
@@ -40,10 +42,10 @@ const fakeSubmit = async (_value: any, ok = true) =>
 					title: "There was an issue with your input",
 					errors: [
 						// -- Try out errors on these fields
-						// {
-						// 	path: "email",
-						// 	detail: "This email already exists",
-						// },
+						{
+							path: "email",
+							detail: "This email already exists",
+						},
 						{
 							path: "postal_code",
 							detail:
@@ -66,8 +68,11 @@ export const Route = createFileRoute("/_app/form-example")({
 		// Suppose options are set by cms
 		allOptions: [
 			{ label: "I like apples!", value: "apples" },
-			{ label: "I like humans!", value: "humans" },
-			{ label: "I eat puppies!", value: "puppies" },
+			{
+				label: "I like puppies very much!",
+				value: "humans",
+			},
+			{ label: "I eat squirrels!", value: "puppies" },
 		],
 	}),
 });
@@ -80,11 +85,7 @@ function FormTest() {
 		mutationFn: ({ body }: { body: ValidationType }) => {
 			// biome-ignore lint/suspicious/noConsole: DEV -show what is submitted
 			console.log("Will submit data:", body);
-			return fakeSubmit(body, true); // CHANGE this to false to test erros
-		},
-		onSuccess: () => {
-			// biome-ignore lint/suspicious/noConsole: DEV -show succes
-			console.log("Success!");
+			return fakeSubmit(body, false); // CHANGE this to false to test erros
 		},
 	});
 
@@ -177,7 +178,7 @@ function FormTest() {
 				<form.AppField name="options">
 					{(field) => (
 						<field.CheckboxGroup
-							label="Pick your options"
+							fieldLabel="Pick your options"
 							items={allOptions}
 						/>
 					)}
@@ -191,6 +192,16 @@ function FormTest() {
 			>
 				Toggle disabled state
 			</Button>
+			{!mutation.isSuccess && (
+				<p className={style.devMessage}>
+					DEV: to successfully submit, update the call to{" "}
+					<code className={style.code}>fakeSubmit</code> in
+					the mutation.
+				</p>
+			)}
+			{mutation.isSuccess && (
+				<p className={style.success}>Success!</p>
+			)}
 		</div>
 	);
 }

@@ -1,58 +1,87 @@
-import { Field as BaseField } from "@base-ui/react/field";
+import {
+	Field as BaseField,
+	type FieldRootProps as BaseFieldRootProps,
+} from "@base-ui/react/field";
 import classNames from "classnames";
 import { ErrorText } from "components/error-text/error-text";
+import { normalizeFieldErrors } from "lib/forms/validation-helpers";
 import * as m from "lib/paraglide/messages";
 import style from "./field.module.scss";
 
-export type FieldProps = {
-	id: string;
-	label?: string;
-	description?: string;
-	required?: boolean;
-	error?: string | string[];
-	noError?: true; // Handy for multiple small fields in a row
-	className?: string;
-	children: React.ReactElement; // Input, Checkbox, etc
-};
-
-const Field = ({
-	id,
-	label,
-	description,
-	required = false,
-	error,
-	noError,
+/**
+ * Styling for fields, to wrap your form control with
+ */
+const FieldRoot = ({
 	className,
-	children,
-}: FieldProps) => {
-	return (
-		<BaseField.Root
-			className={classNames(style.field, className)}
-		>
-			{label && (
-				<BaseField.Label
-					id={`${id}-label`}
-					className={style.label}
-					htmlFor={id}
-				>
-					{label} {required && m.forms_optional()}
-				</BaseField.Label>
-			)}
-			{children}
-			{!noError && (
-				<ErrorText el="label" htmlFor={id}>
-					{error}
-				</ErrorText>
-			)}
-			{description && (
-				<BaseField.Description
-					className={style.description}
-				>
-					{description}
-				</BaseField.Description>
-			)}
-		</BaseField.Root>
-	);
+	...props
+}: FieldRootProps) => (
+	<BaseField.Root
+		className={classNames(style.field, className)}
+		{...props}
+	></BaseField.Root>
+);
+export type FieldRootProps = BaseFieldRootProps & {
+	className?: string;
 };
 
-export default Field;
+/**
+ * Styled Field.Label. Won't render without children
+ */
+const FieldLabel = ({
+	children,
+	required,
+	...props
+}: FieldLabelProps) =>
+	children && (
+		<BaseField.Label className={style.label} {...props}>
+			{children} {required && m.forms_optional()}
+		</BaseField.Label>
+	);
+export type FieldLabelProps = BaseField.Label.Props & {
+	required?: boolean;
+};
+
+/**
+ * Styled Field.Description
+ */
+const FieldDescription = ({
+	children,
+	className,
+	...props
+}: BaseField.Description.Props) =>
+	children && (
+		<BaseField.Description
+			className={classNames(style.description, className)}
+			{...props}
+		>
+			{children}
+		</BaseField.Description>
+	);
+
+/**
+ * Custom Field.Error
+ * Normalizes given errors to array of strings
+ */
+const FieldError = ({
+	children: errors,
+}: BaseField.Error.Props) => (
+	<BaseField.Error
+		match
+		render={({ children, ...props }) => (
+			<ErrorText el="span" {...props}>
+				{normalizeFieldErrors(errors)}
+			</ErrorText>
+		)}
+	/>
+);
+// export type FieldErrorProps = BaseField.Error.Props & {
+// 	id: string;
+// };
+
+export default {
+	...BaseField,
+	Root: FieldRoot,
+	Label: FieldLabel,
+	Description: FieldDescription,
+	Error: FieldError,
+};

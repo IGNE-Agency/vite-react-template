@@ -1,34 +1,29 @@
 import { useFieldContext } from "lib/forms";
-import { normalizeFieldErrors } from "lib/forms/validation-helpers";
-import Field, { type FieldProps } from "../field/field";
-import Checkbox from "./checkbox";
+import Field from "../field/field";
+import Checkbox, { type CheckboxProps } from "./checkbox";
+import style from "./checkbox.module.scss";
 
-// Using TSF `name` as id
-type CheckboxProps = Omit<
-	FieldProps,
-	"id" | "error" | "children"
-> & {
+type Props = CheckboxProps & {
 	label: string;
+	fieldLabel?: string;
+	description?: string;
 };
 
 const TSFCheckbox = ({
 	label,
+	fieldLabel,
 	description,
 	required,
-	noError,
 	className,
 	...props
-}: CheckboxProps) => {
+}: Props) => {
 	const field = useFieldContext<boolean>();
+
 	return (
-		<Field
-			id={field.name}
-			description={description}
-			required={required}
-			error={normalizeFieldErrors(field.getMeta().errors)}
-			noError={noError}
-			className={className}
-		>
+		<Field.Root className={style.root}>
+			<Field.Label required={required}>
+				{fieldLabel}
+			</Field.Label>
 			<Checkbox
 				id={field.name}
 				label={label}
@@ -40,7 +35,9 @@ const TSFCheckbox = ({
 				aria-invalid={!field.state.meta.isValid}
 				{...props}
 			/>
-		</Field>
+			<Field.Error>{field.getMeta().errors}</Field.Error>
+			<Field.Description>{description}</Field.Description>
+		</Field.Root>
 	);
 };
 

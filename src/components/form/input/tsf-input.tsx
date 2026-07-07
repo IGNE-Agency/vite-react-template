@@ -1,18 +1,14 @@
-import {
-	Input as BaseInput,
-	type InputProps as BaseInputProps,
-} from "@base-ui/react/input";
+import { Field as BaseField } from "@base-ui/react/field";
 import { useFieldContext } from "lib/forms";
-import { normalizeFieldErrors } from "lib/forms/validation-helpers";
-import Field, { type FieldProps } from "../field/field";
+import Field from "../field/field";
+import Input, { type InputProps } from "./input";
 import style from "./input.module.scss";
 
-// Using TSF `name` as id
-type InputProps = Omit<
-	BaseInputProps,
-	"id" | "defaultValue"
-> &
-	Omit<FieldProps, "id" | "error" | "children">;
+type Props = InputProps & {
+	label?: string;
+	description?: string;
+	noError?: true; // Handy for multiple small fields in a row
+};
 
 const TSFInput = ({
 	type = "text",
@@ -22,19 +18,16 @@ const TSFInput = ({
 	noError,
 	className,
 	...props
-}: InputProps) => {
+}: Props) => {
 	const field = useFieldContext<string>();
+	const id = field.name;
+
 	return (
-		<Field
-			id={field.name}
-			label={label}
-			description={description}
-			required={required}
-			error={normalizeFieldErrors(field.getMeta().errors)}
-			noError={noError}
-			className={className}
-		>
-			<BaseInput
+		<Field.Root>
+			<Field.Label id={id} required={required}>
+				{label}
+			</Field.Label>
+			<Input
 				type={type}
 				id={field.name}
 				className={style.input}
@@ -46,7 +39,15 @@ const TSFInput = ({
 				aria-invalid={!field.state.meta.isValid}
 				{...props}
 			/>
-		</Field>
+			{!noError && (
+				<BaseField.Label className={style.errorLabel}>
+					<Field.Error>
+						{field.getMeta().errors}
+					</Field.Error>
+				</BaseField.Label>
+			)}
+			<Field.Description>{description}</Field.Description>
+		</Field.Root>
 	);
 };
 

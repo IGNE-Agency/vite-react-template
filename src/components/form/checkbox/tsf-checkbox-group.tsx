@@ -1,21 +1,19 @@
 import { CheckboxGroup as BaseCheckboxGroup } from "@base-ui/react/checkbox-group";
 import { useFieldContext } from "lib/forms";
-import { normalizeFieldErrors } from "lib/forms/validation-helpers";
-import Field, { type FieldProps } from "../field/field";
+import Field from "../field/field";
 import Checkbox from "./checkbox";
+import style from "./checkbox.module.scss";
 
 export type CheckboxGroupItem = Readonly<{
 	label: string;
 	value: string;
 }>;
 
-// Using TSF `name` as id
-type CheckboxProps = Omit<
-	FieldProps,
-	"id" | "error" | "children"
-> & {
-	label: string;
+type Props = {
+	fieldLabel: string;
 	items: CheckboxGroupItem[];
+	required?: boolean;
+	description?: string;
 };
 
 /**
@@ -23,26 +21,22 @@ type CheckboxProps = Omit<
  * All checkboxes have the same name. The value will be an array of checked checkbox strings
  */
 const TSFCheckboxGroup = ({
-	label: fieldLabel,
+	fieldLabel,
 	description,
 	required,
-	noError,
-	className,
 	items,
-}: CheckboxProps) => {
+}: Props) => {
 	const field = useFieldContext<string[]>();
+
 	return (
-		<Field
-			id={field.name}
-			label={fieldLabel}
-			description={description}
-			required={required}
-			error={normalizeFieldErrors(field.getMeta().errors)}
-			noError={noError}
-			className={className}
-		>
+		<Field.Root>
+			<Field.Label required={required}>
+				{fieldLabel}
+			</Field.Label>
+
 			<BaseCheckboxGroup
 				aria-labelledby={`${field.name}-label`}
+				className={style.checkboxGroup}
 				value={field.state.value}
 				onValueChange={(value) => field.handleChange(value)}
 			>
@@ -57,7 +51,9 @@ const TSFCheckboxGroup = ({
 					/>
 				))}
 			</BaseCheckboxGroup>
-		</Field>
+			<Field.Error>{field.getMeta().errors}</Field.Error>
+			<Field.Description>{description}</Field.Description>
+		</Field.Root>
 	);
 };
 
