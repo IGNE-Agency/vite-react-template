@@ -62,10 +62,12 @@ export const apiErrorToFormErrors = (error: unknown) => {
 		return {
 			form: parsed.data.title,
 			fields: Object.fromEntries(
-				parsed.data.errors?.map(({ path, detail }) => [
-					snakeCaseToCamelCase(path),
-					detail,
-				]) || [],
+				Object.entries(parsed.data.errors ?? {}).map(
+					([field, fieldErrors]) => [
+						snakeCaseToCamelCase(field),
+						fieldErrors.map(({ title }) => title),
+					],
+				),
 			),
 		};
 	}

@@ -37,21 +37,37 @@ const fakeSubmit = async (_value: any, ok = true) =>
 			if (ok) {
 				resolve({ message: "Success" });
 			} else {
+				// Note: this error object mimics the agreed upon format with BE, but the actual
+				// implementation may be slightly different
 				reject({
 					type: "ValidationError",
+					code: "invalid_form",
+					status: 422,
 					title: "There was an issue with your input",
-					errors: [
+					errors: {
 						// -- Try out errors on these fields
-						{
-							path: "email",
-							detail: "This email already exists",
-						},
-						{
-							path: "postal_code",
-							detail:
-								"Could not find an address with the data you supplied",
-						},
-					],
+						email: [
+							{
+								code: "exists",
+								title: "This email already exists",
+								properties: { attribute: "unique" },
+							},
+							{
+								code: "unimaginative",
+								title:
+									"Your emailaddress is unimaginative 🤪",
+								properties: { attribute: "unimaginative" },
+							},
+						],
+						postal_code: [
+							{
+								code: "not_found",
+								title:
+									"Could not find an address with the data you supplied",
+								properties: { attribute: "not_found" },
+							},
+						],
+					},
 				} satisfies ValidationError);
 			}
 		}, 500),
