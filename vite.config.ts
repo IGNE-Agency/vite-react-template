@@ -8,6 +8,7 @@ import https from "vite-plugin-mkcert";
 import svgr from "vite-plugin-svgr";
 import viteTsConfigPaths from "vite-tsconfig-paths";
 import { name } from "./package.json";
+import { translatedPathnames } from "./router-i18n";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
@@ -20,6 +21,7 @@ export default defineConfig(({ mode }) => {
 				outdir: "./src/lib/paraglide",
 				strategy: ["url", "localStorage", "baseLocale"],
 				emitTsDeclarations: true,
+				urlPatterns: translatedPathnames,
 				localStorageKey: `${name}-lang`,
 			}),
 			heyApiPlugin({

@@ -1,4 +1,8 @@
-import { Link, useNavigate } from "@tanstack/react-router";
+import {
+	Link,
+	linkOptions,
+	useNavigate,
+} from "@tanstack/react-router";
 import Logo from "assets/icons/logo.svg?react";
 import classNames from "classnames";
 import { Button, Select } from "components/form";
@@ -9,13 +13,13 @@ import type { Locale } from "lib/paraglide/runtime";
 import { locales, setLocale } from "lib/paraglide/runtime";
 import style from "./app-header.module.scss";
 
-const links = [
+const links = linkOptions([
 	{
-		to: "/" as const,
+		to: "/",
 		icon: <Logo width="1rem" />,
 		label: m.home_title,
 	},
-];
+]);
 
 const AppHeader = () => {
 	const locale = useLocale();

@@ -12,8 +12,8 @@ import {
 	type ValidationError,
 } from "lib/heyapi";
 import * as m from "lib/paraglide/messages";
+import { makePageTitle } from "lib/title";
 import { useState } from "react";
-import { useDocumentTitle } from "usehooks-ts";
 import z from "zod";
 import style from "./login.module.scss";
 
@@ -25,11 +25,13 @@ const loginSearchSchema = z.object({
 
 export const Route = createFileRoute("/_auth/login")({
 	validateSearch: loginSearchSchema,
+	head: () => ({
+		meta: [{ title: makePageTitle(m.login_title()) }],
+	}),
 	component: LoginPage,
 });
 
 function LoginPage() {
-	useDocumentTitle(m.login_title());
 	const { redirect } = Route.useSearch();
 	const navigate = useNavigate();
 	const [email, setEmail] = useState("");
@@ -101,9 +103,7 @@ function LoginPage() {
 					</Link>
 				</div>
 				<ErrorText>{error?.message}</ErrorText>
-				<Button type="submit">
-					{m.login_submit()}
-				</Button>
+				<Button type="submit">{m.login_submit()}</Button>
 			</Form>
 		</>
 	);
