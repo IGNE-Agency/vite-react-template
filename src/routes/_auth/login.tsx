@@ -5,7 +5,7 @@ import {
 	Link,
 	useNavigate,
 } from "@tanstack/react-router";
-import classNames from "classnames";
+import clsx from "clsx";
 import { ErrorText } from "components/error-text/error-text";
 import { Button, Form } from "components/form";
 import { H1 } from "components/heading/heading";
@@ -92,7 +92,7 @@ function LoginPage() {
 					</form.AppField>
 					<Link
 						to="/forgot-password"
-						className={classNames([style.forgotPassword])}
+						className={clsx([style.forgotPassword])}
 					>
 						{m.login_forgot_password()}
 					</Link>

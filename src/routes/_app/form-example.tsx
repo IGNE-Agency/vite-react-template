@@ -105,7 +105,7 @@ function FormTest() {
 		},
 	});
 
-	// Note: Only filled in so it's easier to test
+	// Note: Has values so it's easier to test/play the form
 	const defaultValues: ValidationType = {
 		email: "test@test.nl",
 		postalCode: "1234AZ",
