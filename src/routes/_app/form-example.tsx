@@ -16,6 +16,9 @@ import { useState } from "react";
 import z from "zod";
 import style from "./form-example.module.scss";
 
+// Note: this whole file is an example, you should always prefer to use generated schema's
+// and messages/labels translated through paraglide.
+// The main takeaway of this page is to show how to use tanstack form AppFields and showing errors!
 const validationSchema = z.object({
 	email: z.email(),
 	postalCode: z.string().regex(/\d{4}\s?[a-zA-Z]{2}/, {
@@ -190,6 +193,7 @@ function FormTest() {
 						<field.Checkbox
 							fieldLabel="You have to agree to this!"
 							label="Sure, whatever dude."
+							required
 						/>
 					)}
 				</form.AppField>

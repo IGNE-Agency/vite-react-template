@@ -1,13 +1,17 @@
 .field {
 	display: flex;
 	flex-direction: column;
+	justify-content: space-between;
 	gap: var(--unit-2);
 	width: 100%;
 }
 
 .label {
 	cursor: default;
-	color: lch(from inherit calc(l + 20) c h);
+}
+
+.optional {
+	color: lch(from currentColor calc(l + 60) c h);
 }
 
 .description {

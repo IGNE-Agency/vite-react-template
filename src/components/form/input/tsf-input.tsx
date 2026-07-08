@@ -20,16 +20,12 @@ const TSFInput = ({
 	...props
 }: Props) => {
 	const field = useFieldContext<string>();
-	const id = field.name;
 
 	return (
 		<Field.Root>
-			<Field.Label id={id} required={required}>
-				{label}
-			</Field.Label>
+			<Field.Label required={required}>{label}</Field.Label>
 			<Input
 				type={type}
-				id={field.name}
 				className={style.input}
 				value={field.state.value}
 				onChange={(evt) =>

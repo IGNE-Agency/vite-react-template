@@ -34,7 +34,12 @@ const FieldLabel = ({
 }: FieldLabelProps) =>
 	children && (
 		<BaseField.Label className={style.label} {...props}>
-			{children} {required && m.forms_optional()}
+			{children}{" "}
+			{!required && (
+				<span className={style.optional}>
+					{m.forms_optional()}
+				</span>
+			)}
 		</BaseField.Label>
 	);
 export type FieldLabelProps = BaseField.Label.Props & {
@@ -51,7 +56,12 @@ const FieldLabelLike = ({
 }: FieldLabelLikeProps) =>
 	children && (
 		<p className={style.label} {...props}>
-			{children} {required && m.forms_optional()}
+			{children}{" "}
+			{!required && (
+				<span className={style.optional}>
+					{m.forms_optional()}
+				</span>
+			)}
 		</p>
 	);
 export type FieldLabelLikeProps =
