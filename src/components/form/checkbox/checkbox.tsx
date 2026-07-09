@@ -1,5 +1,5 @@
 import { Checkbox as BaseCheckbox } from "@base-ui/react/checkbox";
-import classNames from "classnames";
+import clsx from "clsx";
 import CheckIcon from "./check.svg?react";
 import style from "./checkbox.module.scss";
 
@@ -15,7 +15,7 @@ const Checkbox = ({
 }: CheckboxProps) => {
 	return (
 		<BaseCheckbox.Root
-			className={classNames(style.control, className)}
+			className={clsx(style.control, className)}
 			{...props}
 		>
 			<BaseCheckbox.Indicator className={style.indicator}>

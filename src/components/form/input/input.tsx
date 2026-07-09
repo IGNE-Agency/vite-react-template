@@ -2,7 +2,7 @@ import {
 	Input as BaseInput,
 	type InputProps as BaseInputProps,
 } from "@base-ui/react/input";
-import classNames from "classnames";
+import clsx from "clsx";
 import style from "./input.module.scss";
 
 export type InputProps = BaseInputProps;
@@ -14,7 +14,7 @@ const Input = ({
 }: InputProps) => (
 	<BaseInput
 		type={type}
-		className={classNames(style.input, className)}
+		className={clsx(style.input, className)}
 		{...props}
 	/>
 );

@@ -1,4 +1,4 @@
-import classNames from "classnames";
+import clsx from "clsx";
 import { Fragment, type HTMLAttributes } from "react";
 import style from "./error-text.module.scss";
 
@@ -34,7 +34,7 @@ export function ErrorText({
 	const El = el;
 	return (
 		<El
-			className={classNames(style.text, className)}
+			className={clsx(style.text, className)}
 			htmlFor={htmlFor}
 		>
 			{Array.isArray(children)

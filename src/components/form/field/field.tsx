@@ -2,7 +2,7 @@ import {
 	Field as BaseField,
 	type FieldRootProps as BaseFieldRootProps,
 } from "@base-ui/react/field";
-import classNames from "classnames";
+import clsx from "clsx";
 import { ErrorText } from "components/error-text/error-text";
 import { normalizeFieldErrors } from "lib/forms/validation-helpers";
 import * as m from "lib/paraglide/messages";
@@ -16,7 +16,7 @@ const FieldRoot = ({
 	...props
 }: FieldRootProps) => (
 	<BaseField.Root
-		className={classNames(style.field, className)}
+		className={clsx(style.field, className)}
 		{...props}
 	></BaseField.Root>
 );
@@ -79,7 +79,7 @@ const FieldDescription = ({
 }: BaseField.Description.Props) =>
 	children && (
 		<BaseField.Description
-			className={classNames(style.description, className)}
+			className={clsx(style.description, className)}
 			{...props}
 		>
 			{children}
