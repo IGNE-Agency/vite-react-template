@@ -32,7 +32,7 @@ The suffix format (in this case `Menu`Trigger), prevents issues with reserved co
 
 export type MenuTriggerProps = BaseMenu.Trigger.Props & { icon: "chevron" | "arrow" }
 const MenuTrigger = ({children, icon, ...rest}: MenuTriggerProps) =>
-  <BaseMenu.Trigger {...rest}>{children}{icon ? <ChevronRight /> <Arrow />}</BaseMenu.Trigger>
+  <BaseMenu.Trigger {...rest}>{children}{icon ? <ChevronRight /> : <Arrow />}</BaseMenu.Trigger>
 
 //...
 ```
