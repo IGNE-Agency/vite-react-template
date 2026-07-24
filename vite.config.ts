@@ -26,7 +26,7 @@ export default defineConfig(({ mode }) => {
 			}),
 			heyApiPlugin({
 				config: {
-					input: "./openapi.json",
+					input: "./openapi.yaml",
 					output: "src/lib/heyapi",
 					plugins: [
 						"@hey-api/typescript",

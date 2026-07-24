@@ -1,6 +1,8 @@
 {
 	"$schema": "https://inlang.com/schema/inlang-message-format",
 
+	"forms_optional": "Optioneel",
+
 	"roles_user": "Gebruiker",
 	"roles_admin": "Administrator",
 

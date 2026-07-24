@@ -1,28 +1,22 @@
+import {
+	Input as BaseInput,
+	type InputProps as BaseInputProps,
+} from "@base-ui/react/input";
+import clsx from "clsx";
 import style from "./input.module.scss";
 
-type Props = React.ComponentPropsWithoutRef<"input"> & {
-	name: string;
-	label?: string;
-	isInvalid?: boolean;
-};
+export type InputProps = BaseInputProps;
 
-function Input({
-	label,
-	isInvalid,
+const Input = ({
 	type = "text",
+	className,
 	...props
-}: Props) {
-	return (
-		<>
-			{label && <span>{label}</span>}
-			<input
-				type={type}
-				aria-invalid={isInvalid}
-				className={style.input}
-				{...props}
-			/>
-		</>
-	);
-}
+}: InputProps) => (
+	<BaseInput
+		type={type}
+		className={clsx(style.input, className)}
+		{...props}
+	/>
+);
 
 export default Input;

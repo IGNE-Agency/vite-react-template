@@ -1,5 +1,6 @@
 import {
 	createRootRouteWithContext,
+	ErrorComponent,
 	HeadContent,
 	Outlet,
 	redirect,
@@ -55,6 +56,9 @@ export const Route =
 				<Outlet />
 				<Scripts />
 			</>
+		),
+		errorComponent: (error) => (
+			<ErrorComponent error={error} />
 		),
 		notFoundComponent: NotFoundPage,
 	});

@@ -1,4 +1,4 @@
-@use "style/variables/mixins.scss";
+@use "../form.scss";
 
 .select {
 	display: inline-flex;
@@ -15,10 +15,10 @@
 	}
 
 	&[aria-invalid="true"] {
-		@include mixins.invalid;
+		@include form.invalid;
 	}
 
 	&:disabled {
-		@include mixins.disabled;
+		@include form.disabled;
 	}
 }

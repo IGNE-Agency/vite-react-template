@@ -1,12 +1,12 @@
-@use "style/variables/mixins.scss";
+@use "../form.scss";
 
 .input {
 	display: inline-flex;
-	flex: 1;
 	border: 2px solid currentColor;
 	border-radius: var(--unit-1);
 	background: white;
 	padding: var(--unit-4);
+	width: 100%;
 	min-width: 0;
 	color: black;
 
@@ -15,10 +15,14 @@
 	}
 
 	&[aria-invalid="true"] {
-		@include mixins.invalid;
+		@include form.invalid;
 	}
 
 	&:disabled {
-		@include mixins.disabled;
+		@include form.disabled;
 	}
+}
+
+.errorLabel {
+	cursor: default;
 }

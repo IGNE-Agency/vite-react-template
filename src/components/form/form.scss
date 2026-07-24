@@ -1,10 +1,9 @@
-// Meant for recurring styling.
+// Shared styles to be used in scss
 //
 // @use "style/variables/mixins.scss"
 // .selector {
-//   @include mixins.disabled;
+//   @include form.disabled;
 // }
-
 @mixin disabled {
 	opacity: 0.5;
 	cursor: not-allowed;
