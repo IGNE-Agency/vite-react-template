@@ -8,7 +8,18 @@ import https from "vite-plugin-mkcert";
 import svgr from "vite-plugin-svgr";
 import viteTsConfigPaths from "vite-tsconfig-paths";
 import { name } from "./package.json";
+import { baseLocale } from "./project.inlang/settings.json";
 import { translatedPathnames } from "./router-i18n";
+
+/**
+ * Serves the document in the locale paraglide compiles for, read from the
+ * settings file rather than repeated in `index.html` so the two cannot disagree.
+ */
+const documentLocale = () => ({
+	name: "document-locale",
+	transformIndexHtml: (html: string) =>
+		html.replaceAll("%LOCALE%", baseLocale),
+});
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
@@ -24,6 +35,7 @@ export default defineConfig(({ mode }) => {
 				urlPatterns: translatedPathnames,
 				localStorageKey: `${name}-lang`,
 			}),
+			documentLocale(),
 			heyApiPlugin({
 				config: {
 					input: "./openapi.yaml",
