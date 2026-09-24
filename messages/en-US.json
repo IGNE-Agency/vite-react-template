@@ -3,9 +3,6 @@
 
 	"forms_optional": "Optional",
 
-	"roles_user": "User",
-	"roles_admin": "Administrator",
-
 	"loading_message": "Loading...",
 
 	"nav_logout": "Log out",
