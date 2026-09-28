@@ -108,20 +108,8 @@ Before implementing any interactive widget (dialog, popover, menu, select, check
 - Change only what is necessary for the requested outcome
 - Do not refactor files you are not already modifying
 - Do not add dependencies unless clearly necessary — prefer what is already in `package.json`
-
----
-
-## Comments
-
-A comment earns its place only by carrying a non-obvious fact the code cannot show: a provider's real column values, an undocumented API quirk, a constraint that lives outside the file. One or two lines.
-
-Do not write:
-
-- why a function or module exists, or a paragraph justifying a design decision
-- a restatement of what the code plainly does
-- a note recording the reasoning behind an earlier choice
-
-Draft the comment, then delete every sentence that argues, justifies, or narrates. If nothing factual is left, drop the comment. This applies to new code, to comments touched while editing, and to review: flag doc or inline comments that break these rules, and suggest the one-or-two-line fact to keep, if there is one.
+- No comments. Not for rationale, edge cases, warnings or spec quirks — if it needs explaining, the name is wrong.
+- Doc comments on exported symbols only: short, correct, one example. Keep them general and brief; say what the symbol is, not why it was built that way. No prose, no rationale, no design history. One or two sentences.
 
 ---
 
