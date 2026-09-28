@@ -7,6 +7,7 @@ A template for quick-starting any React app!
 
 - [Vite React Template](#vite-react-template)
   - [🏃‍♂️ Getting started](#️-getting-started)
+    - [👥 CODEOWNERS](#-codeowners)
     - [🟢 OpenAPI](#-openapi)
   - [🚀 Deployments](#-deployments)
     - [🔁 Github Workflows](#-github-workflows)
@@ -21,22 +22,20 @@ To run this project, [use `bun`](https://bun.sh/):
 ```sh
 # Install dependencies
 bun install
-bun run gen
 bun run dev
 ```
 
+### 👥 CODEOWNERS
+
+[`.github/CODEOWNERS`](.github/CODEOWNERS) lists the maintainers of this template. When starting a new project, replace them with the owners of that project, or remove the file. (Also, remove this chapter).
+
 ### 🟢 OpenAPI
 
-If the api endpoints changed, you need to re-generate the api-related files.
+The API client is generated automatically on every `bun dev` and `bun run build` by the [heyapi](https://heyapi.dev/) Vite plugin. It reads the OpenAPI spec and generates typesafe types, an SDK, TanStack Query hooks and zod schemas into `src/lib/heyapi`. These files are gitignored; don't edit them.
 
-```sh
-# Run code generators for API schemas and validators
-bun run gen
-```
+Code generation is configured in [`vite.config.ts`](./vite.config.ts), under `heyApiPlugin`.
 
-This will read the provided openapi spec and generate some files. These files provide typesafe API clients and form validators.
-
-> ⚠️ The provided spec is an example. You should delete `openapi.json` and reference your own OpenAPI specification by changing the `input` in `heyapi.config.ts`
+> ⚠️ The provided spec is an example. You should delete `openapi.yaml` and reference your own OpenAPI specification by changing the `input` of `heyApiPlugin` in `vite.config.ts`
 
 ### 💻 Editor setup
 
@@ -56,7 +55,7 @@ To overwrite any general settings, create a `settings.local.json` file.
 
 ### 🔁 Github Workflows / Bitbucket pipeline (todo)
 
-Use the provided Github Workflows, just add the last step in [.github/workflows/deploy_develop.yml](.github/workflows/deploy_develop.yml).
+The provided [.github/workflows/build.yml](.github/workflows/build.yml) builds the app on pull requests to `main` and `develop`. Deploy steps are project-specific: make sure to update it to your needs.
 
 ### 🛠️ DIY
 

@@ -8,20 +8,19 @@ You are working in a production TypeScript + React repository. Make safe, minima
 
 ## Stack
 
-| Concern         | Tool                                                                |
-| --------------- | ------------------------------------------------------------------- |
-| Package manager | `bun`                                                               |
-| Build           | Vite                                                                |
-| Framework       | React 19 + TypeScript 5.9                                           |
-| Routing         | `@tanstack/react-router`                                            |
-| Data fetching   | `openapi-fetch` + `openapi-react-query` + `@tanstack/react-query`   |
-| API types       | Generated — `src/lib/schema.gen.d.ts` + `src/lib/validators.gen.ts` |
-| Forms           | react controlled components                                         |
-| UI primitives   | `@base-ui/react`                                                    |
-| Styling         | CSS Modules + SCSS (`sass-embedded`)                                |
-| i18n            | `@inlang/paraglide-js`                                              |
-| Unit testing    | Vitest (if applicable)                                              |
-| E2e Testing     | Playwright (if applicable)                                          |
+| Concern         | Tool                                                                                             |
+| --------------- | ------------------------------------------------------------------------------------------------ |
+| Package manager | `bun`                                                                                            |
+| Build           | Vite                                                                                             |
+| Framework       | React 19 + TypeScript 5.9                                                                        |
+| Routing         | `@tanstack/react-router`                                                                         |
+| Data fetching   | `@hey-api/openapi-ts` (sdk + TanStack Query plugins) + `@tanstack/react-query`                   |
+| API types       | Generated into `src/lib/heyapi/` on `bun dev` / `bun run build` (configured in `vite.config.ts`) |
+| Forms           | react controlled components                                                                      |
+| UI primitives   | `@base-ui/react`                                                                                 |
+| Styling         | CSS Modules + SCSS (`sass`)                                                                      |
+| i18n            | `@inlang/paraglide-js`                                                                           |
+| Testing         | None installed                                                                                   |
 
 ---
 
@@ -95,7 +94,7 @@ Before implementing any interactive widget (dialog, popover, menu, select, check
 ## i18n
 
 - This project uses Paraglide JS. When in doubt about message format, arrays, pluralization, or other Paraglide-specific behavior, consult the docs at https://inlang.com/m/gerre34r/library-inlang-paraglideJs before making assumptions.
-- Messages are in `src/messages` folder
+- Messages are in `messages/{locale}.json`
 - Scope keys to their feature, not a generic layer — `login_email` not `field_email`. Identical strings across features should still have separate keys so they can evolve independently.
 - Reserve `common_` only for structural UI strings unlikely to ever diverge, like `common_save` or `common_cancel`. Field labels don't qualify.
 - Use `{feature}_{concept}` as the default pattern: `login_submit`, `nav_logout`, `error_page_title`.

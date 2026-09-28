@@ -5,6 +5,7 @@ on:
     branches:
       - develop
       - main
+      - develop
 jobs:
   build:
     timeout-minutes: 5
