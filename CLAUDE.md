@@ -113,11 +113,9 @@ Before implementing any interactive widget (dialog, popover, menu, select, check
 
 ## Comments
 
-- No comments. One exception: a fact whose source of truth lives outside this repository. Two lines max. Not if the surrounding lines already show it.
-- Doc comments on exported symbols only. One sentence saying what the symbol is, plus one example. Never why it was built that way.
-- Trimming a comment: keep what it is, cut what argues. If nothing is left, delete it.
-- TODOs are exempt. They must contain a ticket reference.
-- Design-system and config files may open with one block on how to use the file, with a call example. Three lines max.
+- No comments. Exception: a fact whose source of truth lives outside this repository. Two lines max.
+- TODOs are allowed. They must contain a ticket reference.
+- Design-system and config files may open with one block on how to use the file. Three lines max.
 - Applies to new code, comments you touch, and review.
 
 ---
