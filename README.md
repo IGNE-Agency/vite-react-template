@@ -47,10 +47,12 @@ You should find them in the "Recommended" section of the extensions tab.
 
 If you use another editor, the same applies: make sure it understands how to format according to the Biome & prettier configs.
 
-#### Claude
+#### AI
 
-The `.claude` folder can be extended per project by specific skills, etc. See Claude docs.  
+Within IGNE we mainly use Claude. The `.claude` folder can be extended per project by specific skills, etc. See Claude docs.  
 To overwrite any general settings, create a `settings.local.json` file.
+
+Agent settings are in `AGENTS.md`, so if another agent is used alongside Claude, it just works. Note that you should exclusively use `AGENTS.md`, using `CLAUDE.md` in the root or a (sub)folder will make Claude ignore `AGENTS.md`.
 
 ## 🚀 Deployments
 
