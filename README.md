@@ -70,11 +70,8 @@ bun run build --mode develop
 
 The app is now built in `./dist` and ready to be hosted.
 
-> ⚠️ Note that the web app is configured to send requests to the server it's hosted on. This is to prevent CORS issues while developing our projects.
+> ⚠️ Note that the web app sends API requests to the hostname it is served on, so no CORS is needed.
 >
-> In order to support this, the server must reverse proxy requests according to [the following rules in `vite.config.ts`](./vite.config.ts):
+> In production and on the test environments, [`@igne-agency/proxy`](https://www.npmjs.com/package/@igne-agency/proxy) does this: add `proxy/proxy.json` as its docs describe (`docs/getting-started.md`). Locally, the Vite dev server reads the backend paths from that same `proxy/proxy.json` (see `vite.config.ts`) and sends them to `API_TARGET` (default `http://localhost:8000`). Without `proxy/proxy.json` it sends `/api` and `/sanctum`.
 >
-> ```
-> "/api": "https://api.example.CHANGE_ME.com/api/v1",
-> "/oauth2": "https://CHANGE_ME.exampleauthservice.com/v3/oauth2"
-> ```
+> No backend yet? `VITE_FAKE_API=true bun dev` answers login, logout and the current user in the browser.
