@@ -145,14 +145,18 @@ export default defineConfig(({ mode }) => {
 		},
 		server: {
 			open: true,
-			proxy: {
-				[env.VITE_API_BASEURL]: {
-					// TODO: Change to your actual backend
-					target: "CHANGE_ME",
-					secure: true,
-					changeOrigin: true,
-				},
-			},
+			proxy: Object.fromEntries(
+				(env.API_PATHS || "/api,/sanctum")
+					.split(",")
+					.map((path) => [
+						path.trim(),
+						{
+							target:
+								env.API_URL || "http://localhost:8000",
+							changeOrigin: true,
+						},
+					]),
+			),
 		},
 	};
 });
