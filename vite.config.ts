@@ -1,4 +1,3 @@
-import { existsSync, readFileSync } from "node:fs";
 import * as path from "node:path";
 import { heyApiPlugin } from "@hey-api/vite-plugin";
 import { paraglideVitePlugin } from "@inlang/paraglide-js";
@@ -21,47 +20,6 @@ const documentLocale = () => ({
 	transformIndexHtml: (html: string) =>
 		html.replaceAll("%LOCALE%", baseLocale),
 });
-
-type ProxyHost = {
-	origin?: string;
-	primary?: boolean;
-	paths?: Record<string, unknown>;
-};
-
-/**
- * The paths the backend serves, read from the development environment in
- * proxy/proxy.json so the dev server and the proxy can never disagree: every
- * path of its primary hostname that goes to another origin than the frontend.
- * Without proxy/proxy.json, the paths of a plain Laravel API.
- */
-const backendPaths = (): string[] => {
-	const file = path.resolve(__dirname, "proxy/proxy.json");
-
-	if (!existsSync(file)) {
-		return ["/api", "/sanctum"];
-	}
-
-	const { environments } = JSON.parse(
-		readFileSync(file, "utf8"),
-	);
-	const hosts: ProxyHost[] = Object.values(
-		(
-			environments.development ??
-			Object.values(environments)[0]
-		).hosts,
-	);
-	const host =
-		hosts.find((candidate) => candidate.primary) ??
-		hosts[0];
-
-	return Object.entries(host.paths ?? {})
-		.filter(
-			([, origin]) =>
-				typeof origin === "string" &&
-				origin !== host.origin,
-		)
-		.map(([prefix]) => prefix);
-};
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
@@ -187,16 +145,17 @@ export default defineConfig(({ mode }) => {
 		},
 		server: {
 			open: true,
-			// The backend paths of proxy/proxy.json go to API_TARGET.
 			proxy: Object.fromEntries(
-				backendPaths().map((path) => [
-					path,
-					{
-						target:
-							env.API_TARGET || "http://localhost:8000",
-						changeOrigin: true,
-					},
-				]),
+				(env.API_PATHS || "/api,/sanctum")
+					.split(",")
+					.map((path) => [
+						path.trim(),
+						{
+							target:
+								env.API_URL || "http://localhost:8000",
+							changeOrigin: true,
+						},
+					]),
 			),
 		},
 	};

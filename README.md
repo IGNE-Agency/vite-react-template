@@ -72,6 +72,6 @@ The app is now built in `./dist` and ready to be hosted.
 
 > ⚠️ Note that the web app sends API requests to the hostname it is served on, so no CORS is needed.
 >
-> In production and on the test environments, [`@igne-agency/proxy`](https://www.npmjs.com/package/@igne-agency/proxy) does this: add `proxy/proxy.json` as its docs describe (`docs/getting-started.md`). Locally, the Vite dev server reads the backend paths from that same `proxy/proxy.json` (see `vite.config.ts`) and sends them to `API_TARGET` (default `http://localhost:8000`). Without `proxy/proxy.json` it sends `/api` and `/sanctum`.
+> In production and on the test environments, [`@igne-agency/proxy`](https://www.npmjs.com/package/@igne-agency/proxy) does this. Locally, the Vite dev server sends `API_PATHS` (default `/api,/sanctum`) to `API_URL` (default `http://localhost:8000`), see `.env.example`.
 >
 > No backend yet? `VITE_FAKE_API=true bun dev` answers login, logout and the current user in the browser.
