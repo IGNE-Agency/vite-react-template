@@ -63,6 +63,7 @@ const AppHeader = () => {
 				<div className={style.row}>
 					<Select
 						name="lang"
+						aria-label={m.nav_language()}
 						options={languageOptions}
 						defaultValue={locale.toString()}
 						onChange={({ currentTarget: { value } }) =>
