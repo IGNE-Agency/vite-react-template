@@ -1,9 +1,3 @@
-@use "/src/style/mixins.scss";
-
 .disablerFieldset {
 	display: contents;
-}
-
-.legend {
-	@include mixins.visually-hidden;
 }

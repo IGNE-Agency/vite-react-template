@@ -4,14 +4,12 @@ import style from "./form.module.scss";
 
 type FormProps = React.ComponentProps<"form"> & {
 	disabled?: boolean;
-	legend?: string;
 };
 
 const Form = ({
 	children,
 	className,
 	disabled = false,
-	legend,
 	...props
 }: FormProps) => {
 	return (
@@ -24,11 +22,6 @@ const Form = ({
 				disabled={disabled}
 				className={style.disablerFieldset}
 			>
-				{legend && (
-					<Fieldset.Legend className={style.legend}>
-						{legend}
-					</Fieldset.Legend>
-				)}
 				{children}
 			</Fieldset.Root>
 		</form>
