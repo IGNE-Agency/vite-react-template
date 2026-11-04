@@ -3,6 +3,8 @@
 
 	"forms_optional": "Optional",
 
+	"error_unknown": "Unknown error.",
+
 	"loading_message": "Loading...",
 
 	"nav_logout": "Log out",
