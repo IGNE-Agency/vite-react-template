@@ -1,3 +1,4 @@
+import { Fieldset } from "@base-ui/react/fieldset";
 import clsx from "clsx";
 import style from "./form.module.scss";
 
@@ -12,13 +13,17 @@ const Form = ({
 	...props
 }: FormProps) => {
 	return (
-		<form className={clsx([className])} {...props}>
-			<fieldset
+		<form
+			className={clsx([className])}
+			noValidate
+			{...props}
+		>
+			<Fieldset.Root
 				disabled={disabled}
 				className={style.disablerFieldset}
 			>
 				{children}
-			</fieldset>
+			</Fieldset.Root>
 		</form>
 	);
 };
