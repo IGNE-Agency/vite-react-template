@@ -10,7 +10,7 @@ client.setConfig({
 	baseUrl: env.apiBaseUrl,
 	headers: {
 		Accept: "application/json",
-		ContentType: "application/json",
+		"Content-Type": "application/json",
 	},
 });
 
