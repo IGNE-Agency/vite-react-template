@@ -3,6 +3,7 @@ import {
 	createRouter,
 	RouterProvider,
 } from "@tanstack/react-router";
+import { queryClient } from "lib/api";
 import {
 	deLocalizeUrl,
 	localizeUrl,
@@ -15,10 +16,7 @@ export type RouterContext = Readonly<{
 
 const router = createRouter({
 	routeTree,
-	context: {
-		// biome-ignore lint/style/noNonNullAssertion: will immediately get instantiated
-		queryClient: null!,
-	},
+	context: { queryClient },
 	defaultPreload: "intent",
 	rewrite: {
 		input: ({ url }) => deLocalizeUrl(url),
@@ -26,18 +24,12 @@ const router = createRouter({
 	},
 });
 
-export const AppRouter = ({
-	queryClient,
-}: RouterContext) => {
-	return (
-		<RouterProvider
-			router={router}
-			context={{ queryClient }}
-		/>
-	);
-};
+export const AppRouter = () => (
+	<RouterProvider router={router} />
+);
 
 declare module "@tanstack/react-router" {
+	// oxlint-disable-next-line typescript/consistent-type-definitions -- module augmentation merges into an interface
 	interface Register {
 		router: typeof router;
 	}

@@ -11,15 +11,18 @@ export const normalizeFieldErrors = (
 	const errorArray = Array.isArray(errors)
 		? errors
 		: [errors];
-	return errorArray.flatMap((error) => {
-		if (typeof error === "string") return [error];
+	return errorArray.flatMap(error => {
+		if (typeof error === "string") {
+			return [error];
+		}
 		if (
 			error &&
 			typeof error === "object" &&
 			"message" in error &&
 			typeof error.message === "string"
-		)
+		) {
 			return [error.message];
+		}
 		return [];
 	});
 };
@@ -34,12 +37,11 @@ export const getFieldErrors = <
 			{ errors: unknown } | undefined
 		>;
 	},
-	TField extends keyof TState["fieldMeta"],
 >(
 	state: TState,
-	fields: TField[],
+	fields: (keyof TState["fieldMeta"])[],
 ): string[] =>
-	fields.flatMap((field) =>
+	fields.flatMap(field =>
 		normalizeFieldErrors(state.fieldMeta[field]?.errors),
 	);
 
@@ -77,9 +79,9 @@ export const apiErrorToFormErrors = (error: unknown) => {
 
 // Instead of using `UseMutationResult` we use this custom type, so it
 // can be used by other means than react-query and is easier to mock.
-type Mutatable<TVariables> = {
+type Mutatable<TVariables> = Readonly<{
 	mutateAsync: (variables: TVariables) => Promise<unknown>;
-};
+}>;
 
 /**
  * Submit form and handle possible errors.
@@ -98,6 +100,7 @@ export const mutateAndValidate = async <TVariables>(
 ) => {
 	try {
 		await mutation.mutateAsync(variables);
+		return undefined;
 	} catch (error) {
 		return apiErrorToFormErrors(error);
 	}

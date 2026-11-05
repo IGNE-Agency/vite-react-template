@@ -26,8 +26,8 @@ class ErrorBoundary extends Component<
 		return { error };
 	}
 
-	// biome-ignore lint/correctness/noUnusedFunctionParameters: depends on project. Remove if not used
-	componentDidCatch(error: Error, info: ErrorInfo) {
+	// Unused until the project reports errors somewhere. Remove if not used.
+	componentDidCatch(_error: Error, _info: ErrorInfo) {
 		// Maybe do some analytics here
 	}
 

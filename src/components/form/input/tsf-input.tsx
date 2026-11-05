@@ -4,11 +4,12 @@ import Field from "../field/field";
 import Input, { type InputProps } from "./input";
 import style from "./input.module.scss";
 
-type Props = InputProps & {
-	label?: string;
-	description?: string;
-	noError?: true; // Handy for multiple small fields in a row
-};
+type Props = InputProps &
+	Readonly<{
+		label?: string;
+		description?: string;
+		noError?: true; // Handy for multiple small fields in a row
+	}>;
 
 const TSFInput = ({
 	type = "text",
@@ -16,7 +17,7 @@ const TSFInput = ({
 	description,
 	required,
 	noError,
-	className,
+	className: _className,
 	...props
 }: Props) => {
 	const field = useFieldContext<string>();
@@ -28,7 +29,7 @@ const TSFInput = ({
 				type={type}
 				className={style.input}
 				value={field.state.value}
-				onChange={(evt) =>
+				onChange={evt =>
 					field.handleChange(evt.target.value)
 				}
 				onBlur={field.handleBlur}

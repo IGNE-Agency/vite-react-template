@@ -5,12 +5,14 @@ import { en, nl } from "zod/locales";
 
 const zodLocales = { en, nl };
 
+const isZodLocale = (
+	lng: string,
+): lng is keyof typeof zodLocales =>
+	Object.hasOwn(zodLocales, lng);
+
 export const loadZodLocale = (locale: string) => {
-	const lng = locale.substring(
-		0,
-		2,
-	) as keyof typeof zodLocales;
-	if (lng in zodLocales) {
+	const lng = locale.substring(0, 2);
+	if (isZodLocale(lng)) {
 		z.config(zodLocales[lng]());
 	}
 };

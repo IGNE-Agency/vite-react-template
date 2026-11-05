@@ -17,7 +17,7 @@ client.setConfig({
 // TODO: THIS IS FAKE API HANDLING TO MAKE THE TEMPLATE
 // WORK, PLEASE REMOVE THIS AND SET YOUR PROXY TO YOUR
 // ACTUAL BACKEND.
-client.interceptors.response.use(async (res) => {
+client.interceptors.response.use(async res => {
 	// FAKE LOGIN
 	if (res.url.endsWith("/api/auth/login")) {
 		await cookieStore.set({

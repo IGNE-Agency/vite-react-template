@@ -1,0 +1,30 @@
+{
+	"$schema": "./node_modules/oxfmt/configuration_schema.json",
+	"useTabs": true,
+	"tabWidth": 2,
+	"semi": true,
+	"singleQuote": false,
+	"jsxSingleQuote": false,
+	"quoteProps": "as-needed",
+	"bracketSpacing": true,
+	"bracketSameLine": true,
+	"arrowParens": "avoid",
+	"endOfLine": "lf",
+	"printWidth": 60,
+	"sortPackageJson": true,
+	"ignorePatterns": [
+		".claude",
+		"dist",
+		"src/lib/heyapi",
+		"src/lib/paraglide",
+		"*.gen.*"
+	],
+	"overrides": [
+		{
+			"files": ["*.md", "*.mdx"],
+			"options": {
+				"proseWrap": "never"
+			}
+		}
+	]
+}

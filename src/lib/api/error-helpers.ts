@@ -10,14 +10,19 @@ export const parseErrorString = (
 	fallback?: string,
 ): string => {
 	const unknownError = fallback || m.error_unknown();
-	if (!value) return unknownError;
-	if (typeof value === "string") return value;
+	if (!value) {
+		return unknownError;
+	}
+	if (typeof value === "string") {
+		return value;
+	}
 	if (
 		typeof value === "object" &&
 		"message" in value &&
-		value.message
+		typeof value.message === "string" &&
+		value.message !== ""
 	) {
-		return String(value.message);
+		return value.message;
 	}
 	return unknownError;
 };

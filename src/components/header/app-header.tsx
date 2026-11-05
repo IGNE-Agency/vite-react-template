@@ -4,13 +4,16 @@ import {
 	useNavigate,
 } from "@tanstack/react-router";
 import Logo from "assets/icons/logo.svg?react";
-import clsx from "clsx";
+import { clsx } from "clsx";
 import { Button, Select } from "components/form";
 import { postApiAuthLogout } from "lib/heyapi";
 import { useLocale } from "lib/i18n";
 import * as m from "lib/paraglide/messages";
-import type { Locale } from "lib/paraglide/runtime";
-import { locales, setLocale } from "lib/paraglide/runtime";
+import {
+	isLocale,
+	locales,
+	setLocale,
+} from "lib/paraglide/runtime";
 import style from "./app-header.module.scss";
 
 const links = linkOptions([
@@ -32,7 +35,7 @@ const AppHeader = () => {
 
 	const languageOptions = locales
 		.toSorted((a, b) => a.localeCompare(b, locale))
-		.map((lang) => ({
+		.map(lang => ({
 			value: lang,
 			label:
 				new Intl.DisplayNames([lang], {
@@ -42,19 +45,18 @@ const AppHeader = () => {
 
 	const handleLogout = async () => {
 		await postApiAuthLogout();
-		navigate({ to: "/login" });
+		await navigate({ to: "/login" });
 	};
 
 	return (
 		<header>
 			<div className={clsx([style.header, style.row])}>
 				<nav className={style.row}>
-					{links.map((link) => (
+					{links.map(link => (
 						<Link
 							key={link.to}
 							to={link.to}
-							className={style.link}
-						>
+							className={style.link}>
 							{link.icon}
 							<span>{link.label()}</span>
 						</Link>
@@ -66,9 +68,11 @@ const AppHeader = () => {
 						aria-label={m.nav_language()}
 						options={languageOptions}
 						defaultValue={locale.toString()}
-						onChange={({ currentTarget: { value } }) =>
-							setLocale(value as Locale)
-						}
+						onChange={({ currentTarget: { value } }) => {
+							if (isLocale(value)) {
+								void setLocale(value);
+							}
+						}}
 					/>
 					<Button onClick={handleLogout}>
 						{m.nav_logout()}
