@@ -185,7 +185,8 @@ paths:
     post:
       responses:
         "204":
-          description: If there is a user with the given email address, a recovery email
+          description:
+            If there is a user with the given email address, a recovery email
             will be sent to that address.
         "422":
           $ref: "#/components/responses/ValidationException"

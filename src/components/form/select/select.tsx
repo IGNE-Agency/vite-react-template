@@ -1,23 +1,27 @@
 import style from "./select.module.scss";
 
-export type SelectOption = {
+export type SelectOption = Readonly<{
 	label: string;
 	value: string;
-};
+}>;
 
-type Props = React.ComponentPropsWithoutRef<"select"> & {
-	name: string;
-	options: SelectOption[];
-	isInvalid?: boolean;
-};
+type Props = React.ComponentPropsWithoutRef<"select"> &
+	Readonly<{
+		name: string;
+		options: SelectOption[];
+		isInvalid?: boolean;
+	}>;
 
-function Select({ options, isInvalid, ...props }: Props) {
+const Select = ({
+	options,
+	isInvalid,
+	...props
+}: Props) => {
 	return (
 		<select
 			aria-invalid={isInvalid}
 			className={style.select}
-			{...props}
-		>
+			{...props}>
 			{options.map(({ value, label }) => (
 				<option key={value} value={value}>
 					{label}
@@ -25,6 +29,6 @@ function Select({ options, isInvalid, ...props }: Props) {
 			))}
 		</select>
 	);
-}
+};
 
 export default Select;

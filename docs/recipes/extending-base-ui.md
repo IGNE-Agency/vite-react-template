@@ -10,16 +10,23 @@ This doc describes a good way to do that.
 For example a menu's Trigger should always contain an arrow:
 
 ```tsx
-import { Menu as BaseMenu } from '@base-ui/react/menu';
+import { Menu as BaseMenu } from "@base-ui/react/menu";
 import ChevronRight from "assets/icons/chevron-right.svg?react";
 
-const MenuTrigger = ({children, ...rest}: BaseMenu.Trigger.Props) =>
-  <BaseMenu.Trigger {...rest}>{children}<ChevronRight /></BaseMenu.Trigger>
+const MenuTrigger = ({
+	children,
+	...rest
+}: BaseMenu.Trigger.Props) => (
+	<BaseMenu.Trigger {...rest}>
+		{children}
+		<ChevronRight />
+	</BaseMenu.Trigger>
+);
 
 export default {
-  ...BaseMenu,
-  Trigger: MenuTrigger,
-}
+	...BaseMenu,
+	Trigger: MenuTrigger,
+};
 ```
 
 This way you only have to redefine the compound components that you change.  
@@ -30,9 +37,19 @@ The suffix format (in this case `Menu`Trigger), prevents issues with reserved co
 ```tsx
 //...
 
-export type MenuTriggerProps = BaseMenu.Trigger.Props & { icon: "chevron" | "arrow" }
-const MenuTrigger = ({children, icon, ...rest}: MenuTriggerProps) =>
-  <BaseMenu.Trigger {...rest}>{children}{icon ? <ChevronRight /> : <Arrow />}</BaseMenu.Trigger>
+export type MenuTriggerProps = BaseMenu.Trigger.Props & {
+	icon: "chevron" | "arrow";
+};
+const MenuTrigger = ({
+	children,
+	icon,
+	...rest
+}: MenuTriggerProps) => (
+	<BaseMenu.Trigger {...rest}>
+		{children}
+		{icon ? <ChevronRight /> : <Arrow />}
+	</BaseMenu.Trigger>
+);
 
 //...
 ```

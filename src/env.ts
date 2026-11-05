@@ -4,7 +4,7 @@ const envSchema = z
 	.object({
 		VITE_API_BASEURL: z.string().default(""),
 	})
-	.transform((raw) => ({
+	.transform(raw => ({
 		apiBaseUrl: raw.VITE_API_BASEURL,
 	}));
 

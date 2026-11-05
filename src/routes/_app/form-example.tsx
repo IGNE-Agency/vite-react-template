@@ -13,7 +13,7 @@ import {
 import type { ValidationError } from "lib/heyapi";
 import { makePageTitle } from "lib/title";
 import { useState } from "react";
-import z from "zod";
+import { z } from "zod";
 import style from "./form-example.module.scss";
 
 // Note: this whole file is an example, you should always prefer to use generated schema's
@@ -33,8 +33,7 @@ const validationSchema = z.object({
 });
 type ValidationType = z.infer<typeof validationSchema>;
 
-// biome-ignore lint/suspicious/noExplicitAny: whatever man
-const fakeSubmit = async (_value: any, ok = true) =>
+const fakeSubmit = async (_value: unknown, ok = true) =>
 	new Promise((resolve, reject) =>
 		setTimeout(() => {
 			if (ok) {
@@ -78,31 +77,13 @@ const fakeSubmit = async (_value: any, ok = true) =>
 
 // ---
 
-export const Route = createFileRoute("/_app/form-example")({
-	head: () => ({
-		meta: [{ title: makePageTitle("Form test") }],
-	}),
-	component: FormTest,
-	loader: () => ({
-		// Suppose options are set by cms
-		allOptions: [
-			{ label: "I like apples!", value: "apples" },
-			{
-				label: "I like puppies very much!",
-				value: "puppies",
-			},
-			{ label: "I eat squirrels!", value: "squirrels" },
-		],
-	}),
-});
-
-function FormTest() {
+const FormTest = () => {
 	const [disabled, setDisabled] = useState(false);
 	const { allOptions } = Route.useLoaderData();
 
 	const mutation = useMutation({
 		mutationFn: ({ body }: { body: ValidationType }) => {
-			// biome-ignore lint/suspicious/noConsole: DEV -show what is submitted
+			// oxlint-disable-next-line no-console -- DEV: show what is submitted
 			console.log("Will submit data:", body);
 			return fakeSubmit(body, false); // CHANGE this to false to test erros
 		},
@@ -134,14 +115,13 @@ function FormTest() {
 
 			<Form
 				className={formStyle.form}
-				onSubmit={(evt) => {
+				onSubmit={evt => {
 					evt.preventDefault();
-					form.handleSubmit();
+					void form.handleSubmit();
 				}}
-				disabled={mutation.isPending || disabled}
-			>
+				disabled={mutation.isPending || disabled}>
 				<form.AppField name="email">
-					{(field) => (
+					{field => (
 						<field.Input
 							label="Your e-mail"
 							autoComplete="email"
@@ -155,30 +135,29 @@ function FormTest() {
 				*/}
 				<div className={style.address}>
 					<form.AppField name="postalCode">
-						{(field) => (
+						{field => (
 							<field.Input label="Postal code" noError />
 						)}
 					</form.AppField>
 					<form.AppField name="houseNumber">
-						{(field) => (
+						{field => (
 							<field.Input label="House number" noError />
 						)}
 					</form.AppField>
 					<form.AppField name="houseNumberAdd">
-						{(field) => (
+						{field => (
 							<field.Input label="Addition" noError />
 						)}
 					</form.AppField>
 					<form.Subscribe
-						selector={(state) =>
+						selector={state =>
 							getFieldErrors(state, [
 								"postalCode",
 								"houseNumber",
 								"houseNumberAdd",
 							])
-						}
-					>
-						{(errors) =>
+						}>
+						{errors =>
 							errors.length > 0 ? (
 								<ErrorText className={style.addressError}>
 									{errors}
@@ -189,7 +168,7 @@ function FormTest() {
 				</div>
 
 				<form.AppField name="agree">
-					{(field) => (
+					{field => (
 						<field.Checkbox
 							fieldLabel="You have to agree to this!"
 							label="Sure, whatever dude."
@@ -199,7 +178,7 @@ function FormTest() {
 				</form.AppField>
 
 				<form.AppField name="options">
-					{(field) => (
+					{field => (
 						<field.CheckboxGroup
 							fieldLabel="Pick your options"
 							items={allOptions}
@@ -211,8 +190,7 @@ function FormTest() {
 			</Form>
 			<Button
 				type="button"
-				onClick={() => setDisabled((d) => !d)}
-			>
+				onClick={() => setDisabled(d => !d)}>
 				Toggle disabled state
 			</Button>
 			{!mutation.isSuccess && (
@@ -227,4 +205,22 @@ function FormTest() {
 			)}
 		</div>
 	);
-}
+};
+
+export const Route = createFileRoute("/_app/form-example")({
+	head: () => ({
+		meta: [{ title: makePageTitle("Form test") }],
+	}),
+	component: FormTest,
+	loader: () => ({
+		// Suppose options are set by cms
+		allOptions: [
+			{ label: "I like apples!", value: "apples" },
+			{
+				label: "I like puppies very much!",
+				value: "puppies",
+			},
+			{ label: "I eat squirrels!", value: "squirrels" },
+		],
+	}),
+});
