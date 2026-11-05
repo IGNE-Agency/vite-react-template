@@ -1,8 +1,12 @@
 import * as z from "zod";
 
-const envSchema = z.object({
-	apiBaseUrl: z.string().default(""),
-});
+const envSchema = z
+	.object({
+		VITE_API_BASEURL: z.string().default(""),
+	})
+	.transform((raw) => ({
+		apiBaseUrl: raw.VITE_API_BASEURL,
+	}));
 
 const env = envSchema.parse(import.meta.env);
 
