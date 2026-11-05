@@ -3,6 +3,8 @@
 
 	"forms_optional": "Optioneel",
 
+	"error_unknown": "Onbekende fout.",
+
 	"loading_message": "Bezig met laden...",
 
 	"nav_logout": "Uitloggen",
