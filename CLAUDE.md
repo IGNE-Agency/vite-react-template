@@ -8,19 +8,19 @@ You are working in a production TypeScript + React repository. Make safe, minima
 
 ## Stack
 
-| Concern         | Tool                                                                                             |
-| --------------- | ------------------------------------------------------------------------------------------------ |
-| Package manager | `bun`                                                                                            |
-| Build           | Vite                                                                                             |
-| Framework       | React 19 + TypeScript 5.9                                                                        |
-| Routing         | `@tanstack/react-router`                                                                         |
-| Data fetching   | `@hey-api/openapi-ts` (sdk + TanStack Query plugins) + `@tanstack/react-query`                   |
-| API types       | Generated into `src/lib/heyapi/` on `bun dev` / `bun run build` (configured in `vite.config.ts`) |
-| Forms           | react controlled components                                                                      |
-| UI primitives   | `@base-ui/react`                                                                                 |
-| Styling         | CSS Modules + SCSS (`sass`)                                                                      |
-| i18n            | `@inlang/paraglide-js`                                                                           |
-| Testing         | None installed                                                                                   |
+| Concern | Tool |
+| --- | --- |
+| Package manager | `bun` |
+| Build | Vite |
+| Framework | React 19 + TypeScript 5.9 |
+| Routing | `@tanstack/react-router` |
+| Data fetching | `@hey-api/openapi-ts` (sdk + TanStack Query plugins) + `@tanstack/react-query` |
+| API types | Generated into `src/lib/heyapi/` on `bun dev` / `bun run build` (configured in `vite.config.ts`) |
+| Forms | react controlled components |
+| UI primitives | `@base-ui/react` |
+| Styling | CSS Modules + SCSS (`sass`) |
+| i18n | `@inlang/paraglide-js` |
+| Testing | None installed |
 
 ---
 

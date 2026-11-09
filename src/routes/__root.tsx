@@ -57,7 +57,7 @@ export const Route =
 				<Scripts />
 			</>
 		),
-		errorComponent: (error) => (
+		errorComponent: error => (
 			<ErrorComponent error={error} />
 		),
 		notFoundComponent: NotFoundPage,

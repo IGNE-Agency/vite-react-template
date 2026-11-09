@@ -5,7 +5,7 @@ import {
 	Link,
 	useNavigate,
 } from "@tanstack/react-router";
-import clsx from "clsx";
+import { clsx } from "clsx";
 import { ErrorText } from "components/error-text/error-text";
 import { Button, Form } from "components/form";
 import { H1 } from "components/heading/heading";
@@ -19,7 +19,7 @@ import { postApiAuthLoginMutation } from "lib/heyapi/@tanstack/react-query.gen";
 import { zLoginRequest } from "lib/heyapi/zod.gen";
 import * as m from "lib/paraglide/messages";
 import { makePageTitle } from "lib/title";
-import z from "zod";
+import { z } from "zod";
 import style from "./login.module.scss";
 
 const loginSearchSchema = z.object({
@@ -28,15 +28,7 @@ const loginSearchSchema = z.object({
 	),
 });
 
-export const Route = createFileRoute("/_auth/login")({
-	validateSearch: loginSearchSchema,
-	head: () => ({
-		meta: [{ title: makePageTitle(m.login_title()) }],
-	}),
-	component: LoginPage,
-});
-
-function LoginPage() {
+const LoginPage = () => {
 	const { redirect } = Route.useSearch();
 	const navigate = useNavigate();
 
@@ -65,15 +57,14 @@ function LoginPage() {
 				{m.login_title()}
 			</H1>
 			<Form
-				onSubmit={(evt) => {
+				onSubmit={evt => {
 					evt.preventDefault();
-					form.handleSubmit();
+					void form.handleSubmit();
 				}}
 				className={style.form}
-				disabled={mutation.isPending}
-			>
+				disabled={mutation.isPending}>
 				<form.AppField name="email">
-					{(field) => (
+					{field => (
 						<field.Input
 							label={m.login_email()}
 							autoComplete="email"
@@ -82,7 +73,7 @@ function LoginPage() {
 				</form.AppField>
 				<div className={style.label}>
 					<form.AppField name="password">
-						{(field) => (
+						{field => (
 							<field.Input
 								type="password"
 								label={m.login_password()}
@@ -92,21 +83,19 @@ function LoginPage() {
 					</form.AppField>
 					<Link
 						to="/forgot-password"
-						className={clsx([style.forgotPassword])}
-					>
+						className={clsx([style.forgotPassword])}>
 						{m.login_forgot_password()}
 					</Link>
 				</div>
 
 				<form.Subscribe
-					selector={(state) => {
+					selector={state => {
 						const errBag = state.errorMap.onSubmit;
 						return typeof errBag === "string"
 							? errBag
 							: errBag?.form;
-					}}
-				>
-					{(formError) => (
+					}}>
+					{formError => (
 						<ErrorText>
 							{normalizeFieldErrors(formError)}
 						</ErrorText>
@@ -116,4 +105,12 @@ function LoginPage() {
 			</Form>
 		</>
 	);
-}
+};
+
+export const Route = createFileRoute("/_auth/login")({
+	validateSearch: loginSearchSchema,
+	head: () => ({
+		meta: [{ title: makePageTitle(m.login_title()) }],
+	}),
+	component: LoginPage,
+});

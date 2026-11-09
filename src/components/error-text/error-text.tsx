@@ -1,4 +1,4 @@
-import clsx from "clsx";
+import { clsx } from "clsx";
 import { Fragment, type HTMLAttributes } from "react";
 import style from "./error-text.module.scss";
 
@@ -23,23 +23,24 @@ type Props = Readonly<
 /**
  * Will only render if children is a string or array of strings.
  */
-export function ErrorText({
+export const ErrorText = ({
 	el = "p",
 	className,
 	children,
-	htmlFor = undefined,
-}: Props) {
-	if (!children || children.length < 1) return null;
+	htmlFor,
+}: Props) => {
+	if (!children || children.length < 1) {
+		return null;
+	}
 
 	const El = el;
 	return (
 		<El
 			className={clsx(style.text, className)}
-			htmlFor={htmlFor}
-		>
+			htmlFor={htmlFor}>
 			{Array.isArray(children)
 				? children.map((e, i, all) => (
-						// biome-ignore lint/suspicious/noArrayIndexKey: just text, no order logic
+						// oxlint-disable-next-line react/no-array-index-key -- just text, no order logic
 						<Fragment key={i}>
 							{e}
 							{i < all.length - 1 ? <br /> : null}
@@ -48,4 +49,4 @@ export function ErrorText({
 				: children}
 		</El>
 	);
-}
+};

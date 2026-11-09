@@ -2,7 +2,7 @@ import {
 	Field as BaseField,
 	type FieldRootProps as BaseFieldRootProps,
 } from "@base-ui/react/field";
-import clsx from "clsx";
+import { clsx } from "clsx";
 import { ErrorText } from "components/error-text/error-text";
 import { normalizeFieldErrors } from "lib/forms/validation-helpers";
 import * as m from "lib/paraglide/messages";
@@ -17,12 +17,12 @@ const FieldRoot = ({
 }: FieldRootProps) => (
 	<BaseField.Root
 		className={clsx(style.field, className)}
-		{...props}
-	></BaseField.Root>
+		{...props}></BaseField.Root>
 );
-export type FieldRootProps = BaseFieldRootProps & {
-	className?: string;
-};
+export type FieldRootProps = BaseFieldRootProps &
+	Readonly<{
+		className?: string;
+	}>;
 
 /**
  * Styled Field.Label. Won't render without children
@@ -42,9 +42,10 @@ const FieldLabel = ({
 			)}
 		</BaseField.Label>
 	);
-export type FieldLabelProps = BaseField.Label.Props & {
-	required?: boolean;
-};
+export type FieldLabelProps = BaseField.Label.Props &
+	Readonly<{
+		required?: boolean;
+	}>;
 
 /**
  * A paragraph styled like a field label
@@ -65,9 +66,10 @@ const FieldLabelLike = ({
 		</p>
 	);
 export type FieldLabelLikeProps =
-	React.ComponentProps<"p"> & {
-		required?: boolean;
-	};
+	React.ComponentProps<"p"> &
+		Readonly<{
+			required?: boolean;
+		}>;
 
 /**
  * Styled Field.Description
@@ -80,8 +82,7 @@ const FieldDescription = ({
 	children && (
 		<BaseField.Description
 			className={clsx(style.description, className)}
-			{...props}
-		>
+			{...props}>
 			{children}
 		</BaseField.Description>
 	);
@@ -95,7 +96,7 @@ const FieldError = ({
 }: BaseField.Error.Props) => (
 	<BaseField.Error
 		match
-		render={({ children, ...props }) => (
+		render={({ children: _children, ...props }) => (
 			<ErrorText el="span" {...props}>
 				{normalizeFieldErrors(errors)}
 			</ErrorText>

@@ -1,4 +1,3 @@
-import * as path from "node:path";
 import { heyApiPlugin } from "@hey-api/vite-plugin";
 import { paraglideVitePlugin } from "@inlang/paraglide-js";
 import { tanstackRouter } from "@tanstack/router-plugin/vite";
@@ -6,10 +5,9 @@ import react from "@vitejs/plugin-react";
 import { defineConfig, loadEnv } from "vite";
 import https from "vite-plugin-mkcert";
 import svgr from "vite-plugin-svgr";
-import viteTsConfigPaths from "vite-tsconfig-paths";
-import { name } from "./package.json";
-import { baseLocale } from "./project.inlang/settings.json";
-import { translatedPathnames } from "./router-i18n";
+import packageJson from "./package.json" with { type: "json" };
+import inlangSettings from "./project.inlang/settings.json" with { type: "json" };
+import { translatedPathnames } from "./router-i18n.ts";
 
 /**
  * Serves the document in the locale paraglide compiles for, read from the
@@ -18,7 +16,7 @@ import { translatedPathnames } from "./router-i18n";
 const documentLocale = () => ({
 	name: "document-locale",
 	transformIndexHtml: (html: string) =>
-		html.replaceAll("%LOCALE%", baseLocale),
+		html.replaceAll("%LOCALE%", inlangSettings.baseLocale),
 });
 
 // https://vitejs.dev/config/
@@ -33,7 +31,7 @@ export default defineConfig(({ mode }) => {
 				strategy: ["url", "localStorage", "baseLocale"],
 				emitTsDeclarations: true,
 				urlPatterns: translatedPathnames,
-				localStorageKey: `${name}-lang`,
+				localStorageKey: `${packageJson.name}-lang`,
 			}),
 			documentLocale(),
 			heyApiPlugin({
@@ -58,10 +56,7 @@ export default defineConfig(({ mode }) => {
 				routeFileIgnorePattern: "\\.module\\.scss",
 			}),
 			https(),
-			react({
-				babel: { plugins: ["babel-plugin-react-compiler"] },
-			}),
-			viteTsConfigPaths(),
+			react({ compiler: true }),
 			svgr({
 				svgrOptions: {
 					plugins: [
@@ -93,53 +88,38 @@ export default defineConfig(({ mode }) => {
 		},
 		build: {
 			target: "esnext",
-			rollupOptions: {
+			rolldownOptions: {
 				output: {
-					manualChunks(id) {
-						if (
-							id.includes("/node_modules/react/") ||
-							id.includes("/node_modules/react-dom/") ||
-							id.includes("/node_modules/scheduler/")
-						) {
-							return "vendor-react";
-						}
-						if (
-							id.includes(
-								"/node_modules/@tanstack/react-router",
-							) ||
-							id.includes(
-								"/node_modules/@tanstack/router-core",
-							) ||
-							id.includes("/node_modules/@tanstack/history")
-						) {
-							return "vendor-router";
-						}
-						if (
-							id.includes(
-								"/node_modules/@tanstack/react-query",
-							) ||
-							id.includes(
-								"/node_modules/@tanstack/query-core",
-							)
-						) {
-							return "vendor-query";
-						}
-						if (
-							id.includes("/node_modules/i18next") ||
-							id.includes("/node_modules/react-i18next")
-						) {
-							return "vendor-i18n";
-						}
+					codeSplitting: {
+						groups: [
+							{
+								name: "vendor-react",
+								test: /\/node_modules\/(react|react-dom|scheduler)\//,
+							},
+							{
+								name: "vendor-router",
+								test: /\/node_modules\/@tanstack\/(react-router|router-core|history)\//,
+							},
+							{
+								name: "vendor-query",
+								test: /\/node_modules\/@tanstack\/(react-query|query-core)\//,
+							},
+							{
+								name: "vendor-i18n",
+								test: /\/node_modules\/(i18next|react-i18next)\//,
+							},
+						],
 					},
 				},
 			},
 		},
 		resolve: {
-			// vite-tsconfig-paths doesn't work in SASS files
+			tsconfigPaths: true,
+			// tsconfig paths don't apply to Sass imports
 			alias: [
 				{
 					find: /^style\/(.*\.(c|s[ac])ss$)/,
-					replacement: `${path.resolve(__dirname)}/src/style/$1`,
+					replacement: `${import.meta.dirname}/src/style/$1`,
 				},
 			],
 		},

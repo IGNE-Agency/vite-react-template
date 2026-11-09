@@ -4,6 +4,14 @@ import * as m from "lib/paraglide/messages";
 import { makePageTitle } from "lib/title";
 import style from "./forgot-password.module.scss";
 
+const ForgotPasswordPage = () => {
+	return (
+		<H1 size="medium" className={style.textCenter}>
+			{m.forgot_password_title()}
+		</H1>
+	);
+};
+
 export const Route = createFileRoute(
 	"/_auth/forgot-password",
 )({
@@ -14,11 +22,3 @@ export const Route = createFileRoute(
 	}),
 	component: ForgotPasswordPage,
 });
-
-function ForgotPasswordPage() {
-	return (
-		<H1 size="medium" className={style.textCenter}>
-			{m.forgot_password_title()}
-		</H1>
-	);
-}

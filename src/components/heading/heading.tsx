@@ -1,21 +1,22 @@
-import clsx from "clsx";
+import { clsx } from "clsx";
 import type { JSX } from "react";
 import style from "./heading.module.scss";
 
 // All html heading, p and span elements have same attributes. Using h1 as template.
-type TextProps = React.ComponentPropsWithoutRef<"h1"> & {
-	el?:
-		| "p"
-		| "span"
-		| "h1"
-		| "h2"
-		| "h3"
-		| "h4"
-		| "h5"
-		| "h6";
-	// Sizes should match the possible sizes from design and `font.scss` file.
-	size: "small" | "medium" | "large";
-};
+type TextProps = React.ComponentPropsWithoutRef<"h1"> &
+	Readonly<{
+		el?:
+			| "p"
+			| "span"
+			| "h1"
+			| "h2"
+			| "h3"
+			| "h4"
+			| "h5"
+			| "h6";
+		// Sizes should match the possible sizes from design and `font.scss` file.
+		size: "small" | "medium" | "large";
+	}>;
 
 /**
  * Headings and short texts that look like headings.
@@ -34,8 +35,7 @@ export const Heading = ({
 	return (
 		<El
 			className={clsx(style[`size-${size}`], className)}
-			{...props}
-		>
+			{...props}>
 			{children}
 		</El>
 	);

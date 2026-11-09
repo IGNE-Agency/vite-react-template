@@ -1,10 +1,11 @@
 import { Fieldset } from "@base-ui/react/fieldset";
-import clsx from "clsx";
+import { clsx } from "clsx";
 import style from "./form.module.scss";
 
-type FormProps = React.ComponentProps<"form"> & {
-	disabled?: boolean;
-};
+type FormProps = React.ComponentProps<"form"> &
+	Readonly<{
+		disabled?: boolean;
+	}>;
 
 const Form = ({
 	children,
@@ -16,12 +17,10 @@ const Form = ({
 		<form
 			className={clsx([className])}
 			noValidate
-			{...props}
-		>
+			{...props}>
 			<Fieldset.Root
 				disabled={disabled}
-				className={style.disablerFieldset}
-			>
+				className={style.disablerFieldset}>
 				{children}
 			</Fieldset.Root>
 		</form>

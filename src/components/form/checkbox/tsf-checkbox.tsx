@@ -4,11 +4,12 @@ import Field from "../field/field";
 import Checkbox, { type CheckboxProps } from "./checkbox";
 import style from "./checkbox.module.scss";
 
-type Props = CheckboxProps & {
-	label: string;
-	fieldLabel?: string;
-	description?: string;
-};
+type Props = CheckboxProps &
+	Readonly<{
+		label: string;
+		fieldLabel?: string;
+		description?: string;
+	}>;
 
 /**
  * Single checkbox connector for tanstack form
@@ -18,7 +19,7 @@ const TSFCheckbox = ({
 	fieldLabel,
 	description,
 	required,
-	className,
+	className: _className,
 	...props
 }: Props) => {
 	const field = useFieldContext<boolean>();
@@ -32,7 +33,7 @@ const TSFCheckbox = ({
 				<Checkbox
 					id={field.name}
 					checked={field.state.value}
-					onCheckedChange={(checked) =>
+					onCheckedChange={checked =>
 						field.handleChange(checked)
 					}
 					onBlur={field.handleBlur}

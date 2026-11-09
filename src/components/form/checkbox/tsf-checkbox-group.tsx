@@ -10,12 +10,12 @@ export type CheckboxGroupItem = Readonly<{
 	value: string;
 }>;
 
-type Props = {
+type Props = Readonly<{
 	fieldLabel: string;
 	items: CheckboxGroupItem[];
 	required?: boolean;
 	description?: string;
-};
+}>;
 
 /**
  * A list of multiple checkboxes for tanstack form.
@@ -38,18 +38,16 @@ const TSFCheckboxGroup = ({
 				aria-labelledby={`${field.name}-label`}
 				className={style.checkboxGroup}
 				value={field.state.value}
-				onValueChange={(value) => field.handleChange(value)}
-			>
+				onValueChange={value => field.handleChange(value)}>
 				{items.map(({ label, value }) => (
 					<Field.Item
 						key={value}
-						render={(props) => (
+						render={props => (
 							<BaseField.Label
 								className={style.label}
 								{...props}
 							/>
-						)}
-					>
+						)}>
 						<Checkbox
 							id={`${field.name}-${value}`}
 							value={value}
